@@ -44,3 +44,5 @@ pnpm-debug.log*
 supabase/config.toml
 supabase/.branches
 supabase/.temp
+
+.nojekyll

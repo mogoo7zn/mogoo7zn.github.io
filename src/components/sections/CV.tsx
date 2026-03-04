@@ -70,39 +70,25 @@ export default function CV() {
                       {profile.major[lang]} · {profile.degree[lang]}
                     </p>
                   </div>
-                  <div
-                    className="flex gap-4 pt-2"
-                    style={{ borderTop: "1px solid var(--color-border)" }}
-                  >
-                    <div>
+                  {profile.coreCourses && (
+                    <div
+                      className="pt-3 mt-2"
+                      style={{ borderTop: "1px solid var(--color-border)" }}
+                    >
                       <span
-                        className="text-xs"
+                        className="text-xs block mb-1"
                         style={{ color: "var(--color-text-muted)" }}
                       >
-                        {ui.cv.gpa[lang]}
+                        {lang === "zh" ? "核心课程" : "Core Courses"}
                       </span>
                       <p
-                        className="font-semibold text-sm"
-                        style={{ color: "var(--color-primary)" }}
+                        className="text-xs leading-relaxed"
+                        style={{ color: "var(--color-text-secondary)" }}
                       >
-                        {profile.gpa}
+                        {profile.coreCourses[lang]}
                       </p>
                     </div>
-                    <div>
-                      <span
-                        className="text-xs"
-                        style={{ color: "var(--color-text-muted)" }}
-                      >
-                        {ui.cv.rank[lang]}
-                      </span>
-                      <p
-                        className="font-semibold text-sm"
-                        style={{ color: "var(--color-primary)" }}
-                      >
-                        {profile.rank}
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </SectionLoader>

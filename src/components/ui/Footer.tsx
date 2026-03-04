@@ -3,8 +3,14 @@ import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 import { Github, Mail, Cpu, Network } from "lucide-react";
 import { profile } from "@/data/profile";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useEffect } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  animate,
+} from "framer-motion";
+import { useEffect, useState } from "react";
 import VisitCounter from "@/components/blog/VisitCounter";
 
 function EmbodiedAICore() {
@@ -32,6 +38,23 @@ function EmbodiedAICore() {
     useTransform(mouseY, [-1, 1], [-20, 20]),
     springConfig,
   );
+
+  // Blinking effect
+  const [isBlinking, setIsBlinking] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const triggerBlink = () => {
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 200);
+
+      const nextBlink = Math.random() * 5000 + 3000; // Blink every 3-8 seconds
+      timeoutId = setTimeout(triggerBlink, nextBlink);
+    };
+
+    timeoutId = setTimeout(triggerBlink, 3000);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   // Pupil movement (moves slightly more than the eye to create looking effect)
   const pupilX = useTransform(eyeX, (x) => x * 1.5);
@@ -90,8 +113,7 @@ function EmbodiedAICore() {
             opacity="0.8"
           />
 
-          {/* Dynamic Inner Content */}
-          <motion.g>
+          <g>
             {/* Connecting Lines */}
             <motion.path
               d={pathD}
@@ -107,7 +129,13 @@ function EmbodiedAICore() {
               cx="150"
               cy="150"
               r="34"
-              style={{ x: eyeX, y: eyeY }}
+              style={{ x: eyeX, y: eyeY, originX: "150px", originY: "150px" }}
+              animate={{ scaleY: isBlinking ? 0.1 : 1 }}
+              transition={
+                isBlinking
+                  ? { duration: 0.1, ease: "easeOut" }
+                  : { type: "spring", stiffness: 250, damping: 25 }
+              }
               stroke="url(#avatar-gradient)"
               strokeWidth="5"
               fill="transparent"
@@ -118,11 +146,22 @@ function EmbodiedAICore() {
               cx="150"
               cy="150"
               r="10"
-              style={{ x: pupilX, y: pupilY }}
+              style={{
+                x: pupilX,
+                y: pupilY,
+                originX: "150px",
+                originY: "150px",
+              }}
+              animate={{ scaleY: isBlinking ? 0.1 : 1 }}
+              transition={
+                isBlinking
+                  ? { duration: 0.1, ease: "easeOut" }
+                  : { type: "spring", stiffness: 250, damping: 25 }
+              }
               fill="var(--color-primary)"
               opacity="0.8"
             />
-          </motion.g>
+          </g>
         </svg>
       </div>
       <div

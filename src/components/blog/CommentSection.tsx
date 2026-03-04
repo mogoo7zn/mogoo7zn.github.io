@@ -483,10 +483,14 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
   async function handleSubmit(
     e: React.FormEvent,
     parentId: number | null = null,
+    overrideContent?: string,
   ) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    const submissionContent =
+      overrideContent !== undefined ? overrideContent : content;
 
     if (!supabase) {
       setError(t.errors.notConfigured[lang]);
@@ -506,7 +510,7 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
       return;
     }
 
-    const trimmedContent = content.trim();
+    const trimmedContent = submissionContent.trim();
 
     if (!trimmedContent) {
       setError(t.errors.contentRequired[lang]);
@@ -566,9 +570,13 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
 
       // Success
       setSuccess(t.submitSuccess[lang]);
-      setContent("");
-      setReplyTo(null); // Clear reply state
-      await loadComments();
+      if (parentId === null) {
+        setContent(""); // Clear main input
+      } else {
+        setReplyTo(null); // Close reply form
+      }
+
+      await loadComments(true);
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);

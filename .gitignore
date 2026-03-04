@@ -46,3 +46,4 @@ supabase/.branches
 supabase/.temp
 
 .nojekyll
+*.sql

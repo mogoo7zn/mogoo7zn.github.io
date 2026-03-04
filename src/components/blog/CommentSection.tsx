@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -31,6 +31,297 @@ interface Comment {
 interface CommentSectionProps {
   pagePath: string;
 }
+
+/* ─────────── Helper Functions ─────────── */
+function formatDate(dateStr: string, lang: string) {
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+interface CommentItemProps {
+  comment: Comment;
+  depth?: number;
+  replyTo: number | null;
+  setReplyTo: (id: number | null) => void;
+  handleSubmitReply: (
+    e: React.FormEvent,
+    parentId: number,
+    content: string,
+  ) => void;
+  lang: "zh" | "en";
+  t: any;
+  githubUser: GitHubUser | null;
+  isAdmin: boolean;
+  deletingId: number | null;
+  handleDelete: (id: number) => void;
+  isSubmitting: boolean;
+}
+
+const CommentItem = memo(
+  ({
+    comment,
+    depth = 0,
+    replyTo,
+    setReplyTo,
+    handleSubmitReply,
+    lang,
+    t,
+    githubUser,
+    isAdmin,
+    deletingId,
+    handleDelete,
+    isSubmitting,
+  }: CommentItemProps) => {
+    const isReplying = replyTo === comment.id;
+    const [replyContent, setReplyContent] = useState("");
+
+    // Limit indentation depth visually to prevent squashed content on mobile
+    const indentStyle =
+      depth > 0
+        ? {
+            marginLeft: depth < 3 ? `${depth * 1.5}rem` : "1.5rem",
+            borderLeft: depth >= 3 ? "2px solid var(--color-border)" : "none",
+            paddingLeft: depth >= 3 ? "1rem" : "0",
+          }
+        : {};
+
+    const handleReplySubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      handleSubmitReply(e, comment.id, replyContent);
+      setReplyContent("");
+    };
+
+    return (
+      <div
+        className={`group ${depth > 0 ? "mt-3" : "mb-6"}`}
+        style={indentStyle}
+      >
+        <div
+          className="rounded-xl p-5 transition-all duration-200 hover:shadow-md relative"
+          style={{
+            backgroundColor: "var(--color-bg-secondary)",
+            border: "1px solid var(--color-border)",
+            borderColor: isReplying
+              ? "var(--color-primary)"
+              : "var(--color-border)",
+          }}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-2">
+                {comment.github_avatar_url ? (
+                  <img
+                    src={comment.github_avatar_url}
+                    alt={comment.github_username || comment.author_name}
+                    className="w-8 h-8 rounded-full flex-shrink-0"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
+                    }}
+                  >
+                    {(comment.author_name || "?").charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {comment.github_username ? (
+                    <a
+                      href={`https://github.com/${comment.github_username}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-sm hover:underline"
+                      style={{ color: "var(--color-text)" }}
+                    >
+                      {comment.github_username}
+                    </a>
+                  ) : (
+                    <span
+                      className="font-semibold text-sm"
+                      style={{ color: "var(--color-text)" }}
+                    >
+                      {comment.author_name}
+                    </span>
+                  )}
+                  <span
+                    className="text-xs"
+                    style={{ color: "var(--color-text-muted)" }}
+                  >
+                    {formatDate(comment.created_at, lang)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div
+                className="pl-11 text-sm prose prose-sm dark:prose-invert max-w-none break-words [&>p]:mb-2 [&>p:last-child]:mb-0 [&>pre]:bg-zinc-900 [&>pre]:p-2 [&>pre]:rounded-md"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                  {comment.content}
+                </ReactMarkdown>
+              </div>
+
+              {/* Actions Line */}
+              <div className="flex justify-end mt-2 gap-3 items-center">
+                {/* Reply Button */}
+                {githubUser && (
+                  <button
+                    onClick={() => {
+                      setReplyTo(isReplying ? null : comment.id);
+                      setReplyContent("");
+                      if (!isReplying)
+                        setTimeout(
+                          () =>
+                            document
+                              .getElementById(`reply-input-${comment.id}`)
+                              ?.focus(),
+                          50,
+                        );
+                    }}
+                    className="text-xs flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
+                    style={{ color: "var(--color-primary)" }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9 14 4 9l5-5" />
+                      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11" />
+                    </svg>
+                    {lang === "zh" ? "回复" : "Reply"}
+                  </button>
+                )}
+
+                {/* Admin delete */}
+                {isAdmin && (
+                  <button
+                    onClick={() => handleDelete(comment.id)}
+                    disabled={deletingId === comment.id}
+                    className="flex-shrink-0 text-xs transition-opacity opacity-0 group-hover:opacity-100 hover:text-red-500"
+                    style={{ color: "#ef4444" }}
+                    title={t.admin.delete[lang]}
+                  >
+                    {deletingId === comment.id
+                      ? "Deleting..."
+                      : lang === "zh"
+                        ? "删除"
+                        : "Delete"}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Reply Form */}
+        {isReplying && (
+          <div
+            className="mt-3 ml-4 md:ml-12 p-4 rounded-xl border border-dashed animate-in fade-in slide-in-from-top-2 duration-200"
+            style={{
+              borderColor: "var(--color-primary)",
+              backgroundColor: "rgba(var(--color-primary-rgb), 0.05)",
+            }}
+          >
+            <form onSubmit={handleReplySubmit}>
+              <div className="flex items-start gap-3">
+                <textarea
+                  id={`reply-input-${comment.id}`}
+                  value={replyContent}
+                  onChange={(e) => setReplyContent(e.target.value)}
+                  placeholder={
+                    lang === "zh"
+                      ? `回复 @${comment.github_username || comment.author_name}...`
+                      : `Reply to @${comment.github_username || comment.author_name}...`
+                  }
+                  className="flex-1 bg-transparent text-sm p-3 rounded-lg border focus:outline-none focus:ring-2 transition-all resize-y"
+                  rows={3}
+                  style={
+                    {
+                      borderColor: "var(--color-border)",
+                      color: "var(--color-text)",
+                      backgroundColor: "var(--color-bg)",
+                      "--tw-ring-color": "var(--color-primary)",
+                    } as React.CSSProperties
+                  }
+                />
+              </div>
+              <div className="flex justify-end gap-2 mt-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setReplyTo(null);
+                    setReplyContent("");
+                  }}
+                  className="text-xs px-3 py-1.5 rounded-lg transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  style={{ color: "var(--color-text-muted)" }}
+                >
+                  {lang === "zh" ? "取消" : "Cancel"}
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !replyContent.trim()}
+                  className="text-xs px-4 py-1.5 rounded-lg text-white font-medium transition-transform active:scale-95"
+                  style={{ background: "var(--color-primary)" }}
+                >
+                  {isSubmitting
+                    ? "..."
+                    : lang === "zh"
+                      ? "发送回复"
+                      : "Send Reply"}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* Render Children Recursively */}
+        {comment.children && comment.children.length > 0 && (
+          <div className="mt-2">
+            {comment.children.map((child) => (
+              <CommentItem
+                key={child.id}
+                comment={child}
+                depth={depth + 1}
+                replyTo={replyTo}
+                setReplyTo={setReplyTo}
+                handleSubmitReply={handleSubmitReply}
+                lang={lang}
+                t={t}
+                githubUser={githubUser}
+                isAdmin={isAdmin}
+                deletingId={deletingId}
+                handleDelete={handleDelete}
+                isSubmitting={isSubmitting}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  },
+);
 
 /* ─────────── Component ─────────── */
 export default function CommentSection({ pagePath }: CommentSectionProps) {
@@ -92,54 +383,58 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
   }, []);
 
   // ─────────── Load comments ───────────
-  const loadComments = useCallback(async () => {
-    if (!supabase) return;
-    try {
-      const { data, error: err } = await supabase
-        .from("comments")
-        .select(
-          "id, page_path, author_name, content, created_at, github_username, github_avatar_url, parent_id",
-        )
-        .eq("page_path", pagePath)
-        .eq("is_visible", true)
-        .order("created_at", { ascending: true }); // Use Ascending for chronological tree building
+  const loadComments = useCallback(
+    async (isSilent = false) => {
+      if (!supabase) return;
+      try {
+        if (!isSilent) setIsLoading(true);
+        const { data, error: err } = await supabase
+          .from("comments")
+          .select(
+            "id, page_path, author_name, content, created_at, github_username, github_avatar_url, parent_id",
+          )
+          .eq("page_path", pagePath)
+          .eq("is_visible", true)
+          .order("created_at", { ascending: true });
 
-      if (err) throw err;
+        if (err) throw err;
 
-      // Build Threaded Comments
-      const rawComments = (data || []) as Comment[];
-      const commentMap = new Map<number, Comment>();
-      const rootComments: Comment[] = [];
+        // Build Threaded Comments
+        const rawComments = (data || []) as Comment[];
+        const commentMap = new Map<number, Comment>();
+        const rootComments: Comment[] = [];
 
-      // Initialize map with empty children array
-      rawComments.forEach((c) => {
-        commentMap.set(c.id, { ...c, children: [] });
-      });
+        // Initialize map with empty children array
+        rawComments.forEach((c) => {
+          commentMap.set(c.id, { ...c, children: [] });
+        });
 
-      // Assemble tree
-      rawComments.forEach((c) => {
-        const comment = commentMap.get(c.id)!;
-        if (comment.parent_id && commentMap.has(comment.parent_id)) {
-          commentMap.get(comment.parent_id)!.children!.push(comment);
-        } else {
-          // If no parent or parent not found (e.g. deleted/hidden), treat as root
-          rootComments.push(comment);
-        }
-      });
+        // Assemble tree
+        rawComments.forEach((c) => {
+          const comment = commentMap.get(c.id)!;
+          if (comment.parent_id && commentMap.has(comment.parent_id)) {
+            commentMap.get(comment.parent_id)!.children!.push(comment);
+          } else {
+            // If no parent or parent not found (e.g. deleted/hidden), treat as root
+            rootComments.push(comment);
+          }
+        });
 
-      // Sort roots by descending (newest first)
-      rootComments.sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      );
+        // Sort roots by descending (newest first)
+        rootComments.sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        );
 
-      setComments(rootComments);
-    } catch (err) {
-      console.error("Failed to load comments:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pagePath]);
+        setComments(rootComments);
+      } catch (err) {
+        console.error("Failed to load comments:", err);
+      } finally {
+        if (!isSilent) setIsLoading(false);
+      }
+    },
+    [pagePath],
+  );
 
   useEffect(() => {
     loadComments();
@@ -328,7 +623,7 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
 
       const result = data as { success: boolean; error?: string };
       if (result.success) {
-        await loadComments();
+        await loadComments(true);
       } else {
         alert(result.error || "Delete failed");
       }
@@ -347,239 +642,13 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
     sessionStorage.removeItem("admin_pw");
   }
 
-  // ─────────── Format date ───────────
-  function formatDate(dateStr: string) {
-    try {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch {
-      return dateStr;
-    }
-  }
-
-  // ─────────── Render Comment Tree ───────────
-  const renderComment = (comment: Comment, depth = 0) => {
-    const isReplying = replyTo === comment.id;
-    // Limit indentation depth visually to prevent squashed content on mobile
-    const indentStyle =
-      depth > 0
-        ? {
-            marginLeft: depth < 3 ? `${depth * 1.5}rem` : "1.5rem",
-            borderLeft: depth >= 3 ? "2px solid var(--color-border)" : "none",
-            paddingLeft: depth >= 3 ? "1rem" : "0",
-          }
-        : {};
-
-    return (
-      <div
-        key={comment.id}
-        className={`group ${depth > 0 ? "mt-3" : "mb-6"}`}
-        style={indentStyle}
-      >
-        <div
-          className="rounded-xl p-5 transition-all duration-200 hover:shadow-md relative"
-          style={{
-            backgroundColor: "var(--color-bg-secondary)",
-            border: "1px solid var(--color-border)",
-            borderColor: isReplying
-              ? "var(--color-primary)"
-              : "var(--color-border)",
-          }}
-        >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              {/* Header */}
-              <div className="flex items-center gap-3 mb-2">
-                {comment.github_avatar_url ? (
-                  <img
-                    src={comment.github_avatar_url}
-                    alt={comment.github_username || comment.author_name}
-                    className="w-8 h-8 rounded-full flex-shrink-0"
-                  />
-                ) : (
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
-                    }}
-                  >
-                    {(comment.author_name || "?").charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div className="flex items-center gap-2 flex-wrap">
-                  {comment.github_username ? (
-                    <a
-                      href={`https://github.com/${comment.github_username}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-semibold text-sm hover:underline"
-                      style={{ color: "var(--color-text)" }}
-                    >
-                      {comment.github_username}
-                    </a>
-                  ) : (
-                    <span
-                      className="font-semibold text-sm"
-                      style={{ color: "var(--color-text)" }}
-                    >
-                      {comment.author_name}
-                    </span>
-                  )}
-                  <span
-                    className="text-xs"
-                    style={{ color: "var(--color-text-muted)" }}
-                  >
-                    {formatDate(comment.created_at)}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div
-                className="pl-11 text-sm prose prose-sm dark:prose-invert max-w-none break-words [&>p]:mb-2 [&>p:last-child]:mb-0 [&>pre]:bg-zinc-900 [&>pre]:p-2 [&>pre]:rounded-md"
-                style={{ color: "var(--color-text-secondary)" }}
-              >
-                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-                  {comment.content}
-                </ReactMarkdown>
-              </div>
-
-              {/* Actions Line */}
-              <div className="flex justify-end mt-2 gap-3 items-center">
-                {/* Reply Button */}
-                {githubUser && (
-                  <button
-                    onClick={() => {
-                      setReplyTo(isReplying ? null : comment.id);
-                      setContent(""); /* Clear content to avoid carrying over */
-                      if (!isReplying)
-                        setTimeout(
-                          () =>
-                            document
-                              .getElementById(`reply-input-${comment.id}`)
-                              ?.focus(),
-                          50,
-                        );
-                    }}
-                    className="text-xs flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
-                    style={{ color: "var(--color-primary)" }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M9 14 4 9l5-5" />
-                      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11" />
-                    </svg>
-                    {lang === "zh" ? "回复" : "Reply"}
-                  </button>
-                )}
-
-                {/* Admin delete */}
-                {isAdmin && (
-                  <button
-                    onClick={() => handleDelete(comment.id)}
-                    disabled={deletingId === comment.id}
-                    className="flex-shrink-0 text-xs transition-opacity opacity-0 group-hover:opacity-100 hover:text-red-500"
-                    style={{ color: "#ef4444" }}
-                    title={t.admin.delete[lang]}
-                  >
-                    {deletingId === comment.id
-                      ? "Deleting..."
-                      : lang === "zh"
-                        ? "删除"
-                        : "Delete"}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Reply Form */}
-        {isReplying && (
-          <div
-            className="mt-3 ml-4 md:ml-12 p-4 rounded-xl border border-dashed animate-in fade-in slide-in-from-top-2 duration-200"
-            style={{
-              borderColor: "var(--color-primary)",
-              backgroundColor: "rgba(var(--color-primary-rgb), 0.05)",
-            }}
-          >
-            <form onSubmit={(e) => handleSubmit(e, comment.id)}>
-              <div className="flex items-start gap-3">
-                <textarea
-                  id={`reply-input-${comment.id}`}
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder={
-                    lang === "zh"
-                      ? `回复 @${comment.github_username || comment.author_name}...`
-                      : `Reply to @${comment.github_username || comment.author_name}...`
-                  }
-                  className="flex-1 bg-transparent text-sm p-3 rounded-lg border focus:outline-none focus:ring-2 transition-all resize-y"
-                  rows={3}
-                  style={
-                    {
-                      borderColor: "var(--color-border)",
-                      color: "var(--color-text)",
-                      backgroundColor: "var(--color-bg)",
-                      "--tw-ring-color": "var(--color-primary)",
-                    } as React.CSSProperties
-                  }
-                />
-              </div>
-              <div className="flex justify-end gap-2 mt-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setReplyTo(null);
-                    setContent("");
-                  }}
-                  className="text-xs px-3 py-1.5 rounded-lg transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  style={{ color: "var(--color-text-muted)" }}
-                >
-                  {lang === "zh" ? "取消" : "Cancel"}
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !content.trim()}
-                  className="text-xs px-4 py-1.5 rounded-lg text-white font-medium transition-transform active:scale-95"
-                  style={{ background: "var(--color-primary)" }}
-                >
-                  {isSubmitting
-                    ? "..."
-                    : lang === "zh"
-                      ? "发送回复"
-                      : "Send Reply"}
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {/* Render Children Recursively */}
-        {comment.children && comment.children.length > 0 && (
-          <div className="mt-2">
-            {comment.children.map((child) => renderComment(child, depth + 1))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  // Wrapper for reply submissions
+  const handleSubmitReply = useCallback(
+    (e: React.FormEvent, parentId: number, content: string) => {
+      handleSubmit(e, parentId, content);
+    },
+    [lang, pagePath, githubUser],
+  ); // We accept that this might update frequently for now
 
   if (!supabase) return null;
 
@@ -891,7 +960,22 @@ export default function CommentSection({ pagePath }: CommentSectionProps) {
               {t.noComments[lang]}
             </div>
           ) : (
-            comments.map((comment) => renderComment(comment))
+            comments.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                replyTo={replyTo}
+                setReplyTo={setReplyTo}
+                handleSubmitReply={handleSubmitReply}
+                lang={lang}
+                t={t}
+                githubUser={githubUser}
+                isAdmin={isAdmin}
+                deletingId={deletingId}
+                handleDelete={handleDelete}
+                isSubmitting={isSubmitting}
+              />
+            ))
           )}
         </div>
 

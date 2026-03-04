@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 300 300">
+  <defs>
+    <!-- Use userSpaceOnUse so the gradient is continuous across all strokes -->
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="300">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#6366F1"/>
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.70 0" result="g"/>
+      <feMerge>
+        <feMergeNode in="g"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <clipPath id="clipAvatar">
+      <circle cx="150" cy="150" r="124"/>
+    </clipPath>
+
+    <!-- 3D-ish grid to hint interaction/space -->
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#22D3EE" stroke-opacity="0.10" stroke-width="1"/>
+    </pattern>
+
+    <radialGradient id="v" gradientUnits="userSpaceOnUse" cx="150" cy="140" r="188">
+      <stop offset="0" stop-color="#050A14" stop-opacity="0.00"/>
+      <stop offset="1" stop-color="#050A14" stop-opacity="0.60"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark sci-fi plate clipped to a circle -->
+  <g clip-path="url(#clipAvatar)">
+    <circle cx="150" cy="150" r="124" fill="#050A14" opacity="0.90"/>
+    <rect x="0" y="0" width="300" height="300" fill="url(#grid)" opacity="0.85"/>
+    <rect x="0" y="0" width="300" height="300" fill="url(#v)"/>
+
+    <!-- HUD rings (continuous gradient) -->
+    <circle cx="150" cy="150" r="128" fill="none" stroke="url(#g)" stroke-opacity="0.30" stroke-width="2"
+            stroke-dasharray="7 9"/>
+    <circle cx="150" cy="150" r="120" fill="none" stroke="url(#g)" stroke-opacity="0.22" stroke-width="1.6"
+            stroke-dasharray="2 7"/>
+  </g>
+
+  <!-- Core mark -->
+  <g fill="none" stroke="url(#g)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+    <circle cx="150" cy="150" r="118"/>
+    <circle cx="150" cy="150" r="34"/>
+    <!-- clip to keep the connector inside outer circle -->
+    <g clip-path="url(#clipAvatar)">
+      <polyline points="33.15,133.58 92.00,92.00 150.00,116.00 208.00,92.00 266.85,133.58"/>
+    </g>
+  </g>
+</svg>

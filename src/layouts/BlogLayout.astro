@@ -1,0 +1,65 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import VisitCounter from '@/components/blog/VisitCounter';
+import CommentSection from '@/components/blog/CommentSection';
+
+interface Props {
+  title: string;
+  pubDate: string;
+  description?: string;
+  slug?: string;
+  tags?: string[];
+}
+
+const { title, pubDate, description, slug = '', tags = [] } = Astro.props;
+const pagePath = slug ? `/blog/${slug}` : Astro.url.pathname;
+---
+
+<BaseLayout title={`${title} | Blog`} description={description}>
+  <Navbar client:load />
+  <main class="max-w-3xl mx-auto px-4 py-24">
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-2 text-sm mb-8 transition-colors group"
+      style="color: var(--color-primary);"
+    >
+      <span class="transition-transform group-hover:-translate-x-1">←</span> Back to Blog
+    </a>
+    <article class="prose prose-lg dark:prose-invert max-w-none">
+      <header class="mb-10 not-prose">
+        <div class="flex items-center gap-3 flex-wrap mb-3">
+          <time class="text-sm px-2.5 py-0.5 rounded-full" style="color: var(--color-text-muted); background: var(--color-bg-secondary);">
+            {pubDate}
+          </time>
+          <VisitCounter client:load pagePath={pagePath} />
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold mt-2 mb-4 leading-tight" style="color: var(--color-text);">
+          {title}
+        </h1>
+        {description && (
+          <p class="text-base leading-relaxed mb-4" style="color: var(--color-text-muted);">
+            {description}
+          </p>
+        )}
+        {tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {tags.map((tag: string) => (
+              <span
+                class="text-xs px-2.5 py-1 rounded-full font-medium"
+                style="background: rgba(99, 102, 241, 0.08); color: var(--color-primary); border: 1px solid rgba(99, 102, 241, 0.15);"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+        <div class="mt-6 h-px" style="background: linear-gradient(90deg, var(--color-primary), var(--color-accent), transparent);" />
+      </header>
+      <slot />
+    </article>
+    <CommentSection client:visible pagePath={pagePath} />
+  </main>
+  <Footer client:visible />
+</BaseLayout>

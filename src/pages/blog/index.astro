@@ -1,0 +1,24 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import DroneBackToTop from '@/components/ui/DroneBackToTop';
+import PostList from '@/components/blog/PostList';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<PageLayout title="Blog | Zining Wang">
+  <Navbar client:load />
+  <DroneBackToTop client:load />
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-16 min-h-screen">
+    <h1 class="text-3xl md:text-4xl font-bold mb-8 text-gradient inline-block">
+      Blog
+    </h1>
+    <PostList client:load posts={posts.map(p => ({ slug: p.slug, data: p.data }))} />
+  </main>
+  <Footer client:load />
+</PageLayout>

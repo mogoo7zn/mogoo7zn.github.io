@@ -1,0 +1,53 @@
+---
+title: "全国大学生操作系统竞赛"
+titleEn: "National OS Design Competition"
+description: "端侧大语言模型部署的技术探索与竞赛经历。"
+descriptionEn: "Technical exploration of on-device LLM deployment and competition experience."
+pubDate: "2025-09-06"
+tags: ["project", "LLM", "edge-computing", "competition"]
+draft: true
+---
+
+# 全国大学生操作系统竞赛
+
+## 赛题背景
+
+面向 DAYU200 开发板进行端侧大语言模型部署，挑战在资源受限的嵌入式设备上实现高效的 AI 推理。
+
+## 技术方案
+
+### 模型选型与优化
+
+- 选用 Llama 系列模型作为基座
+- 使用 MNN 推理框架进行模型转换与优化
+- 量化技术：INT4/INT8 权重量化
+
+### GPU 加速
+
+利用 DAYU200 开发板的 GPU 算力提升推理速度：
+
+- OpenCL 后端适配
+- 内存管理优化
+- 算子融合策略
+
+### 多模态探索
+
+决赛阶段探索多模态大模型与操作系统的协调：
+
+- 视觉编码器的轻量化部署
+- 多模态输入的流式处理
+- 最终实现约 15 token/s 的端侧推理能力
+
+## 队长经历
+
+作为队长，学习了团队协作与任务分配的重要性。
+
+## 核心收获
+
+- 深入理解 LLM 推理优化技术
+- 嵌入式设备资源管理经验
+- 团队领导与项目管理能力
+
+---
+
+_更多内容持续更新中..._

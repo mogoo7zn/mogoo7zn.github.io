@@ -28,6 +28,8 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           # Use legacy peer deps if needed by dependencies
           NPM_CONFIG_LEGACY_PEER_DEPS: true
 

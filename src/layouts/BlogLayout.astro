@@ -4,6 +4,7 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import VisitCounter from '@/components/blog/VisitCounter';
 import CommentSection from '@/components/blog/CommentSection';
+import DroneBackToTop from '@/components/ui/DroneBackToTop';
 
 interface Props {
   title: string;
@@ -61,5 +62,6 @@ const pagePath = slug ? `/blog/${slug}` : Astro.url.pathname;
     </article>
     <CommentSection client:visible pagePath={pagePath} />
   </main>
+  <DroneBackToTop client:load />
   <Footer client:visible />
 </BaseLayout>

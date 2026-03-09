@@ -47,3 +47,4 @@ supabase/.temp
 
 .nojekyll
 *.sql
+*.tex

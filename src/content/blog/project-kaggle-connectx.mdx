@@ -1,53 +1,72 @@
 ---
 title: "Kaggle ConnectX 强化学习竞赛"
 titleEn: "Kaggle ConnectX RL Competition"
-description: "使用强化学习方法开发重力四子棋 Agent 的技术分享。"
-descriptionEn: "Technical sharing on developing Connect Four agents using reinforcement learning."
+description: "使用强化学习方法开发重力四子棋 Agent 的技术分享"
+descriptionEn: "Technical sharing on developing Connect Four agents using reinforcement learning"
 pubDate: "2026-01-25"
 tags: ["project", "reinforcement-learning", "DQN", "AlphaZero", "Kaggle"]
-draft: true
+draft: false
 ---
+
+import PDFViewer from "@/components/blog/mdx/PDFViewer";
+import LinkCard from "@/components/blog/mdx/LinkCard";
 
 # Kaggle ConnectX 强化学习竞赛
 
 ## 竞赛简介
 
-Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛，参赛者需要开发智能 Agent 与其他选手对战。
+Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛，不仅充满趣味，更是一个检验强化学习算法的绝佳平台。参赛者需要开发智能 Agent 与其他选手的策略进行对战
+
+## 项目资源
+
+### 完整技术报告
+
+这份 PDF 包含详细的算法推导、实验设置以及结果分析，记录了我的思考过程
+
+<PDFViewer
+  url="/projects/project-kaggle-connectx/report.pdf"
+  title="Kaggle ConnectX Technical Report"
+/>
+
+### 源代码
+
+这里整理了 DQN 和 AlphaZero 的完整实现代码，可以直接运行体验
+
+<LinkCard
+  href="/projects/project-kaggle-connectx/Kaggle-ConnectX-source-code.zip"
+  title="Kaggle ConnectX Source Code"
+  description="点击下载完整源代码 (ZIP)"
+/>
 
 ## 技术方案
 
 ### DQN 方法
 
-首先尝试了 Deep Q-Network 方法：
+在探索初期，我首先尝试了 Deep Q-Network 方法：
 
-- 状态编码：6×7 棋盘状态的张量表示
-- 网络架构：卷积神经网络 + 全连接层
-- 经验回放与目标网络
+- **状态编码**：将 6×7 的棋盘状态转换为张量表示
+- **网络架构**：采用卷积神经网络提取特征，并通过全连接层输出动作价值
+- **训练技巧**：引入经验回放与目标网络以提升训练稳定性
 
 ### AlphaZero 方法
 
-进一步实现了 AlphaZero 算法：
+为了追求更强的博弈能力，进一步实现了 AlphaZero 算法：
 
-- Monte Carlo Tree Search (MCTS)
-- 策略网络 + 价值网络
-- 自对弈训练流程
+- **搜索算法**：使用 Monte Carlo Tree Search (MCTS) 进行动作规划
+- **双头网络**：策略网络预测落子概率，价值网络评估当前局面胜率
+- **自对弈**：通过自我博弈不断生成高质量的训练数据
 
 ### 排名表现
 
-历史最高排名 **19/241 名**，验证了算法的有效性。
+经过多轮迭代，Agent 取得了历史最高排名 **19/241 名**，这也验证了算法在复杂博弈环境下的有效性
 
 ## 关键技术细节
 
-- 训练稳定性：学习率调度与梯度裁剪
-- MCTS 搜索效率优化
-- 对手建模与开局库
+- **训练稳定性**：通过精细的学习率调度与梯度裁剪机制，避免模型发散
+- **搜索效率**：优化 MCTS 的搜索逻辑，在有限时间内探索更多可能
+- **博弈策略**：引入对手建模与开局库，提升 Agent 在实战中的应对能力
 
-## 核心收获
+## 收获
 
-- 掌握基本强化学习算法（DQN、PPO、AlphaZero）
-- 理解 Agent 开发的核心思路
-- Kaggle 竞赛实战经验
-
----
-
-_更多内容持续更新中..._
+- 深入掌握了 DQN、PPO、AlphaZero 等主流强化学习算法
+- 初步理解了 Agent 开发的核心思路，即如何从零开始构建一个智能体

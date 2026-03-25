@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 import { skills } from "@/data/skills";
-import { Code2, Layers, Monitor, Wrench } from "lucide-react";
+import { Braces, Code2, Layers, Monitor, Wrench } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
   SiCplusplus,
@@ -11,6 +11,7 @@ import {
   SiKotlin,
   SiJavascript,
   SiTypescript,
+  SiDotnet,
   SiPytorch,
   SiReact,
   SiNextdotjs,
@@ -26,10 +27,15 @@ import {
 } from "react-icons/si";
 import { FaJava, FaMicrochip, FaWindows } from "react-icons/fa6";
 import { VscVscode } from "react-icons/vsc";
-import { TbBrandCSharp } from "react-icons/tb";
 
 // Generic fallback
-const iconMap: Record<string, LucideIcon> = { Code2, Layers, Monitor, Wrench };
+const iconMap: Record<string, LucideIcon> = {
+  Braces,
+  Code2,
+  Layers,
+  Monitor,
+  Wrench,
+};
 
 // Skill to Icon mapping
 const skillIconMap: Record<
@@ -41,7 +47,7 @@ const skillIconMap: Record<
   Python: SiPython,
   Java: FaJava,
   Kotlin: SiKotlin,
-  "C#": TbBrandCSharp,
+  "C#": SiDotnet,
   JavaScript: SiJavascript,
   TypeScript: SiTypescript,
   ArkTS: SiHuawei, // Using Huawei icon for ArkTS as it's related

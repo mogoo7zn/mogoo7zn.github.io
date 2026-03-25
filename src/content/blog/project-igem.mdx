@@ -1,53 +1,121 @@
 ---
 title: "iGEM 国际遗传基因工程设计大赛"
 titleEn: "iGEM International Genetic Engineering Competition"
-description: "iGEM 竞赛中网页开发与团队管理的独特经历"
-descriptionEn: "Web development and team management experience at iGEM competition"
+description: "基于 Next.js 的 iGEM Wiki 开发实践，以及网页组协作与交付过程"
+descriptionEn: "A practical record of building the iGEM Wiki with Next.js and leading the web team through delivery"
 pubDate: "2025-11-09"
 tags: ["project", "iGEM", "web-development", "team-management"]
-draft: true
+draft: false
 ---
 
-# iGEM 国际遗传基因工程设计大赛
+import Callout from "@/components/blog/mdx/Callout";
+import { Step } from "@/components/blog/mdx/Steps";
+import Details from "@/components/blog/mdx/Details";
+import LinkCard from "@/components/blog/mdx/LinkCard";
 
 ## 竞赛简介
 
-iGEM（International Genetically Engineered Machine）是全球规模宏大的合成生物学竞赛，在这里，我担任了 2025 年 USTC 队的网页组组长
+iGEM（International Genetically Engineered Machine）是全球性的合成生物学竞赛。在 2025 年 USTC 队项目中，我担任网页组组长，主要负责 Wiki 网站的架构设计、页面开发、内容接入与协作推进
 
-## 工作内容
+![iGEM Team](/images/blog/project-igem/igem_team.png)
 
-### 实验服务器平台
+<Callout type="info" title="项目交付背景">
+  这次项目的核心交付物并不是一个泛化的“比赛官网”，而是一套严格面向 iGEM Wiki
+  展示与评审需求的静态网站工程。我们需要在有限的开发周期内，既保证视觉与交互的高质量，又要确保内容组能便捷地填充大量实验与建模文档
+</Callout>
 
-作为搭建者之一，我和网页组的伙伴们共同构建了校内比赛专用的实验服务器平台，主要实现了：
+## 核心工程架构
 
-- **数据管理系统**：高效整理繁杂的实验数据，让查找更便捷
-- **团队协作集成**：打通多方工具，提升团队沟通效率
-- **进度可视化**：将抽象的实验进度直观呈现，一眼掌握全局
+为了满足静态部署与高性能访问的需求，我们构建了一套基于 Next.js 的现代化工程方案
 
-### 队伍主页设计
+### 1. 技术栈选型
 
-我主导了队伍主页的美工与功能开发，力求在展示技术的同时兼顾美感：
+项目基于 **Next.js 15** 和 **React 18** 构建，既保留组件化开发体验，也方便后续做静态导出。在样式与交互层面，我们采用了混合技术栈以兼顾开发效率与表现力：
 
-- **Next.js + React**：选用现代化的前端框架，保证性能与灵活性
-- **响应式设计**：完美适配各种屏幕尺寸，随时随地流畅访问
-- **交互与可视化**：加入生动的交互动画和数据图表，让科学故事更易读
-- **国际化支持**：多语言切换，让世界各地的评委都能无障碍阅读
+- **样式层**：SCSS Modules 用于组件级样式隔离，结合 Tailwind CSS 处理原子化样式
+- **交互层**：引入 GSAP 处理复杂时间轴动画，Lenis 优化滚动体验，Lottie 负责矢量动画渲染
+- **工程化**：集成 ESLint、Prettier、Husky 保证多人协作时的代码规范
 
-### 技术探索
+### 2. 静态自动化部署
 
-在这个项目中，我还大胆尝试了 Haskell 函数式编程，虽然充满挑战，但也极大拓宽了我的技术视野
+针对 iGEM 比赛服务器的特性，我们在生产环境下配置了纯静态导出模式，并解决了路径前缀问题
 
-## 团队管理心得
+<Details title="查看 Next.js 静态导出配置逻辑">
 
-作为网页组的负责人，这段经历给我的触动甚至超过了技术本身：
+```javascript
+// next.config.js 核心配置片段
+const isProduction = process.env.NODE_ENV === "production";
 
-- **高效沟通**：学会了如何明确需求，大幅减少理解偏差带来的返工
-- **知人善任**：根据每位成员的特长进行任务分工，让大家都能在擅长的领域发光发热
-- **氛围营造**：通过协商与鼓励，打造积极向上的团队氛围，这是一切合作的基础
-- **进度把控**：定期的 check-in 机制，让我们能及时发现问题并在偏离航线前调整方案
+const nextConfig = {
+  output: isProduction ? "export" : undefined, // 生产环境启用静态导出
+  distDir: isProduction ? "out" : ".next",
+  // 适配比赛服务器的子路径部署
+  basePath: "/ustc",
+  assetPrefix: isProduction ? "/ustc" : "",
+  // 静态导出模式下需禁用服务端图片优化
+  images: {
+    unoptimized: isProduction,
+  },
+};
+```
+
+</Details>
+
+## 关键功能实现
+
+### Markdown 驱动的内容管线
+
+为了让内容组能专注于文档编写，我们设计了一套将 Markdown 直接转化为 React 页面的自动化管线，实现了内容与代码的解耦
+
+<Step number={1} title="自定义 Loader 接入">
+  在 `next.config.js` 中配置本地 `md-loader`，拦截 `.md` 文件加载请求，通过
+  Babel 将 Markdown 内容转化为 React 可渲染的组件结构
+</Step>
+
+<Step number={2} title="运行时渲染与解析">
+  开发 `local-md-loader.js`，在前端运行时动态拉取 `static/md`
+  下的文档资源，并交给 `MDRenderer` 进行解析，支持公式、代码高亮等富文本特性
+</Step>
+
+<Step number={3} title="自动化目录生成">
+  页面组件（如 `description.jsx`）在渲染后会自动扫描文档中的 section
+  结构，提取标题层级，自动生成侧边导航目录，彻底告别了手动维护锚点的繁琐工作
+</Step>
+
+### 分层加载与性能优化
+
+为了提升 Wiki 在评审过程中的首屏体验，我们设计了一套完整的分层加载机制
+
+- **全局状态管理**：在 `_app.jsx` 中统一挂载 Theme、Page、Interaction 等 Context，确保全站状态共享
+- **关键资源预加载**：应用启动时优先加载核心样式与脚本，通过 `GlobalLoader` 遮罩过渡，避免样式闪烁
+- **分级加载策略**：非关键样式与重型组件通过动态导入（Dynamic Imports）延后加载，确保主内容优先可见
+
+### 页面组织与导航系统
+
+Wiki 的页面结构严格遵循比赛评审逻辑，并未采用单页堆砌，而是建立了清晰的路由体系：
+
+- **路由模块化**：`src/pages` 下按 `description`、`design`、`results` 等模块拆分独立路由
+- **配置化导航**：通过 `navigation.js` 统一管理 Project、Wet Lab、Dry Lab 等五大版块的菜单结构
+- **统一布局模式**：利用 `getLayout` 模式为不同页面注入统一的页头、页脚与背景逻辑，同时保留了局部页面的自定义能力
+
+## 团队协作与管理
+
+作为网页组负责人，我的工作重心不仅是代码实现，更在于构建高效的协作流
+
+- **资源自动化同步**：编写 `lychee-sync` 脚本，在构建前自动同步图片素材到静态目录，减少了手动搬运的机械劳动
+- **组件化开发**：将通用的图表、弹窗、卡片封装为独立组件，让组员只需关注业务逻辑，大幅降低了代码耦合度
+- **需求分层推进**：在内容未定稿时先行搭建骨架屏与路由结构，确保开发进度不被内容产出阻塞
 
 ## 核心收获
 
-- 磨练了全栈 Web 开发的硬实力
-- 积累了宝贵的团队领导与项目管理经验
-- 深刻体会了跨学科协作的乐趣与挑战
+<Callout type="tip" title="项目复盘">
+  这段经历让我对 **Next.js 静态站点生成（SSG）**
+  的工程实践有了深刻理解。通过亲手搭建从 Markdown
+  到页面的完整渲染链路，以及处理真实的静态部署问题，我在前端工程化架构设计上的能力得到了质的飞跃。同时，带领团队完成这样一个高强度的交付项目，也让我在任务拆分与进度管理上积累了宝贵的实战经验
+</Callout>
+
+<LinkCard
+  href="https://gitlab.eduxiji.net/ustc-igem/2025-wiki"
+  title="iGEM Wiki 项目源码"
+  description="查看基于 Next.js 的完整工程源码与文档实现（GitLab）"
+/>

@@ -7,7 +7,7 @@ export interface SkillCategory {
 export const skills: SkillCategory[] = [
   {
     title: { zh: "编程语言", en: "Languages" },
-    icon: "Code2",
+    icon: "Braces",
     items: [
       "C++",
       "Python",

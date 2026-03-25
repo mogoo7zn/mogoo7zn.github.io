@@ -1,0 +1,37 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    # 每天的 UTC 时间 00:00 执行一次
+    - cron: "0 0 * * *"
+  # 允许在 GitHub Actions 面板手动点击运行测试
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase page_views API
+        env:
+          SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Error: Secrets PUBLIC_SUPABASE_URL or PUBLIC_SUPABASE_ANON_KEY are not set."
+            exit 1
+          fi
+
+          # 发送一个简单的 GET 请求，查询第一条 page_views 记录
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$SUPABASE_URL/rest/v1/page_views?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Accept: application/json")
+
+          echo "Supabase responded with HTTP status: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "✅ Ping successful! Supabase is kept alive."
+          else
+            echo "❌ Ping failed! Status: $HTTP_STATUS"
+            exit 1
+          fi

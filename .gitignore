@@ -48,3 +48,5 @@ supabase/.temp
 .nojekyll
 *.sql
 *.tex
+
+public/projects/project-igem

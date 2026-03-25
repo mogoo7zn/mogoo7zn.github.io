@@ -113,7 +113,7 @@ function EmbodiedAICore() {
             opacity="0.8"
           />
 
-          <g>
+          <motion.g>
             {/* Connecting Lines */}
             <motion.path
               d={pathD}
@@ -161,7 +161,7 @@ function EmbodiedAICore() {
               fill="var(--color-primary)"
               opacity="0.8"
             />
-          </g>
+          </motion.g>
         </svg>
       </div>
       <div

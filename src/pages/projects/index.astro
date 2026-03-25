@@ -4,6 +4,10 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import ProjectPageList from '@/components/projects/ProjectPageList';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.slug);
 ---
 
 <PageLayout title="Projects | Zining Wang">
@@ -13,7 +17,7 @@ import ProjectPageList from '@/components/projects/ProjectPageList';
     <h1 class="text-2xl md:text-3xl font-bold mb-8 text-gradient inline-block">
       Projects
     </h1>
-    <ProjectPageList client:load />
+    <ProjectPageList client:load validBlogSlugs={validBlogSlugs} />
   </main>
   <Footer client:load />
 </PageLayout>

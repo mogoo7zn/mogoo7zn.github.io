@@ -1,9 +1,15 @@
 ---
 import BlogLayout from '@/layouts/BlogLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import SensorGrid from '@/components/ui/SensorGrid';
+import DraftNotice from '@/components/blog/DraftNotice';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
+  // Include all posts so drafts don't 404, but render the Draft UI instead
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: post,
@@ -14,12 +20,29 @@ const post = Astro.props;
 const { Content } = await post.render();
 ---
 
-<BlogLayout
-  title={post.data.title}
-  pubDate={post.data.pubDate.toLocaleDateString('zh-CN')}
-  description={post.data.description}
-  slug={post.slug}
-  tags={post.data.tags}
->
-  <Content />
-</BlogLayout>
+{
+  post.data.draft ? (
+    <BaseLayout title={`Work in Progress: ${post.data.title}`} description="This project documentation is currently being written.">
+      <Navbar client:load />
+      <div class="relative min-h-screen flex flex-col">
+        <div class="fixed inset-0 z-0 pointer-events-none opacity-60">
+           <SensorGrid client:load /> 
+        </div>
+        <main class="flex-grow flex items-center justify-center relative z-10 px-4 pt-20 pb-10">
+          <DraftNotice client:load title={post.data.title} />
+        </main>
+        <Footer client:load />
+      </div>
+    </BaseLayout>
+  ) : (
+    <BlogLayout
+      title={post.data.title}
+      pubDate={post.data.pubDate.toLocaleDateString('zh-CN')}
+      description={post.data.description}
+      slug={post.slug}
+      tags={post.data.tags}
+    >
+      <Content />
+    </BlogLayout>
+  )
+}

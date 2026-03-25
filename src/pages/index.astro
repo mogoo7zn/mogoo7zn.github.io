@@ -12,6 +12,11 @@ import Skills from '@/components/sections/Skills';
 import Timeline from '@/components/sections/Timeline';
 import CV from '@/components/sections/CV';
 import Footer from '@/components/ui/Footer';
+
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.slug);
 ---
 
 <PageLayout>
@@ -22,7 +27,7 @@ import Footer from '@/components/ui/Footer';
   <main>
     <Hero client:load />
     <About client:visible />
-    <Projects client:visible />
+    <Projects client:visible validBlogSlugs={validBlogSlugs} />
     <Skills client:visible />
     <Timeline client:visible />
     <CV client:visible />

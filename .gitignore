@@ -49,4 +49,12 @@ supabase/.temp
 *.sql
 *.tex
 
+# Ignore heavy dependencies and build outputs in project-igem, but keep the core files
+public/projects/project-igem/**/node_modules/
+public/projects/project-igem/**/.next/
+public/projects/project-igem/**/dist/
+public/projects/project-igem/**/build/
+public/projects/project-igem/**/coverage/
+public/projects/project-igem/**/*.log
+public/projects/project-igem/**/.Trash-*/
 public/projects/project-igem

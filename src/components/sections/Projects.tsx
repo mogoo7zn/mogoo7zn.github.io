@@ -28,7 +28,11 @@ const iconMap: Record<string, LucideIcon> = {
   Dna,
 };
 
-export default function Projects() {
+interface ProjectsProps {
+  validBlogSlugs?: string[];
+}
+
+export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
   const lang = useStore($lang);
   const [expanded, setExpanded] = useState<string | null>(null);
 

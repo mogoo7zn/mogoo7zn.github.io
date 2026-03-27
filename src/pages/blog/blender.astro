@@ -1,0 +1,58 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import DroneBackToTop from '@/components/ui/DroneBackToTop';
+import BlenderAlbumGrid from '@/components/blender/BlenderAlbumGrid';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft && post.data.series === 'blender')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<PageLayout title="Blender Notes | Zining Wang">
+  <Navbar client:load />
+  <DroneBackToTop client:load />
+  
+  <div class="relative pt-24 pb-16 overflow-hidden" style="background-color: var(--color-bg-primary);">
+    {/* Subtle Background Elements */}
+    <div class="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full blur-[100px] pointer-events-none opacity-[0.03]" style="background-color: var(--color-text);" />
+    <div class="absolute top-20 -left-20 w-[300px] h-[300px] rounded-full blur-[80px] pointer-events-none opacity-[0.02]" style="background-color: var(--color-primary);" />
+    
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-sm mb-8 transition-all group px-4 py-2 rounded-full backdrop-blur-md hover:shadow-sm"
+        style="color: var(--color-text-secondary); background-color: var(--color-bg-secondary); border: 1px solid var(--color-border);"
+      >
+        <span class="transition-transform group-hover:-translate-x-1">←</span> 返回博客列表
+      </a>
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mt-2">
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="px-3 py-1 rounded-full text-[11px] font-bold tracking-widest text-white shadow-sm uppercase" style="background-color: var(--color-primary);">
+              Album Series
+            </span>
+            <span class="text-sm font-medium px-3 py-1 rounded-full" style="color: var(--color-text-secondary); background-color: var(--color-bg-secondary); border: 1px solid var(--color-border);">
+              共 {posts.length} 篇作品与笔记
+            </span>
+          </div>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight" style="color: var(--color-text);">
+            Blender 3D 笔记专辑
+          </h1>
+          <p class="text-lg max-w-2xl leading-relaxed" style="color: var(--color-text-secondary);">
+            这里记录了我的 3D 建模学习历程、渲染实验与材质研究心得。不仅是技术的沉淀，也是充满视觉创意的探索画廊。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px" style="background-color: var(--color-border);" />
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 py-16 min-h-screen" style="background-color: var(--color-bg-primary);">
+    <BlenderAlbumGrid client:load posts={posts.map(p => ({ slug: p.slug, data: p.data }))} />
+  </main>
+  <Footer client:load />
+</PageLayout>

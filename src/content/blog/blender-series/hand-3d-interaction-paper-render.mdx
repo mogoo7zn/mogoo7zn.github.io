@@ -1,0 +1,50 @@
+﻿---
+title: '手部三维交互论文配图：Blender 渲染与处理工作流'
+titleEn: 'Paper Figures for Hand 3D Interaction: Blender Render Workflow'
+description: '记录在手部三维交互项目中，如何使用 Blender 处理实验点云数据并进行论文高质量配图的渲染操作，作为日后的快速索引备忘录。'
+descriptionEn: 'Notes on how to use Blender to process experimental point cloud data and render high-quality figures for papers in the Hand 3D Interaction project. Served as a quick index for future reference.'
+pubDate: 2026-03-27
+tags: ['blender', 'paper', '3D', 'interaction']
+series: 'blender'
+cover: '/images/blog/blender-series/hand-3d-interaction/cover.jpg'
+---
+
+# 手部三维交互项目：论文配图渲染备忘录
+
+在最近的手部三维交互项目中，我们需要将各种实验生成的坐标数据、模型和交互点云导出为直观且高质量的形式，以便用于最终的学术论文配图。在尝试了各种可视化方案后，我选择将数据桥接至 **Blender** 中进行统一处理和引擎渲染。
+
+这篇文档不涉及基础的建模讲解，而是重点记录为了达到
+论文级配图质量，我到底在 Blender 内部组合了哪些特定的功能与流程节点。这是一份纯粹的个人备忘录，方便在下次写论文或者更新实验数据时，能够迅速回忆起整套制作管线，直接套用。
+
+## 📥 数据导入与预处理
+
+为了将代码或程序输出的三维模型态对齐到 Blender，通常会有一些针对性的预处理操作。
+*(此处记录不同格式模型如 .obj、.ply 或 .fbx 导入时的坐标轴差异，以及如何快速清理无用顶点序列的技巧)*
+
+## 🦾 模型姿态与骨骼调整
+
+如果在数据处理阶段有手指关节点抓取不到位或者存在穿模的现象，可以在该步骤直接在 Blender 内部进行微调修补。
+*(此处记录如何利用快速绑骨、权重分配或形态键/Shape Keys来修正异常的手部交互抓取动作)*
+
+## 🎨 论文配图级材质 (Materials) 设定
+
+学术论文图 не要求绝对写实的电影感，但非常强调**结构清晰、对比度高以及视觉的高级感**。
+*(此处记录我为该项目反复试验后得出的几个关键材质节点的连接方法。比如：类似亚光塑料质感的手部网格材质节点图，或是高亮透明代表相交接触面的玻璃节点参数等)*
+
+## 💡 灯光布置与机位 (Lighting & Camera)
+
+不同于普通的室内场景布光，论文配图的打光要求是消除阴影死角、凸显结构边缘。
+- 三点布光（Three-point Lighting）的具体位置坐标。
+- 摄像机的焦距设定（为了避免透视形变带来的结构理解误差，通常我会使用更长焦段或者是开启正交视图 Orthographic 模式）。
+
+## 📸 渲染与导出设置 (Render Settings)
+
+这里是我目前使用的渲染输出参数。这套参数能在保证极高清晰度和抗锯齿（Anti-Aliasing）水平的前提下，尽可能控制渲染时长。
+*(此处记录 Cycles 采样数配置，或者是透明背景导出的开关位置，以及色彩空间 Filmic 等设定的抉择)*
+
+---
+
+### 相关资源与数据文件
+
+所有的中间 \.blend\ 工程文件和对应的原始数据点云我都已打包隔离，并存放于项目的内部开发库中。这篇文章纯作管线回忆，不包含敏感原数据。
+

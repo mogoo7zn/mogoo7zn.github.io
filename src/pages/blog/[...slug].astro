@@ -5,6 +5,7 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import SensorGrid from '@/components/ui/SensorGrid';
 import DraftNotice from '@/components/blog/DraftNotice';
+import BlenderSeriesNav from '@/components/blender/BlenderSeriesNav';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,12 +13,30 @@ export async function getStaticPaths() {
   // Include all posts so drafts don't 404, but render the Draft UI instead
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: post,
+    props: { post, allPosts: posts },
   }));
 }
 
-const post = Astro.props;
+const { post, allPosts } = Astro.props;
 const { Content } = await post.render();
+
+// Compute series navigation if the post belongs to the "blender" series
+let seriesIndex = -1;
+let prevPost = null;
+let nextPost = null;
+let totalInSeries = 0;
+
+if (post.data.series === 'blender' && !post.data.draft) {
+  const seriesPosts = allPosts
+    .filter((p) => p.data.series === 'blender' && !p.data.draft)
+    .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+  
+  totalInSeries = seriesPosts.length;
+  seriesIndex = seriesPosts.findIndex((p) => p.slug === post.slug);
+  
+  if (seriesIndex > 0) prevPost = seriesPosts[seriesIndex - 1];
+  if (seriesIndex < totalInSeries - 1) nextPost = seriesPosts[seriesIndex + 1];
+}
 ---
 
 {
@@ -41,7 +60,17 @@ const { Content } = await post.render();
       description={post.data.description}
       slug={post.slug}
       tags={post.data.tags}
+      series={post.data.series}
     >
+      {post.data.series === 'blender' && (
+        <BlenderSeriesNav 
+          client:load 
+          currentIndex={seriesIndex + 1} 
+          total={totalInSeries} 
+          prevPost={prevPost ? { slug: prevPost.slug, title: prevPost.data.title, titleEn: prevPost.data.titleEn } : null}
+          nextPost={nextPost ? { slug: nextPost.slug, title: nextPost.data.title, titleEn: nextPost.data.titleEn } : null}
+        />
+      )}
       <Content />
     </BlogLayout>
   )

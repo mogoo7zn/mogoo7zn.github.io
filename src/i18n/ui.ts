@@ -133,7 +133,10 @@ export const ui = {
         zh: "评论系统未配置",
         en: "Comment system not configured",
       },
-      unknown: { zh: "提交失败，请重试", en: "Submission failed, please retry" },
+      unknown: {
+        zh: "提交失败，请重试",
+        en: "Submission failed, please retry",
+      },
     },
     admin: {
       title: { zh: "管理员", en: "Admin" },

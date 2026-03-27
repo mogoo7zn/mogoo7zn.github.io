@@ -6,9 +6,33 @@ import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import PostList from '@/components/blog/PostList';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog'))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = await getCollection('blog');
+const activePosts = allPosts.filter((post) => !post.data.draft);
+
+// Filter out blender series posts to replace them with a single Album entry
+const normalPosts = activePosts.filter((post) => post.data.series !== 'blender');
+const blenderPosts = activePosts.filter((post) => post.data.series === 'blender');
+
+const finalPosts = [...normalPosts];
+
+if (blenderPosts.length > 0) {
+  const latestDate = new Date(Math.max(...blenderPosts.map(p => p.data.pubDate.valueOf())));
+  finalPosts.push({
+    slug: 'blender',
+    data: {
+      title: 'Blender 学习笔记',
+      titleEn: 'Blender Notes',
+      description: `这是关于 3D 建模、渲染与 Blender 软件使用的专题笔记相册。点击进入专辑探索这 ${blenderPosts.length} 篇视觉创作与技术沉淀。`,
+      descriptionEn: `A special album series for 3D modeling, rendering, and Blender usage notes. Explore ${blenderPosts.length} visual creations and technical guides.`,
+      pubDate: latestDate,
+      tags: ['Blender', '3D', 'album'],
+      isAlbum: true,
+      folderCount: blenderPosts.length
+    }
+  } as any);
+}
+
+finalPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <PageLayout title="Blog | Zining Wang">
@@ -18,7 +42,7 @@ const posts = (await getCollection('blog'))
     <h1 class="text-3xl md:text-4xl font-bold mb-8 text-gradient inline-block">
       Blog
     </h1>
-    <PostList client:load posts={posts.map(p => ({ slug: p.slug, data: p.data }))} />
+    <PostList client:load posts={finalPosts.map(p => ({ slug: p.slug, data: p.data }))} />
   </main>
   <Footer client:load />
 </PageLayout>

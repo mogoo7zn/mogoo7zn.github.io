@@ -12,21 +12,24 @@ interface Props {
   description?: string;
   slug?: string;
   tags?: string[];
+  series?: string;
 }
 
-const { title, pubDate, description, slug = '', tags = [] } = Astro.props;
+const { title, pubDate, description, slug = '', tags = [], series = '' } = Astro.props;
 const pagePath = slug ? `/blog/${slug}` : Astro.url.pathname;
+const backLink = series === 'blender' ? '/blog/blender' : '/blog';
+const backText = series === 'blender' ? 'Back to Blender Notes' : 'Back to Blog';
 ---
 
 <BaseLayout title={`${title} | Blog`} description={description}>
   <Navbar client:load />
   <main class="max-w-3xl mx-auto px-4 py-24">
     <a
-      href="/blog"
+      href={backLink}
       class="inline-flex items-center gap-2 text-sm mb-8 transition-colors group"
       style="color: var(--color-primary);"
     >
-      <span class="transition-transform group-hover:-translate-x-1">←</span> Back to Blog
+      <span class="transition-transform group-hover:-translate-x-1">←</span> {backText}
     </a>
     <article class="prose prose-lg dark:prose-invert max-w-none">
       <header class="mb-10 not-prose">

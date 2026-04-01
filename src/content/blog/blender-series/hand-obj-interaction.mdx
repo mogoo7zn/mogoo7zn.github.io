@@ -1,0 +1,152 @@
+﻿---
+title: "手部三维交互论文配图"
+titleEn: "Paper Figures for Hand 3D Interaction: Blender Render Workflow"
+description: "记录在手部三维交互项目中，如何使用 Blender 处理实验点云数据进行配图的渲染操作，作为日后的快速索引备忘录"
+descriptionEn: "Notes on how to use Blender to process experimental point cloud data and render high-quality figures for papers in the Hand 3D Interaction project. Served as a quick index for future reference."
+pubDate: 2026-03-27
+tags: ["blender", "paper", "3D", "interaction"]
+series: "blender"
+cover: "/images/blog/blender-series/hand-obj-interaction/cover.png"
+---
+
+import Callout from "@/components/blog/mdx/Callout";
+import { Step } from "@/components/blog/mdx/Steps";
+import Details from "@/components/blog/mdx/Details";
+import LinkCard from "@/components/blog/mdx/LinkCard";
+
+# 手部三维交互项目：论文配图渲染备忘录
+
+<Callout type="info" title="目标与背景">
+  在该使用场景中，需要将模型推理与真实扫描的结果文件（如 `.obj` 或 `.glb`
+  格式）进行高质量的渲染对比，以直观展示在相同视角和光照条件下，不同方法的表现差异
+  本文将详细记录如何一步步导入模型、烘焙贴图 (Bake) 并设置相机与灯光进行渲染
+  最终渲染规格为学术论文中常用的 `512x512` 分辨率
+</Callout>
+
+## 1. 导入源文件
+
+首先，将实验生成的点云或网格数据导入到 Blender 的工作空间中
+
+<Step title="导入并区分网格数据格式">
+    **操作步骤**：点击顶部菜单栏 `File > Import > Wavefront (.obj)` 导入生成的手部和物体模型
+    
+    ![导入模型 1](/images/blog/blender-series/hand-obj-interaction/import-res-1.png)
+
+    <Callout type="tip" title="OBJ 与 GLB 格式的区别">
+        - **.glb 格式**：也可以通过 `File > Import > glTF 2.0 (.glb/.gltf)` 导入，Blender 会自动处理并带入其内置的纹理和材质信息
+        - **.obj 格式**：通常只包含纯几何信息（顶点、面等），需要我们稍后手动配置材质与纹理坐标
+    </Callout>
+
+    ![导入模型 2](/images/blog/blender-series/hand-obj-interaction/import-res-2.png)
+
+    <Callout type="warning" title="跨层级选择注意">
+        由于 `.glb` 等文件内部可能包含复杂的父子节点层级与多面片信息，在 3D 视口中选中对象时，请务必按住 `Shift` 键进行点击，或者直接在右侧大纲视图 (Outliner) 中操作，以确保正确选中整个模型整体
+    </Callout>
+
+</Step>
+
+## 2. 几何清理与纹理烘焙 (Bake)
+
+在配置最终材质与灯光渲染之前，需要对模型原有的顶点色或零散纹理进行烘焙 (Bake) 处理，从而统一材质的光照响应，确保渲染出标准且无瑕疵的视觉效果
+
+<Step title="UV 展开与材质贴图序列配置">
+    我们需要先对物体进行 UV 展开 (UV Mapping)，随后将顶点附带的颜色数据通过 Bake 操作烘焙为一张统一的 2D 贴图
+    具体流程如下：
+
+    1. **UV 展开**：选中模型对象，按 `Tab` 键进入编辑模式 (Edit Mode)，全选顶点后按 `U` 键唤出菜单，选择合适的选项（如 `Smart UV Project` 等）进行 UV 展开，确保 UV 坐标在 2D 平面上合理分布
+
+    ![Bake 1](/images/blog/blender-series/hand-obj-interaction/bake-1.png)
+
+    ![Bake 2](/images/blog/blender-series/hand-obj-interaction/bake-2.png)
+
+    2. **新建目标贴图**：将工作区切换至 `UV Editing`，为当前模型新建一张空白图像 (Image Texture)，命名为易辨识的名称
+    推荐分辨率设置为 `1024 x 1024`，并保持该图像在编辑器中处于打开的状态
+
+    ![Bake 3](/images/blog/blender-series/hand-obj-interaction/bake-3.png)
+
+    3. **着色器节点准备**：切换至 `Shading` 工作区，在下方的 Shader Editor 中选中模型的材质节点树，添加一个 **Image Texture** 节点，并从其下拉图片列表中选择刚刚创建好的新贴图
+
+    ![Bake 4](/images/blog/blender-series/hand-obj-interaction/bake-4.png)
+
+    <Callout type="tip" title="节点快捷添加">
+        在 Shader Editor 中，使用 `Shift + A` 快捷键调出新建菜单，在搜索框输入并搜寻 "Image Texture" 即可快速查找到对应节点
+    </Callout>
+
+    ![Bake 5](/images/blog/blender-series/hand-obj-interaction/bake-5.png)
+
+    ![Bake 6](/images/blog/blender-series/hand-obj-interaction/bake-6.png)
+
+    4. **顶点色占位关联**：接着，新建一个输入节点 **Color Attribute**，用于暂时代替读取原网格上的顶点色信息
+
+    ![Bake 7](/images/blog/blender-series/hand-obj-interaction/bake-7.png)
+
+    <Callout type="warning" title="Bake 关键前置检查">
+        在执行右侧的 Bake 烘焙操作之前，务必在 Shader 编辑器中确保新建的 **Image Texture** 节点带有白色高亮边框（即处于激活被选中状态），否则 Blender 将不知晓该把贴图信息烘焙到哪张图上，导致烘焙失败
+    </Callout>
+
+    5. **执行烘焙 (Bake)**：在右侧属性面板进入 `Render Properties` 标签页，在弹出的 Bake 选项卡中，将 **Bake Type** 改选为 `Diffuse`
+
+    ![Bake 8](/images/blog/blender-series/hand-obj-interaction/bake-8.png)
+
+    在 Influence 影响参数配置下：取消勾选 Direct 和 Indirect，仅保留 **Color** 的勾选状态
+    最后点击 **Bake** 按钮
+    顶点颜色将被渲染光栅化，并记录到那张新建的 2D 贴图上，帮助在渲染中正确计算色彩映射
+
+    ![Bake 9](/images/blog/blender-series/hand-obj-interaction/bake-9.png)
+
+    6. **应用烘焙贴图**：烘焙完毕后，在左侧 Image 预览处应该能看到带有颜色信息的展开贴图
+    此时回到 Shader Editor，将刚才建立的 **Image Texture** 节点的 Color 输出，直接连接到 Principled BSDF 主干节点的 Base Color 输入上；同时可将此前用于占位的 Color Attribute 节点安全删去
+
+    ![Bake 10](/images/blog/blender-series/hand-obj-interaction/bake-10.png)
+
+    ![Bake 11](/images/blog/blender-series/hand-obj-interaction/bake-11.png)
+
+    回到 Modeling 或 Layout 视图区，切换至材质预览，可以看到模型已经正确且清晰地应用了烘焙完成后的完整贴图效果：
+
+    ![Bake 12](/images/blog/blender-series/hand-obj-interaction/bake-12.png)
+
+</Step>
+
+## 3. 相机调整与灯光设置
+
+对于学术论文配图，“规范清晰的固定视角”与“高质量的对比打光”是核心诉求
+我们将画面裁切分辨率固化为 `512 x 512`
+
+<Step title="锁定机位与场景打光技巧">
+    1. **设定相机画幅边界**：首先创建一个 Camera，设定分辨率为 `512 x 512` 正方形画幅，并在视口调整到易于观察手物交互细节的三维位置，按对齐视角快捷键固定机位
+    
+    ![渲染配置 1](/images/blog/blender-series/hand-obj-interaction/render-1.png)
+
+    2. **精细调优固定相机**：
+    - 选中相机，进入右侧的 `Camera Properties` (属性面板绿色相机图标)，调整 **Focal Length (焦距)**，手部特写推荐设置在 `85mm - 100mm` 左右，以获取自然且不易透视畸变的聚焦构图
+    - 在 3D 视图中按 `N` 键打开右侧边栏，切换到 `View` 标签，勾选 **Lock Camera to View**
+      这样当你在视口中拖拽导航调整视角时，相机位置会自动实时跟随定位
+      妥当后，记得取消勾选防止二次误碰
+
+    ![渲染配置 2](/images/blog/blender-series/hand-obj-interaction/render-2.png)
+
+    3. **配置主光源 (Area Light)**：
+    - 在场景中生成主要补光灯（例如面光源 Area Light），进入 `Light Properties` 面板设置各项指标
+      调整 **Strength (强度)** 控制基础亮度，对于手部通常置于 1000~2000W 之间
+    - 放大光源 **Size (尺寸)**，面积越大的面光源投出的软阴影过渡越平滑高级，规避硬切的生硬感
+    - 自如控制光照衰变夹角，使手指缝隙中的几何结构起伏和手-物穿模关系暴露清晰，同时避免亮部过度拉白曝光
+
+    ![渲染配置 3](/images/blog/blender-series/hand-obj-interaction/render-3.png)
+
+    <Callout type="tip" title="进阶打光技巧：相机背冲向补光">
+        一个通用的经验打光法：将主光源严格放置在对应相机的正后方顺向照射，你可以利用 3D 游标配合快捷键极速完成布置，步骤如下：
+
+        1. 选中相机，并在视图中按 `Shift + S` 弹出饼菜单，选择 **Cursor to Selected**，这会将 3D 游标吸附固定到相机原点
+        2. 再选中场景灯光，按 `Shift + S`，选择 **Selection to Cursor**，这会使光源紧密重合到游标之处，也就是与机位对齐重合
+        3. 选择光源，敲下移动快捷键 `G` 紧跟两下 `Z Z`，拖动鼠标即可让其在相机的光轴直线上向后滑退远离
+        此时的阴影遮挡效果最为直观且富有质感
+    </Callout>
+
+    ![渲染配置 4](/images/blog/blender-series/hand-obj-interaction/render-4.png)
+
+</Step>
+
+## 4. 最终渲染出图
+
+检查渲染引擎是否稳健设定在 Cycles 或 Eevee 后，点击键盘 `F12` 进行计算输出
+通过以上流程规范化操作，便能得到如下极简干练的高质量对比成片：

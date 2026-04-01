@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { post, allPosts } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 
 // Compute series navigation if the post belongs to the "blender" series
 let seriesIndex = -1;
@@ -61,6 +61,7 @@ if (post.data.series === 'blender' && !post.data.draft) {
       slug={post.slug}
       tags={post.data.tags}
       series={post.data.series}
+      headings={headings}
     >
       {post.data.series === 'blender' && (
         <BlenderSeriesNav 

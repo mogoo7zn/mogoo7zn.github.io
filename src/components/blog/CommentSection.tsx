@@ -168,7 +168,7 @@ const CommentItem = memo(
 
               {/* Content */}
               <div
-                className="pl-11 text-sm prose prose-sm dark:prose-invert max-w-none break-words [&>p]:mb-2 [&>p:last-child]:mb-0 [&>pre]:bg-zinc-900 [&>pre]:p-2 [&>pre]:rounded-md"
+                className="pl-11 text-sm pretext-design max-w-none break-words [&>p]:mb-2 [&>p:last-child]:mb-0 [&>pre]:bg-zinc-900 [&>pre]:p-2 [&>pre]:rounded-md"
                 style={{ color: "var(--color-text-secondary)" }}
               >
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>

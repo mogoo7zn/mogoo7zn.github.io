@@ -91,9 +91,14 @@ export default function TableOfContents({
                   }}
                   onClick={(e) => {
                     e.preventDefault();
-                    document
-                      .getElementById(heading.slug)
-                      ?.scrollIntoView({ behavior: "smooth" });
+                    const element = document.getElementById(heading.slug);
+                    if (element) {
+                      const y =
+                        element.getBoundingClientRect().top +
+                        window.scrollY -
+                        100;
+                      window.scrollTo({ top: y, behavior: "smooth" });
+                    }
                     window.history.pushState(null, "", `#${heading.slug}`);
                     setActiveId(heading.slug);
                     if (isMobile) {

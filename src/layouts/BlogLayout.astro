@@ -28,14 +28,14 @@ const backText = series === 'blender' ? 'Back to Blender Notes' : 'Back to Blog'
 <BaseLayout title={`${title} | Blog`} description={description}>
   <Navbar client:load />
   
-  <div class="max-w-[100rem] mx-auto px-4 lg:px-8 xl:px-12 py-24 flex xl:gap-8 2xl:gap-16 items-start justify-center">
+  <div class="max-w-[104rem] mx-auto px-4 lg:px-8 xl:px-12 py-24 flex xl:gap-10 2xl:gap-14 items-start justify-center">
     {/* Left Sidebar Table of Contents */}
     <aside class="hidden xl:flex flex-col w-[16rem] 2xl:w-[18rem] shrink-0 sticky top-24 pt-8 h-[calc(100vh-6rem)] relative z-10 pr-2 xl:pr-6">
       <TableOfContents client:load headings={headings} />
     </aside>
 
     {/* Main Content Area */}
-    <main class="w-full max-w-full lg:max-w-5xl xl:max-w-[62rem] 2xl:max-w-[72rem]">
+    <main class="w-full max-w-full lg:max-w-5xl xl:max-w-[64rem] 2xl:max-w-[74rem] xl:ml-2 2xl:ml-3">
       <a
         href={backLink}
         class="inline-flex items-center gap-2 text-sm mb-8 transition-colors group"
@@ -84,7 +84,7 @@ const backText = series === 'blender' ? 'Back to Blender Notes' : 'Back to Blog'
     </main>
 
     {/* Right padding filler for centering balance, slightly narrower than left sidebar to push content slightly right */}
-    <div class="hidden xl:block w-[14rem] 2xl:w-[16rem] shrink-0 pointer-events-none"></div>
+    <div class="hidden xl:block w-[8rem] 2xl:w-[10rem] shrink-0 pointer-events-none"></div>
   </div>
   <DroneBackToTop client:load />
   <Footer client:visible />

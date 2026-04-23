@@ -1,0 +1,18 @@
+
+{
+  "title": "Safety",
+  "bannerImage": "/images/banners/safety_banner.jpg",
+  "description": "Ensuring our project is conducted safely and responsibly, both in and out of the lab.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Lab Safety Protocols",
+      "id": "lab-safety"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam."
+    }
+  ]
+}

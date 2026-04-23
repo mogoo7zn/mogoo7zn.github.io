@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
-import { profile } from "@/data/profile";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -39,7 +38,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Intersection Observer for active section
   useEffect(() => {
     const sections = document.querySelectorAll("section[id]");
     const observer = new IntersectionObserver(
@@ -52,19 +50,29 @@ export default function Navbar() {
       },
       { rootMargin: "-20% 0px -70% 0px" },
     );
-    sections.forEach((s) => observer.observe(s));
+
+    sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass shadow-sm" : ""
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+    <nav className="fixed left-0 right-0 top-0 z-50 px-3 pt-3 md:px-4">
+      <div
+        className={`mx-auto max-w-7xl overflow-hidden rounded-2xl border transition-all duration-300 ${
+          scrolled
+            ? "glass shadow-[var(--shadow-soft)]"
+            : "bg-[color-mix(in_srgb,var(--color-bg-card)_72%,transparent)]"
+        }`}
+        style={{
+          borderColor: scrolled
+            ? "color-mix(in srgb, var(--color-border) 88%, transparent)"
+            : "transparent",
+          backdropFilter: scrolled ? undefined : "blur(10px)",
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none rounded-2xl bg-[radial-gradient(circle_at_top_left,rgba(var(--color-primary-rgb),0.08),transparent_28%),radial-gradient(circle_at_top_right,rgba(var(--color-accent-rgb),0.06),transparent_24%)] opacity-50" />
+
+        <div className="relative z-10 flex h-16 items-center justify-between px-4 sm:px-6">
           <a href="/" className="shrink-0 flex items-center gap-2 group">
             <svg
               width="48"
@@ -119,7 +127,7 @@ export default function Navbar() {
               />
             </svg>
             <span
-              className="text-lg font-semibold hidden sm:inline"
+              className="hidden text-lg font-semibold sm:inline"
               style={{
                 background:
                   "linear-gradient(90deg, var(--color-text) 0%, var(--color-primary) 50%, var(--color-text) 100%)",
@@ -141,49 +149,66 @@ export default function Navbar() {
             `}</style>
           </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div
+            className="hidden items-center gap-1 rounded-full border px-2 py-1.5 md:flex"
+            style={{
+              borderColor: "color-mix(in srgb, var(--color-border) 86%, transparent)",
+              background:
+                "color-mix(in srgb, var(--color-bg-secondary) 84%, transparent)",
+            }}
+          >
             {sectionItems.map((item) => (
               <a
                 key={item.key}
                 href={item.href}
-                className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[var(--color-bg-secondary)]"
+                className="rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200"
                 style={{
                   color:
                     activeSection === item.key
-                      ? "var(--color-primary)"
+                      ? "white"
                       : "var(--color-text-secondary)",
+                  background:
+                    activeSection === item.key
+                      ? "linear-gradient(135deg, var(--color-primary), var(--color-accent))"
+                      : "transparent",
+                  boxShadow:
+                    activeSection === item.key
+                      ? "0 10px 24px var(--color-glow)"
+                      : "none",
                 }}
               >
                 {ui.nav[item.key][lang]}
               </a>
             ))}
-            {/* Separator */}
+
             <span
-              className="mx-1.5 w-px h-4 shrink-0"
+              className="mx-1.5 h-4 w-px shrink-0"
               style={{ backgroundColor: "var(--color-border)" }}
             />
+
             {pageItems.map((item) => (
               <a
                 key={item.key}
                 href={item.href}
-                className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[var(--color-bg-secondary)]"
-                style={{
-                  color: "var(--color-text-secondary)",
-                }}
+                className="rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:bg-[var(--color-bg-card)]"
+                style={{ color: "var(--color-text-secondary)" }}
               >
                 {ui.nav[item.key][lang]}
               </a>
             ))}
           </div>
 
-          {/* Controls */}
           <div className="flex items-center gap-2">
             <LanguageToggle />
             <ThemeToggle />
             <button
-              className="md:hidden p-2 rounded-lg"
-              style={{ color: "var(--color-text-secondary)" }}
+              className="rounded-xl border p-2 md:hidden"
+              style={{
+                color: "var(--color-text-secondary)",
+                borderColor: "var(--color-border)",
+                background:
+                  "color-mix(in srgb, var(--color-bg-secondary) 82%, transparent)",
+              }}
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
@@ -193,19 +218,18 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <div
-          className="md:hidden glass border-t"
+          className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border glass md:hidden"
           style={{ borderColor: "var(--color-border)" }}
         >
-          <div className="px-4 py-3 space-y-1">
+          <div className="space-y-1 px-4 py-3">
             {sectionItems.map((item) => (
               <a
                 key={item.key}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-[var(--color-bg-secondary)]"
+                className="block rounded-xl px-3 py-2 text-sm font-medium transition-colors hover:bg-[var(--color-bg-secondary)]"
                 style={{
                   color:
                     activeSection === item.key
@@ -216,20 +240,19 @@ export default function Navbar() {
                 {ui.nav[item.key][lang]}
               </a>
             ))}
-            {/* Mobile Separator */}
+
             <div
               className="my-2 h-px"
               style={{ backgroundColor: "var(--color-border)" }}
             />
+
             {pageItems.map((item) => (
               <a
                 key={item.key}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-[var(--color-bg-secondary)]"
-                style={{
-                  color: "var(--color-text-secondary)",
-                }}
+                className="block rounded-xl px-3 py-2 text-sm font-medium transition-colors hover:bg-[var(--color-bg-secondary)]"
+                style={{ color: "var(--color-text-secondary)" }}
               >
                 {ui.nav[item.key][lang]}
               </a>

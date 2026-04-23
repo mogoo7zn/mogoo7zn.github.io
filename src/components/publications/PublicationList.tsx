@@ -25,19 +25,26 @@ const statusLabel: Record<Publication["status"], { zh: string; en: string }> = {
   "under-review": { zh: "审稿中", en: "Under Review" },
 };
 
-export default function PublicationList() {
+export default function PublicationList({
+  pubs = publications,
+}: {
+  pubs?: typeof publications;
+}) {
   const lang = useStore($lang);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  if (publications.length === 0) {
+  if (pubs.length === 0) {
     return (
-      <div className="text-center py-20">
+      <div className="text-center py-20 flex flex-col items-center justify-center">
         <BookOpen
-          size={48}
-          className="mx-auto mb-4 opacity-30"
+          size={56}
+          className="mb-4 opacity-20"
           style={{ color: "var(--color-text-muted)" }}
         />
-        <p className="text-lg" style={{ color: "var(--color-text-secondary)" }}>
+        <p
+          className="text-lg font-medium"
+          style={{ color: "var(--color-text-secondary)" }}
+        >
           {ui.publications.noPubs[lang]}
         </p>
       </div>
@@ -45,8 +52,8 @@ export default function PublicationList() {
   }
 
   return (
-    <div className="space-y-4">
-      {publications.map((pub, i) => {
+    <div className="space-y-6">
+      {pubs.map((pub, i) => {
         const isExpanded = expandedId === pub.id;
 
         return (
@@ -55,178 +62,219 @@ export default function PublicationList() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.06 * i, duration: 0.4 }}
-            className="rounded-xl p-5 transition-all duration-300 hover:shadow-lg"
+            className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 overflow-hidden"
             style={{
               backgroundColor: "var(--color-bg-card)",
               border: "1px solid var(--color-border)",
             }}
           >
-            {/* Status & Year */}
-            <div className="flex items-center gap-2 mb-2">
-              <span
-                className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColor[pub.status]}`}
-              >
-                {statusLabel[pub.status][lang]}
-              </span>
-              <span
-                className="text-xs"
-                style={{ color: "var(--color-text-muted)" }}
-              >
-                {pub.year}
-              </span>
-            </div>
+            {/* Ambient Background Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
 
-            {/* Title */}
-            <h3
-              className="font-semibold text-base md:text-lg leading-snug mb-2"
-              style={{ color: "var(--color-text)" }}
-            >
-              {pub.title[lang]}
-            </h3>
-
-            {/* Authors */}
-            <p
-              className="text-sm mb-2 leading-relaxed"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              {pub.authors.map((a, j) => (
-                <span key={j}>
-                  {j > 0 && ", "}
+            <div className="relative z-10 flex flex-col h-full">
+              {/* Status & Year */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
                   <span
-                    className={
-                      a.isMe ? "font-semibold text-gradient" : undefined
-                    }
+                    className={`text-xs font-semibold px-3 py-1 rounded-full shadow-sm ${statusColor[pub.status]}`}
                   >
-                    {a.name}
+                    {statusLabel[pub.status][lang]}
                   </span>
-                </span>
-              ))}
-            </p>
+                  <span
+                    className="text-sm font-medium tracking-wide"
+                    style={{ color: "var(--color-text-muted)" }}
+                  >
+                    {pub.year}
+                  </span>
+                </div>
+              </div>
 
-            {/* Venue */}
-            <p
-              className="text-sm italic mb-3"
-              style={{ color: "var(--color-text-muted)" }}
-            >
-              {pub.venue[lang]}
-            </p>
+              {/* Title */}
+              <a href={`/publications/${pub.id}`} className="block mb-3">
+                <h3
+                  className="font-bold text-xl md:text-2xl leading-tight transition-colors group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-500 group-hover:to-purple-500"
+                  style={{ color: "var(--color-text)" }}
+                >
+                  {pub.title[lang]}
+                </h3>
+              </a>
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {pub.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-0.5 rounded-full"
-                  style={{
-                    backgroundColor: "var(--color-bg-secondary)",
-                    color: "var(--color-text-secondary)",
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+              {/* Authors */}
+              <p
+                className="text-sm md:text-base mb-4 leading-relaxed"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                {pub.authors.map((a, j) => (
+                  <span key={j}>
+                    {j > 0 && ", "}
+                    <span
+                      className={
+                        a.isMe ? "font-bold text-gradient" : "font-medium"
+                      }
+                    >
+                      {a.name}
+                    </span>
+                  </span>
+                ))}
+              </p>
 
-            {/* Links */}
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              {pub.pdf && (
-                <a
-                  href={pub.pdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                  style={{
-                    color: "var(--color-primary)",
-                    backgroundColor: "var(--color-bg-secondary)",
-                  }}
+              {/* Venue */}
+              <div className="flex items-start gap-2 mb-5">
+                <BookOpen
+                  size={18}
+                  className="mt-0.5 opacity-60"
+                  style={{ color: "var(--color-text-muted)" }}
+                />
+                <p
+                  className="text-sm font-medium italic"
+                  style={{ color: "var(--color-text-secondary)" }}
                 >
-                  <FileText size={13} /> PDF
-                </a>
-              )}
-              {pub.arxiv && (
-                <a
-                  href={pub.arxiv}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                  style={{
-                    color: "var(--color-primary)",
-                    backgroundColor: "var(--color-bg-secondary)",
-                  }}
-                >
-                  <ExternalLink size={13} /> arXiv
-                </a>
-              )}
-              {pub.doi && (
-                <a
-                  href={pub.doi}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                  style={{
-                    color: "var(--color-primary)",
-                    backgroundColor: "var(--color-bg-secondary)",
-                  }}
-                >
-                  <ExternalLink size={13} /> DOI
-                </a>
-              )}
-              {pub.code && (
-                <a
-                  href={pub.code}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                  style={{
-                    color: "var(--color-primary)",
-                    backgroundColor: "var(--color-bg-secondary)",
-                  }}
-                >
-                  <Code2 size={13} /> Code
-                </a>
-              )}
-            </div>
+                  {pub.venue[lang]}
+                </p>
+              </div>
 
-            {/* Abstract toggle */}
-            {pub.abstract && (
-              <>
-                <button
-                  onClick={() => setExpandedId(isExpanded ? null : pub.id)}
-                  className="inline-flex items-center gap-1 text-xs font-medium transition-colors mt-1"
-                  style={{ color: "var(--color-primary)" }}
-                >
-                  {isExpanded
-                    ? ui.publications.hideAbstract[lang]
-                    : ui.publications.showAbstract[lang]}
-                  {isExpanded ? (
-                    <ChevronUp size={14} />
-                  ) : (
-                    <ChevronDown size={14} />
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {pub.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs font-medium px-3 py-1 rounded-md"
+                    style={{
+                      backgroundColor: "var(--color-bg-secondary)",
+                      color: "var(--color-text-secondary)",
+                      border: "1px solid var(--color-border)",
+                    }}
+                  >
+                    # {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Links & Expand */}
+              <div
+                className="mt-auto pt-2 flex flex-wrap items-center justify-between gap-4 border-t border-dashed"
+                style={{ borderColor: "var(--color-border)" }}
+              >
+                <div className="flex flex-wrap items-center gap-3 pt-4">
+                  <a
+                    href={`/publications/${pub.id}`}
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                    style={{
+                      color: "white",
+                      background:
+                        "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
+                    }}
+                  >
+                    <BookOpen size={16} />{" "}
+                    {lang === "zh" ? "阅读详情" : "Read More"}
+                  </a>
+                  {pub.pdf && (
+                    <a
+                      href={pub.pdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      style={{
+                        color: "var(--color-text)",
+                        backgroundColor: "var(--color-bg-secondary)",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <FileText size={16} /> PDF
+                    </a>
                   )}
-                </button>
+                  {pub.arxiv && (
+                    <a
+                      href={pub.arxiv}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      style={{
+                        color: "var(--color-text)",
+                        backgroundColor: "var(--color-bg-secondary)",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <ExternalLink size={16} /> arXiv
+                    </a>
+                  )}
+                  {pub.doi && (
+                    <a
+                      href={pub.doi}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      style={{
+                        color: "var(--color-text)",
+                        backgroundColor: "var(--color-bg-secondary)",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <ExternalLink size={16} /> DOI
+                    </a>
+                  )}
+                  {pub.code && (
+                    <a
+                      href={pub.code}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      style={{
+                        color: "var(--color-text)",
+                        backgroundColor: "var(--color-bg-secondary)",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <Code2 size={16} /> Code
+                    </a>
+                  )}
+                </div>
+
+                {pub.abstract && (
+                  <button
+                    onClick={() => setExpandedId(isExpanded ? null : pub.id)}
+                    className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors pt-4 hover:opacity-80"
+                    style={{ color: "var(--color-primary)" }}
+                  >
+                    {isExpanded
+                      ? ui.publications.hideAbstract[lang]
+                      : ui.publications.showAbstract[lang]}
+                    {isExpanded ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
+                  </button>
+                )}
+              </div>
+
+              {/* Abstract toggle content */}
+              {pub.abstract && (
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden"
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden mt-4"
                     >
-                      <p
-                        className="text-sm leading-relaxed mt-3 p-3 rounded-lg"
+                      <div
+                        className="text-sm md:text-base leading-relaxed p-5 rounded-xl relative overflow-hidden"
                         style={{
                           color: "var(--color-text-secondary)",
                           backgroundColor: "var(--color-bg-secondary)",
+                          borderLeft: "3px solid var(--color-primary)",
                         }}
                       >
-                        {pub.abstract[lang]}
-                      </p>
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none"></div>
+                        <p className="relative z-10">{pub.abstract[lang]}</p>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </>
-            )}
+              )}
+            </div>
           </motion.article>
         );
       })}

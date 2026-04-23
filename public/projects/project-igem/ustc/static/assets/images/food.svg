@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="_2" data-name="2">
+    <g id="Food">
+      <rect x="110" y="0" width="200" height="500" rx="40" ry="40"/>
+      <rect y="0" width="200" height="80" rx="40" ry="40"/>
+      <circle class="cls-1" cx="40" cy="39" r="30"/>
+      <path d="M27,69V16s3,7,4,11,1.85,10.51,2,14-.8,13.39-2,14v14h-4Z"/>
+      <path d="M44.5,69v-26s-7.5,0-7.5-8v-15.5c0-.83.67-1.5,1.5-1.5h0c.83,0,1.5.67,1.5,1.5v15.5s5,0,5,0v-15.5c0-.83.67-1.5,1.5-1.5h0c.83,0,1.5.67,1.5,1.5v15.5s5,0,5,0v-15.5c0-.83.67-1.5,1.5-1.5h0c.83,0,1.5.67,1.5,1.5v15.5c0,8-7.5,8-7.5,8v26h-4Z"/>
+    </g>
+  </g>
+</svg>

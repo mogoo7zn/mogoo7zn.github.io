@@ -1,0 +1,12 @@
+{
+  "name": "webpack-igemd-loader",
+  "scripts": {
+    "build:submodule": "npm install --prefix ./md-renderer-react && npm run build --prefix ./md-renderer-react"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1",
+    "katex": "^0.16.22",
+    "stream": "^0.0.3",
+    "timers": "^0.1.1"
+  }
+}

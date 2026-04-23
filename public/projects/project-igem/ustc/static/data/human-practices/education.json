@@ -1,0 +1,28 @@
+
+{
+  "title": "Education",
+  "bannerImage": "/images/banners/education_banner.jpg",
+  "description": "Engaging with students and the public to share our science and foster a passion for synthetic biology.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "High School Outreach Program",
+      "id": "high-school-outreach"
+    },
+    {
+      "type": "paragraph",
+      "text": "We developed and delivered a series of workshops for local high school students. The workshops introduced the core concepts of synthetic biology, DNA, and genetic engineering through interactive presentations and a hands-on activity involving strawberry DNA extraction."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Developing Educational Materials",
+      "id": "educational-materials"
+    },
+    {
+      "type": "paragraph",
+      "text": "To make synthetic biology more accessible, we created a series of animated videos and infographics explaining our project and its underlying principles. These materials were shared on social media and our project website, reaching a broad audience."
+    }
+  ]
+}

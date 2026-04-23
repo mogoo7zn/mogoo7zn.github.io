@@ -1,4 +1,4 @@
-export const ui = {
+﻿export const ui = {
   nav: {
     home: { zh: "首页", en: "Home" },
     about: { zh: "关于", en: "About" },
@@ -12,8 +12,8 @@ export const ui = {
   hero: {
     greeting: { zh: "你好，我是", en: "Hi, I'm" },
     subtitle: {
-      zh: "USTC · 计算机科学与技术",
-      en: "USTC · Computer Science and Technology",
+      zh: "中国科学技术大学计算机科学本科生，关注具身智能与 AI4S",
+      en: "I'm a Computer Science undergraduate at USTC, focused on embodied AI and AI4S.",
     },
     cta: { zh: "了解更多", en: "Learn More" },
     scrollDown: { zh: "向下滚动", en: "Scroll Down" },
@@ -21,8 +21,8 @@ export const ui = {
   about: {
     title: { zh: "关于我", en: "About Me" },
     description: {
-      zh: "我是中国科学技术大学计算机科学与技术专业的本科生，目前研究兴趣集中在三维交互与具身智能领域。我热衷于探索如何让智能体在三维世界中感知、理解并与环境交互。",
-      en: "I'm an undergraduate student in Computer Science at USTC. My research interests lie in 3D interaction and embodied intelligence — exploring how agents perceive, understand, and interact within 3D environments.",
+      zh: "我目前在中国科学技术大学学习计算机科学与技术，主要关注具身智能与 AI4S，也持续从工程实践里寻找真正值得研究的问题",
+      en: "I am a Computer Science undergraduate at USTC. My recent work focuses on embodied AI and AI4S, exploring how intelligent agents can perceive, understand, and interact with the real world.",
     },
     researchAreas: { zh: "研究方向", en: "Research Interests" },
   },

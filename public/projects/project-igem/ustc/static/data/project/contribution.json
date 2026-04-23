@@ -1,0 +1,18 @@
+
+{
+  "title": "Contribution",
+  "bannerImage": "/images/banners/contribution_banner.jpg",
+  "description": "Our contributions to the iGEM community, including new parts and documentation.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Parts Submitted to the Registry",
+      "id": "parts-submitted"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam."
+    }
+  ]
+}

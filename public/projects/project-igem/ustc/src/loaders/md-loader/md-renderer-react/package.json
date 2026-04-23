@@ -1,0 +1,46 @@
+{
+  "name": "md-renderer-react",
+  "version": "1.0.0",
+  "description": "A flexible Markdown renderer supporting React",
+  "main": "dist/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./src/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist"
+  },
+  "keywords": [
+    "markdown",
+    "renderer",
+    "react"
+  ],
+  "author": "lyingloong",
+  "license": "MIT",
+  "dependencies": {
+    "@bjorn3/browser_wasi_shim": "^0.4.0",
+    "ef.js": "^0.17.4",
+    "highlight.js": "^11.11.1",
+    "katex": "^0.16.21",
+    "marked": "^16.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remark": "^15.0.1",
+    "remark-parse": "^11.0.0",
+    "webpack-igemd-loader": "file:.."
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.3",
+    "@babel/plugin-syntax-top-level-await": "^7.14.5",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "core-js": "^3.32.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

@@ -14,31 +14,27 @@ export interface Publication {
 }
 
 export const publications: Publication[] = [
-  // ── Example entry (replace with your real publications) ───────
-  // {
-  //   id: "example-paper",
-  //   title: {
-  //     zh: "论文标题",
-  //     en: "Paper Title",
-  //   },
-  //   authors: [
-  //     { name: "Zining Wang", isMe: true },
-  //     { name: "Collaborator Name" },
-  //   ],
-  //   venue: {
-  //     zh: "会议/期刊名称",
-  //     en: "Conference / Journal Name",
-  //   },
-  //   year: 2026,
-  //   abstract: {
-  //     zh: "摘要内容...",
-  //     en: "Abstract content...",
-  //   },
-  //   doi: "https://doi.org/10.xxxx/xxxxx",
-  //   arxiv: "https://arxiv.org/abs/xxxx.xxxxx",
-  //   pdf: "/papers/example.pdf",
-  //   code: "https://github.com/mogoo7zn/example",
-  //   tags: ["3D Interaction", "Embodied AI"],
-  //   status: "published",
-  // },
+  {
+    id: "THREAD",
+    title: {
+      zh: "THREAD: Joint 2D-3D Generation of Egocentric Hand-Object Interactions",
+      en: "THREAD: Joint 2D-3D Generation of Egocentric Hand-Object Interactions",
+    },
+    authors: [
+      { name: "Co-author Name" },
+      { name: "Zining Wang", isMe: true },
+      { name: "Et al." },
+    ],
+    venue: {
+      zh: "In submission",
+      en: "Under Review",
+    },
+    year: 2024,
+    abstract: {
+      zh: "本文提出了一种从第一人称视角联合生成二维与三维手物交互序列的方法，旨在为具身智能操作任务提供更丰富、精细的交互合成数据和动作先验指导。论文目前正在审稿阶段。",
+      en: "We propose THREAD, a method for the joint generation of 2D and 3D hand-object interactions from an egocentric perspective. Note: This paper is currently under review.",
+    },
+    tags: ["Hand-Object Interaction", "Embodied AI", "3D Generation"],
+    status: "under-review",
+  },
 ];

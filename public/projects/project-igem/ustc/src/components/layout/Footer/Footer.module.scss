@@ -1,0 +1,270 @@
+@use '../../../styles/variables';
+@use '../../../styles/_mixins';
+
+.footer {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: #f0f0f0;
+  padding: 5rem 0 2rem;
+  z-index: 30;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  }
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+
+  .logo {
+    max-width: 120px;
+    height: auto;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+
+    .logo {
+      max-width: 100px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    gap: 1rem;
+    flex-direction: column;
+
+    .logo {
+      max-width: 80px;
+    }
+  }
+}
+
+.contactSection {
+  text-align: center;
+  margin: 3rem 0;
+  padding: 2rem 0;
+  border-top: 1px solid #333;
+
+  .contactTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-family: var(--font-accent);
+    margin: 0 0 1.5rem 0;
+    position: relative;
+    padding-bottom: 0.5rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    }
+  }
+
+  .contactInfo {
+    max-width: 600px;
+    margin: 0 auto;
+
+    .contactText {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    .contactAddress {
+      margin: 1rem 0 0 0;
+      font-size: 0.95rem;
+      color: #fff;
+      line-height: 1.6;
+      font-style: italic;
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin: 2rem 0;
+    padding: 1.5rem 0;
+
+    .contactTitle {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .contactInfo {
+      .contactText {
+        font-size: 0.9rem;
+      }
+
+      .contactAddress {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    margin: 1.5rem 0;
+    padding: 1rem 0;
+
+    .contactTitle {
+      font-size: 1.3rem;
+    }
+
+    .contactInfo {
+      .contactText {
+        font-size: 0.85rem;
+      }
+
+      .contactAddress {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  @media (max-width: 1200px) {
+    gap: 0.8rem;
+    max-width: 900px;
+  }
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 600px;
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    max-width: 300px;
+  }
+}
+
+.section {
+  .sectionTitle {
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    font-family: var(--font-accent);
+    position: relative;
+    padding-bottom: 0.5rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-color), transparent);
+    }
+  }
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 0.5rem;
+
+    a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 1px;
+        background: var(--accent-color);
+        transition: width 0.3s ease;
+      }
+
+      &:hover {
+        color: var(--accent-color);
+        transform: translateX(5px);
+
+        &::before {
+          width: 10px;
+        }
+      }
+    }
+  }
+}
+
+.bottom {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #333;
+  text-align: center;
+
+  .copyright {
+    margin: 0 0 1rem;
+    font-size: 0.85rem;
+    color: #fff;
+    line-height: 1.5;
+  }
+
+  .repository {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #fff;
+    line-height: 1.5;
+
+    .repoLink {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+  }
+}

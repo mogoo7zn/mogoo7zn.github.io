@@ -1,0 +1,35 @@
+/* 定义动画 */
+@keyframes move-grid-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-40px); /* 移动一个格子的高度，实现无缝循环 */
+  }
+}
+
+@keyframes move-grid-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-40px);
+  }
+}
+
+.grid {
+  position: fixed;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 160px);
+  z-index: -1; // 明确地让它在最底层
+
+  background-color: var(--secondary-bg);
+  background-image:
+    repeating-linear-gradient(to right, var(--grid-line-color) 0, var(--grid-line-color) 2px, transparent 2px, transparent 40px),
+    repeating-linear-gradient(to bottom, var(--grid-line-color) 0, var(--grid-line-color) 2px, transparent 2px, transparent 40px);
+
+  animation: move-grid-up 8s linear infinite;
+
+}

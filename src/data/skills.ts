@@ -6,38 +6,23 @@ export interface SkillCategory {
 
 export const skills: SkillCategory[] = [
   {
-    title: { zh: "编程语言", en: "Languages" },
+    title: { zh: "编程语言", en: "Programming Languages" },
     icon: "Braces",
-    items: [
-      "C++",
-      "Python",
-      "Java",
-      "Kotlin",
-      "C#",
-      "ArkTS",
-      "JavaScript",
-      "TypeScript",
-    ],
+    items: ["Python", "C++", "JavaScript / TypeScript", "C#"],
   },
   {
-    title: { zh: "框架与库", en: "Frameworks" },
+    title: { zh: "人工智能与科学计算", en: "AI & Scientific Computing" },
     icon: "Layers",
-    items: ["PyTorch", "React", "Next.js", "WPF"],
+    items: ["PyTorch", "OpenCV", "NumPy", "SciPy"],
   },
   {
-    title: { zh: "开发平台", en: "Platforms" },
-    icon: "Monitor",
-    items: [
-      "HarmonyOS",
-      "OpenHarmony",
-      "Android",
-      "Embedded (OrangePi, DAYU200)",
-      "Linux",
-    ],
+    title: { zh: "仿真与三维工具", en: "Simulation & 3D" },
+    icon: "Box",
+    items: ["PyBullet", "Isaac Gym / Sim", "Blender", "Unity", "Trimesh"],
   },
   {
-    title: { zh: "开发工具", en: "Tools" },
+    title: { zh: "开发工具", en: "Development Tools" },
     icon: "Wrench",
-    items: ["Git", "Docker", "Anaconda", "Android Studio", "VS Code"],
+    items: ["Linux", "Git", "Docker", "ROS / ROS 2", "VS Code"],
   },
 ];

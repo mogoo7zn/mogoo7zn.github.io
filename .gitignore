@@ -2,6 +2,10 @@
 node_modules/
 .pnp
 .pnp.js
+.venv/
+venv/
+__pycache__/
+*.pyc
 
 # Production
 dist/
@@ -39,17 +43,29 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+*.log
 
 # Supabase Local Development
 supabase/config.toml
 supabase/.branches
 supabase/.temp
 
+# Local temp / backup files
+current_diff.txt
+old_hero.tsx
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.rej
+
 .nojekyll
 *.sql
 *.tex
 
-# Ignore heavy dependencies and build outputs in project-igem, but keep the core files
+# Ignore heavy dependencies and build outputs inside embedded subprojects,
+# but keep source files and assets that are actually used by the website
 public/projects/project-igem/**/node_modules/
 public/projects/project-igem/**/.next/
 public/projects/project-igem/**/dist/
@@ -57,4 +73,3 @@ public/projects/project-igem/**/build/
 public/projects/project-igem/**/coverage/
 public/projects/project-igem/**/*.log
 public/projects/project-igem/**/.Trash-*/
-public/projects/project-igem

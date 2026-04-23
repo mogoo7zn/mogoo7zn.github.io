@@ -1,0 +1,70 @@
+/*
+ * File:       components/common/Mouse/Crosshair.module.scss
+ * Author:     Waverly <waverlyowen@mail.ustc.edu.cn>
+ * Date:       2025-08-01
+ */
+ .crosshairContainer {
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.crosshair {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  transition:
+    --circle-thickness 0.3s ease,
+    --line-length 0.3s ease,
+    --line-thickness 0.3s ease,
+    transform 0.02s linear;
+
+  --circle-thickness: 0px;
+  --line-length: 0px;
+  --line-thickness: 0px;
+  --line-shift: 0px;
+  --line-rotate: 0deg;
+
+  // Used to calculate line positioning
+  --line-left: calc(50% + var(--line-shift));
+  --line-top: calc(50% - var(--line-thickness) / 2);
+}
+
+.circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: var(--circle-thickness) solid var(--primary-color-darken);
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+.line {
+  position: absolute;
+  left: var(--line-left);
+  top: var(--line-top);
+  width: var(--line-length);
+  height: var(--line-thickness);
+  background-color: var(--primary-color-darken);
+  transform-origin: calc(-1 * var(--line-shift)) 50%;
+}
+
+
+.left {
+  transform: rotate(calc(180deg + var(--line-rotate)));
+}
+
+.right {
+  transform: rotate(calc(0deg + var(--line-rotate)));
+}
+
+.top {
+  transform: rotate(calc(270deg + var(--line-rotate)));
+}
+
+.bottom {
+  transform: rotate(calc(90deg + var(--line-rotate)));
+}

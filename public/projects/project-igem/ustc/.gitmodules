@@ -1,0 +1,6 @@
+[submodule "src/lib/lychee-sync"]
+	path = src/lib/lychee-sync
+	url = https://git.lug.ustc.edu.cn/ustc-igem/lychee-sync.git
+[submodule "src/loaders/md-loader"]
+	path = src/loaders/md-loader
+	url = https://git.lug.ustc.edu.cn/ustc-igem/webpack-igemd-loader.git

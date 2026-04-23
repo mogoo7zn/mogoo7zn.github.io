@@ -4,6 +4,25 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import PublicationList from '@/components/publications/PublicationList';
+import { getCollection } from 'astro:content';
+
+const allPubs = await getCollection('publications');
+const mappedPubs = allPubs.map(pub => {
+  return {
+    id: pub.slug,
+    title: { zh: pub.data.title, en: pub.data.titleEn || pub.data.title },
+    authors: pub.data.authors.map(a => ({ name: a, isMe: a.includes('Zining Wang') || a.includes('王子宁') })),
+    venue: { zh: pub.data.venue || '', en: pub.data.venueEn || pub.data.venue || '' },
+    year: pub.data.year || (pub.data.pubDate ? new Date(pub.data.pubDate).getFullYear() : new Date().getFullYear()),
+    doi: pub.data.doi,
+    arxiv: pub.data.arxiv,
+    pdf: pub.data.pdf,
+    code: pub.data.code,
+    tags: pub.data.tags || [],
+    status: pub.data.status,
+    abstract: null,
+  }
+}).sort((a, b) => b.year - a.year);
 ---
 
 <PageLayout title="Publications | Zining Wang">
@@ -13,7 +32,7 @@ import PublicationList from '@/components/publications/PublicationList';
     <h1 class="text-2xl md:text-3xl font-bold mb-8 text-gradient inline-block">
       Publications
     </h1>
-    <PublicationList client:load />
+    <PublicationList client:load pubs={mappedPubs as any} />
   </main>
   <Footer client:load />
 </PageLayout>

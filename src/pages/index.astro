@@ -28,7 +28,7 @@ const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.s
     <Hero client:load />
     <About client:visible />
     <Projects client:visible validBlogSlugs={validBlogSlugs} />
-    <Skills client:visible />
+    <Skills client:load />
     <Timeline client:visible />
     <CV client:visible />
   </main>

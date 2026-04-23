@@ -1,0 +1,28 @@
+
+{
+  "title": "Hardware",
+  "bannerImage": "/images/banners/hardware_banner.jpg",
+  "description": "Our custom-built hardware solutions and innovations designed to support our project.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Device Design and Prototyping",
+      "id": "device-design"
+    },
+    {
+      "type": "paragraph",
+      "text": "To create a user-friendly platform for our biosensor, we designed and 3D-printed a custom microfluidic device. The device features a sample inlet, a reaction chamber containing the lyophilized cells, and a clear viewing window for colorimetric analysis."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Open-Source Controller",
+      "id": "controller"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. We developed a low-cost, Arduino-based controller to maintain optimal temperature and mixing within the reaction chamber."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+
+{
+  "title": "Implementation",
+  "bannerImage": "/images/banners/implementation_banner.jpg",
+  "description": "Proposing a real-world application for our iGEM project.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Proposed Implementation",
+      "id": "proposed-implementation"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam."
+    }
+  ]
+}

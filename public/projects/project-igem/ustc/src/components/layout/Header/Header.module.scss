@@ -1,0 +1,452 @@
+@use '../../../styles/variables';
+@use '../../../styles/_mixins';
+
+.header {
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  padding: 0.5rem 2rem;
+  transition: all 0.3s ease;
+
+  // 确保Header始终显示
+  &.scrolled {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.overBanner {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // 全局移除Header内所有链接的下划线
+  a {
+    text-decoration: none !important;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+
+    &:focus {
+      text-decoration: none !important;
+    }
+
+    &:active {
+      text-decoration: none !important;
+    }
+  }
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 50px;
+  // Firefox兼容性修复
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  justify-content: left;
+  font-family: 'Montserrat-ExtraBold', sans-serif; // 直接应用到.logo
+  font-size: 2rem; // 直接应用到.logo
+  font-weight: 700; // 直接应用到.logo
+  color: #a80c05; // 直接应用到.logo
+  letter-spacing: 0.5px; // 直接应用到.logo
+  transition: color 0.3s ease; // 直接应用到.logo
+  position: relative;
+
+  // 添加logo悬停时的红线效果 - 在Header栏下方
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: #a80c05;
+    transform: translateX(-50%);
+    transform-origin: center;
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+
+  a {
+    color: inherit; // 继承.logo的颜色
+    text-decoration: none !important; // 强制移除下划线
+  }
+}
+
+.nav {
+  flex: 2;
+}
+
+.navList {
+  display: flex;
+  // justify-content: flex-end;
+  align-items: center;
+  gap: 0.2rem; // 减小gap间距
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap; // 防止换行
+  min-width: 0; // 允许flex项目收缩
+}
+
+.navItem {
+  position: relative;
+  flex-shrink: 0; // 防止收缩
+  white-space: nowrap; // 防止文字换行
+}
+
+.navLink {
+  font-family: 'Montserrat-Thin', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem; // 稍微减小字体大小
+  color: #1b0301;
+  text-decoration: none !important; // 强制移除下划线
+  padding: 0.5rem 0.6rem; // 减小左右padding
+  transition: all 0.3s ease;
+  position: relative;
+  white-space: nowrap; // 防止文字换行
+  display: inline-block; // 确保元素为inline-block
+
+  // 添加导航链接悬停时的红线效果 - 在Header栏下方
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: #a80c05;
+    transform: translateX(-50%);
+    transform-origin: center;
+    transition: width 0.3s ease;
+  }
+
+  &:hover {
+    color: #a80c05;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// ===============================================
+// Dropdown Menu Styles
+// ===============================================
+
+.dropdown {
+  position: relative;
+
+  &:hover > .dropdownMenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.dropdownMenu {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 108%; // 让菜单的顶部与父级元素的底部有一定的间距
+  left: 0;
+  z-index: 1001;
+  transform: translateY(10px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+
+  background-color: white;
+  min-width: 200px;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px var(--card-shadow); // MODIFIED
+
+  // 下拉菜单中的链接样式
+  li a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: #333;
+    text-decoration: none !important; // 强制移除下划线
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    font-family: 'Montserrat-Thin', sans-serif;
+    font-size: 1.1rem;
+    position: relative;
+
+    // 添加下拉菜单链接悬停时的红线效果 - 在Header栏下方
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background-color: #a80c05;
+      transform: translateX(-50%);
+      transform-origin: center;
+      transition: width 0.2s ease;
+    }
+
+    &:hover {
+      background-color: #f5f5f5;
+      color: #e5474b;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+
+  :global([data-theme='dark']) & {
+    background-color: #2a2a2a;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    li a {
+      color: #eeeded;
+
+      &:hover {
+        background-color: #3c3c3c;
+        color: #f2a3a5;
+      }
+
+      &:hover::after {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.homeLink {
+  position: relative;
+  color: white !important;
+  background-color: #ffb700;
+  border-radius: 20px;
+  padding: 0.5rem 1.2rem;
+  z-index: 1;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 20px;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+
+  // 添加Home按钮悬停时的红线效果 - 在Header栏下方
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #a80c05;
+    transform: translateX(-50%);
+    transform-origin: center;
+    transition: width 0.3s ease;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+
+  &:hover {
+    color: #a80c05 !important;
+  }
+}
+
+// 移动端菜单
+.mobileMenuToggle {
+  display: none;
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
+  z-index: 101;
+  outline: none; // 移除焦点轮廓
+  padding: 0; // 移除默认内边距
+  margin: 0; // 移除默认外边距
+
+  .icon {
+    display: block;
+    position: relative;
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-color, #1b0301);
+    margin: 2px auto;
+    transition: all 0.3s ease;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 2px;
+      background-color: var(--text-color, #1b0301);
+      transition: all 0.3s ease;
+    }
+
+    &:before {
+      top: -8px;
+    }
+    &:after {
+      bottom: -8px;
+    }
+  }
+
+  // 激活状态样式
+  &.active {
+    .icon {
+      background-color: transparent;
+
+      &:before {
+        transform: rotate(45deg);
+        top: 0;
+      }
+
+      &:after {
+        transform: rotate(-45deg);
+        bottom: 0;
+      }
+    }
+  }
+}
+
+// 中等屏幕优化 - 针对Firefox的文字换行问题
+@media (max-width: 1400px) and (min-width: 1267px) {
+  .navLink {
+    font-size: 1.3rem; // 进一步减小字体
+    padding: 0.5rem 0.5rem; // 减小padding
+  }
+
+  .navList {
+    gap: 0.1rem; // 减小间距
+  }
+}
+
+@media (max-width: 1266px) {
+  .mobileMenuToggle {
+    display: block;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 80%;
+    max-width: 320px;
+    background-color: var(--bg-color); // MODIFIED
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 5rem 2rem 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    box-shadow: -5px 0 15px var(--card-shadow); // MODIFIED
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  // 移动端菜单的暗色模式适配
+  :global([data-theme='dark']) {
+    @media (max-width: 768px) {
+      .nav {
+        background-color: var(--card-bg); // MODIFIED
+        box-shadow: -5px 0 15px var(--card-shadow); // MODIFIED
+      }
+
+      .navList li a {
+        color: var(--text-color); // MODIFIED
+
+        &:hover {
+          color: var(--primary-color); // MODIFIED
+        }
+      }
+
+      .mobileMenuToggle .icon,
+      .mobileMenuToggle .icon:before,
+      .mobileMenuToggle .icon:after {
+        background-color: var(--text-color); // MODIFIED
+      }
+    }
+  }
+
+  .navList {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+
+    li {
+      width: 100%;
+
+      a {
+        display: block;
+        padding: 0.75rem 0;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  // 移动端下拉菜单调整
+  .dropdownMenu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    margin-top: 0.6rem;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+
+    li a {
+      padding-left: 1.5rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  .dropdown:hover > .dropdownMenu,
+  .dropdown.open > .dropdownMenu {
+    max-height: 500px; // 足够大的值以显示所有项
+  }
+}

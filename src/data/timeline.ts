@@ -14,7 +14,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "进入中国科学技术大学", en: "Enrolled at USTC" },
     description: {
       zh: "计算机科学与技术学院，计算机科学与技术专业",
-      en: "School of Computer Science and Technology",
+      en: "Began undergraduate study in Computer Science and Technology at the School of Computer Science and Technology.",
     },
     category: "education",
     icon: "GraduationCap",
@@ -25,7 +25,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "时间流 App 项目启动", en: "TimeFlow App Project Begins" },
     description: {
       zh: "开始开发智能时间管理安卓应用",
-      en: "Started developing a smart time management Android app",
+      en: "Started building a smart time-management app for Android.",
     },
     category: "project",
     icon: "Clock",
@@ -36,7 +36,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "外研社国才杯省级二等奖", en: "FLTRP Provincial Second Prize" },
     description: {
       zh: "2023 年度外研社国才杯省级二等奖",
-      en: "FLTRP Provincial Second Prize",
+      en: "Won the Anhui Provincial Second Prize in the FLTRP·ETIC competition.",
     },
     category: "award",
     icon: "Trophy",
@@ -50,7 +50,7 @@ export const timelineEvents: TimelineEvent[] = [
     },
     description: {
       zh: "大学生研究计划：非遗数字化保护与风格融合",
-      en: "Undergraduate research: digital heritage preservation and style fusion",
+      en: "Launched an undergraduate research project on digital heritage preservation and style fusion.",
     },
     category: "project",
     icon: "Palette",
@@ -61,7 +61,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "时间流 App 发布", en: "TimeFlow App Released" },
     description: {
       zh: "完成 v1.0 版本开发并面向校园用户发布",
-      en: "Completed v1.0 development and released to campus users",
+      en: "Completed version 1.0 and released it to campus users.",
     },
     category: "project",
     icon: "Clock",
@@ -75,7 +75,7 @@ export const timelineEvents: TimelineEvent[] = [
     },
     description: {
       zh: "2024 年度校优秀学生奖学金",
-      en: "2024 Outstanding Student Scholarship",
+      en: "Received the 2024 Outstanding Student Scholarship.",
     },
     category: "award",
     icon: "Trophy",
@@ -89,7 +89,7 @@ export const timelineEvents: TimelineEvent[] = [
     },
     description: {
       zh: "2024 年度余庆杯竞赛三等奖",
-      en: "2024 Yuqing Cup Third Prize",
+      en: "Won Third Prize in the 2024 Yuqing Cup competition.",
     },
     category: "award",
     icon: "Trophy",
@@ -100,7 +100,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "iGEM 竞赛启动", en: "iGEM Competition Begins" },
     description: {
       zh: "担任网页组组长，负责实验服务器平台搭建",
-      en: "Led web team, built experimental server platform",
+      en: "Led the web team and was responsible for building the experimental server platform.",
     },
     category: "competition",
     icon: "Dna",
@@ -111,7 +111,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "全国操作系统大赛", en: "National OS Competition" },
     description: {
       zh: "担任队长，端侧部署多模态大语言模型",
-      en: "Team leader, deployed multi-modal LLM on edge devices",
+      en: "Served as team leader and deployed multimodal LLMs on edge devices.",
     },
     category: "competition",
     icon: "Cpu",
@@ -122,7 +122,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "华为 HarmonyOS 实习", en: "Huawei HarmonyOS Internship" },
     description: {
       zh: "华为终端部门实习，开发相机参数自动化适配工具",
-      en: "Interned at Huawei, developing camera parameter automation tools",
+      en: "Interned at Huawei and developed automated camera-parameter adaptation tools.",
     },
     category: "internship",
     icon: "Building2",
@@ -136,7 +136,7 @@ export const timelineEvents: TimelineEvent[] = [
     },
     description: {
       zh: "全国操作系统设计大赛国家级三等奖",
-      en: "Awarded National Third Prize in OS Design Competition",
+      en: "Received the National Third Prize in the OS Design Competition.",
     },
     category: "award",
     icon: "Trophy",
@@ -147,7 +147,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "华为实习结项", en: "Huawei Internship Conclusion" },
     description: {
       zh: "顺利完成实习项目并进行经验分享",
-      en: "Successfully completed internship project and shared experience",
+      en: "Successfully completed the internship project and shared the experience with peers.",
     },
     category: "internship",
     icon: "Building2",
@@ -158,7 +158,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "iGEM 国际金奖", en: "iGEM International Gold Medal" },
     description: {
       zh: "国际遗传基因工程大赛获得国际级金奖",
-      en: "Awarded International Gold Medal at iGEM",
+      en: "Received an International Gold Medal at iGEM.",
     },
     category: "award",
     icon: "Award",
@@ -172,7 +172,7 @@ export const timelineEvents: TimelineEvent[] = [
     },
     description: {
       zh: "完成风格融合算法研究与论文撰写",
-      en: "Completed style fusion algorithm research and paper writing",
+      en: "Completed research on style-fusion algorithms and paper writing.",
     },
     category: "project",
     icon: "Palette",
@@ -186,7 +186,7 @@ export const timelineEvents: TimelineEvent[] = [
     },
     description: {
       zh: "2025 年度校优秀学生奖学金",
-      en: "2025 Outstanding Student Scholarship",
+      en: "Received the 2025 Outstanding Student Scholarship.",
     },
     category: "award",
     icon: "Trophy",
@@ -197,7 +197,7 @@ export const timelineEvents: TimelineEvent[] = [
     title: { zh: "Kaggle ConnectX 竞赛", en: "Kaggle ConnectX Competition" },
     description: {
       zh: "使用强化学习开发博弈 Agent，最高排名 19/241",
-      en: "Built game-playing agents with RL, peak ranking 19/241",
+      en: "Built game-playing agents with reinforcement learning and reached a peak ranking of 19/241.",
     },
     category: "project",
     icon: "Gamepad2",

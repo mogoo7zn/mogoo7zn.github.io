@@ -1,0 +1,28 @@
+/*
+ * File:       components/common/Animation/Pendulum.module.scss
+ * Author:     Waverly <waverlyowen@mail.ustc.edu.cn>
+ * Date:       2025-08-02
+ */
+
+.wrapper {
+  position: absolute;
+  top: -15vw;
+  right: 5vw;
+  width: 20vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.string {
+  position: relative;
+  transform-origin: top center;
+  transition: transform 0.01s linear;
+}
+
+.bob {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}

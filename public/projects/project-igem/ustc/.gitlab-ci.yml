@@ -1,0 +1,25 @@
+# 使用Node.js 22镜像
+image: node:22
+
+stages:
+  - build
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  LYCHEE_SYNC_SKIP: "true"
+
+# 缓存node_modules以提高构建速度
+cache:
+  paths:
+    - node_modules/
+
+pages:
+  stage: build
+  script:
+    - echo "Deploying pre-built static files from public/ directory"
+  artifacts:
+    paths:
+      - public/
+  only:
+    - main
+    - master

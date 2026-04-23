@@ -1,0 +1,94 @@
+// 主容器，负责创建两栏布局
+.container {
+  display: grid;
+  // 定义两栏：左侧目录固定宽度，右侧内容占据剩余空间
+  grid-template-columns: 240px 1fr; 
+  gap: 3rem; // 两栏之间的间距
+  max-width: 1200px; // 页面内容的最大宽度
+  margin: 0 auto; // 居中显示
+  padding: 2rem; // 页面内边距
+
+  // 响应式设计：当屏幕宽度小于 1024px 时
+  @media (max-width: 1024px) {
+    // 变为单栏布局
+    grid-template-columns: 1fr; 
+  }
+
+  align-items: flex-start;
+}
+
+// 这个类被传给 BaseBanner，用于定义其独特的外观
+.descriptionBanner {
+  background-color: #f0f4f8; // 你想要的纯色背景
+  color: #1a202c; // 在这个背景色下的文字颜色
+  
+  // 在暗色模式下可以覆盖这些颜色
+  :global([data-theme='dark']) & {
+    background-color: #1e293b;
+    color: #e2e8f0;
+  }
+}
+
+// Banner 内部的 h1 标题样式
+.bannerTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+// Banner 内部的段落描述样式
+.bannerDescription {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+// 左侧栏（目录容器）的样式
+.leftColumn {
+  width: 240px;
+  // flex-shrink: 0 防止左侧栏在空间不足时被压缩
+  flex-shrink: 0;
+  
+  // 左侧栏本身需要是粘性定位的，这样它内部的目录才能正确计算高度
+  position: sticky;
+  top: calc(var(--current-header-height, 60px) + 2rem);
+}
+
+.rightColumn {
+  // 右侧栏占据剩余空间
+  flex-grow: 1;
+  min-width: 0; // 防止内容过宽时撑破布局
+}
+
+// 右侧内容中的 H2 标题样式
+.subheading {
+  font-family: var(--font-heading, 'Montserrat-ExtraBold', sans-serif); // 使用全局字体变量
+  color: var(--text-primary, #1a202c);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--primary-100, #ebf8ff);
+  padding-bottom: 0.5rem;
+
+  // 关键属性：当通过目录链接跳转时，让标题距离浏览器顶部有一段距离
+  // 这样标题就不会被固定的 Header 遮挡
+  scroll-margin-top: calc(var(--current-header-height, 60px) + 2rem); 
+
+  // 第一个标题不需要额外的上边距
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// 右侧内容中的段落样式
+.paragraph {
+  font-family: var(--font-body, 'Montserrat-Thin', sans-serif);
+  color: var(--text-secondary, #4a5568);
+  font-size: 1rem;
+  line-height: 1.8; // 增加行高以提高长文本的可读性
+  margin-bottom: 1.5rem;
+}

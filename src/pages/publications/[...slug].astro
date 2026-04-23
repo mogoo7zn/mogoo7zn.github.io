@@ -1,0 +1,50 @@
+---
+import PublicationLayout from '@/layouts/PublicationLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import SensorGrid from '@/components/ui/SensorGrid';
+import DraftNotice from '@/components/blog/DraftNotice';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const publications = await getCollection('publications');
+  return publications.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+---
+
+{
+  post.data.draft ? (
+    <BaseLayout title={`Work in Progress: ${post.data.title}`} description="This publication is currently being drafted.">
+      <Navbar client:load />
+      <div class="relative min-h-screen flex flex-col">
+        <div class="fixed inset-0 z-0 pointer-events-none opacity-60">
+           <SensorGrid client:load /> 
+        </div>
+        <main class="flex-grow flex items-center justify-center relative z-10 px-4 pt-20 pb-10">
+          <DraftNotice client:load title={post.data.title} />
+        </main>
+        <Footer client:load />
+      </div>
+    </BaseLayout>
+  ) : (
+    <PublicationLayout
+      title={post.data.title}
+      pubDate={post.data.pubDate ? post.data.pubDate.toLocaleDateString('zh-CN') : undefined}
+      venue={post.data.venue}
+      authors={post.data.authors}
+      slug={post.slug}
+      tags={post.data.tags}
+      headings={headings}
+      pdf={post.data.pdf}
+    >
+      <Content />
+    </PublicationLayout>
+  )
+}

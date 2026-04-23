@@ -1,0 +1,649 @@
+// 主容器，负责创建两栏布局
+.container {
+  display: grid;
+  // 定义两栏：左侧目录固定宽度，右侧内容占据剩余空间
+  grid-template-columns: 240px 1fr;
+  gap: 1.2rem; // 两栏之间的间距
+  max-width: 1200px; // 页面内容的最大宽度
+  margin: 0 auto; // 居中显示
+  padding: 1.6rem; // 页面内边距
+  width: 100%; // 确保容器宽度不会超出视口
+  box-sizing: border-box; // 包含内边距在宽度计算中
+
+  // 响应式设计：当屏幕宽度小于 1200px 时
+  @media (max-width: 1200px) {
+    // 减小左侧栏宽度以适应中等屏幕
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+    padding: 1.2rem;
+  }
+
+  // 当屏幕宽度小于 1024px 时
+  @media (max-width: 1024px) {
+    // 变为单栏布局
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 1rem;
+  }
+
+  // 当屏幕宽度小于 768px 时
+  @media (max-width: 768px) {
+    padding: 0.8rem;
+  }
+
+  // 当屏幕宽度小于 480px 时
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
+
+  align-items: flex-start;
+}
+
+// 这个类被传给 BaseBanner，用于定义其独特的外观
+.descriptionBanner {
+  background-color: transparent; /* 改为透明，让动画背景透出来 */
+  color: var(--text-color);
+  min-height: 90vh; /* 增加垂直高度，给大标题留出足够的呼吸空间 */
+  display: flex; /* 使用 Flexbox 来垂直居中内容 */
+  flex-direction: column;
+  justify-content: center;
+  text-align: center; /* 让内部文字居中 */
+}
+
+.bannerContent {
+  display: flex;
+  flex-direction: column; // 关键：让子元素垂直（从上到下）排列
+  align-items: center; // 让子元素在水平方向上居中
+  gap: 0; // 在动画和描述文字之间添加一些垂直间距
+  text-align: center; // 确保文字居中
+
+  margin-top: -18vh;
+}
+
+.bannerTitle {
+  font-size: clamp(3rem, 10vw, 6rem); /* 使用 clamp 实现响应式字体大小 */
+  font-weight: 900; /* 更粗的字重以匹配设计 */
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  color: var(--text-color); /* 确保颜色正确 */
+}
+
+.titleAnimationContainer {
+  position: relative; // 关键：让动画脱离文档流，可以与其他元素重叠
+
+  z-index: 5; // z-index 比文字低，动画就在文字后面；比文字高，就在前面
+  pointer-events: none; // 确保动画不会阻挡鼠标事件
+
+  // 在这里控制动画的尺寸，使其能覆盖标题区域
+  width: clamp(600px, 90vw, 1100px);
+}
+
+//为banner过大的项目修改样式
+.oversizeContainer {
+  width: clamp(600px, 70vw, 900px);
+  top: 5vh;
+}
+
+.bannerAnimationsContainer {
+  position: absolute;
+  bottom: 5vh;
+  right: 5vw;
+  // --- 新增 Flexbox 布局 ---
+  display: flex;
+  align-items: flex-end; // 让子元素底部对齐
+  gap: 0; // 在两个动画之间创建 2rem 的固定间距
+
+  // 定义基础尺寸变量
+  --animation-base-size: clamp(100px, 8vw, 160px);
+}
+
+.cornerAnimation {
+  // 不再需要 position: absolute 或 right/bottom
+
+  // 宽度基于父容器的变量计算
+  width: calc(var(--animation-base-size) * 1.5);
+  aspect-ratio: 16 / 9;
+}
+
+.arrowAnimation {
+  // 不再需要 position: absolute 或 right/bottom
+
+  // 宽度直接使用父容器定义的基准尺寸
+  width: var(--animation-base-size);
+  aspect-ratio: 1 / 1;
+
+  cursor: pointer;
+}
+
+// Banner 内部的段落描述样式
+.bannerDescription {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text-secondary); /* 使用次要文本颜色 */
+}
+
+// 左侧栏（目录容器）的样式
+.leftColumn {
+  width: 240px;
+  // flex-shrink: 0 防止左侧栏在空间不足时被压缩
+  flex-shrink: 0;
+
+  // 左侧栏本身需要是粘性定位的，这样它内部的目录才能正确计算高度
+  position: sticky;
+  top: calc(var(--current-header-height, 60px) + 2rem);
+
+  // 响应式调整
+  @media (max-width: 1200px) {
+    width: 200px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    position: static;
+    margin-bottom: 1rem;
+  }
+}
+
+.rightColumn {
+  // 右侧栏占据剩余空间
+  flex-grow: 1;
+  min-width: 0; // 防止内容过宽时撑破布局
+  overflow-wrap: break-word; // 确保长单词能够换行
+  word-wrap: break-word; // 兼容性
+
+  // --- 新增样式 ---
+  background-color: var(--card-bg); /* 使用卡片背景色 */
+  padding: 2rem 3rem; /* 增加内边距 */
+  border-radius: 12px; /* 添加圆角 */
+  box-shadow: var(--card-shadow); /* 添加阴影 */
+
+  // 响应式调整
+  @media (max-width: 1200px) {
+    padding: 1.5rem 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.8rem;
+  }
+}
+
+// 右侧内容中的 H2 标题样式
+.subheading {
+  font-size: 2.2rem; // 稍微减小字体尺寸
+  font-weight: 700; // 调整字重
+  line-height: 1.3; // 调整行高
+  margin-top: 2.5rem; // 调整上边距
+  margin-bottom: 1.5rem; // 调整下边距
+  padding-bottom: 0.6rem; // 调整下内边距
+
+  // --- 修改点 ---
+  font-family: var(--font-main); /* 使用主字体 */
+  color: var(--text-color);
+
+  // 创建更优雅的分割线
+  position: relative;
+
+  // 移除默认的 border-bottom
+  border-bottom: none;
+
+  // 使用伪元素创建渐变分割线
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 70%; // 调整分割线长度
+    height: 2px; // 调整分割线厚度
+    background: linear-gradient(90deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.3));
+    border-radius: 1px; // 调整圆角
+  }
+
+  // 关键属性：当通过目录链接跳转时，让标题距离浏览器顶部有一段距离
+  // 这样标题就不会被固定的 Header 遮挡
+  scroll-margin-top: calc(var(--current-header-height, 60px) + 2rem);
+
+  // 第一个标题不需要额外的上边距
+  &:first-child {
+    margin-top: 0;
+  }
+
+  // 响应式调整
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1.2rem;
+  }
+}
+
+// 右侧内容中的段落样式
+.paragraph {
+  font-family: var(--font-main);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8; // 增加行高以提高长文本的可读性
+  margin-bottom: 1.5rem;
+  text-align: justify; // 实现左右均对齐
+}
+
+.md {
+  font-family: var(--font-main, 'Helvetica', 'Arial', sans-serif);
+  color: var(--text-primary, #222);
+  line-height: 1.75;
+  text-align: justify; // 实现左右均对齐
+}
+
+.plain {
+  color: var(--text-secondary, #444);
+}
+
+.paragraph {
+  font-family: var(--font-main);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin: 1rem 0;
+  text-align: justify; // 实现左右均对齐
+}
+
+.section {
+  margin: 2rem 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  white-space: pre-line;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.section-time {
+  color: #888;
+  font-size: 0.875rem;
+}
+
+.section-content {
+  margin-top: 1rem;
+}
+
+.code {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  background: #f7f7f7;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  position: relative;
+}
+
+.language {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.8rem;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.table th {
+  background-color: #fafafa;
+  font-weight: 600;
+}
+
+.table-cell {
+  vertical-align: top;
+}
+
+.item {
+  margin: 0.3rem 0;
+}
+
+.plain {
+  color: var(--text-secondary);
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
+.superscript {
+  font-weight: bold; // 只保留加粗效果
+}
+
+.math {
+  color: #333;
+  background: transparent;
+  font-size: 1rem;
+}
+
+.math.display {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+.caption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: 600; /* 加粗 */
+}
+
+// Markdown渲染器专用样式
+.react-rendered-content {
+  // 确保markdown内容使用我们的样式
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--text-color);
+    scroll-margin-top: calc(var(--current-header-height, 60px) + 2rem);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-color), transparent);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.3rem;
+      left: 0;
+      width: 60%;
+      height: 3px;
+      background-color: var(--accent-color);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 1.75rem;
+    }
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+
+    @media (max-width: 768px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+  }
+
+  h5 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
+
+  h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
+
+  // 列表样式
+  ul,
+  ol {
+    margin: 1.5rem 0 1.5rem 2rem;
+    padding: 0;
+    font-family: var(--font-main);
+    color: var(--text-secondary);
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      position: relative;
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      line-height: 1.6;
+
+      &::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--accent-color);
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+
+      ul li {
+        margin: 0.5rem 0;
+
+        &::before {
+          content: '◦';
+          color: var(--accent-color);
+          opacity: 0.7;
+        }
+      }
+
+      ol li {
+        margin: 0.5rem 0;
+
+        &::before {
+          content: none;
+        }
+      }
+    }
+  }
+
+  ol {
+    counter-reset: item;
+
+    li {
+      position: relative;
+      margin: 0.75rem 0;
+      padding-left: 2rem;
+      line-height: 1.6;
+      counter-increment: item;
+
+      &::before {
+        content: counter(item) '.';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--accent-color);
+        font-weight: bold;
+        min-width: 1.5rem;
+      }
+
+      ol {
+        counter-reset: subitem;
+
+        li {
+          counter-increment: subitem;
+
+          &::before {
+            content: counter(item) '.' counter(subitem);
+          }
+        }
+      }
+
+      ul li {
+        margin: 0.5rem 0;
+
+        &::before {
+          content: '•';
+          color: var(--accent-color);
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  // 段落样式
+  p {
+    font-family: var(--font-main);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  // 链接样式
+  a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--text-color);
+      text-decoration: underline;
+    }
+  }
+
+  // 代码样式
+  code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    background-color: rgba(var(--accent-color-rgb), 0.1);
+    color: var(--accent-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+
+    code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+  }
+
+  // 引用样式
+  blockquote {
+    border-left: 4px solid var(--accent-color);
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    background-color: rgba(var(--accent-color-rgb), 0.05);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+
+  // 表格样式
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  th,
+  td {
+    border: 1px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  th {
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  tr:hover {
+    background-color: rgba(var(--accent-color-rgb), 0.05);
+  }
+}

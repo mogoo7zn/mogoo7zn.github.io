@@ -1,0 +1,67 @@
+.scrollToTop {
+  position: fixed;
+  right: 30px;
+  bottom: -80px; // 初始位置在屏幕外
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  // 悬停效果
+  &:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(128, 0, 32, 0);
+    
+    .arrowHead {
+      border-bottom-color: #FFD700; // 悬停时箭头变为金色
+    }
+    
+    .arrowStem {
+      background-color: #FFD700; // 悬停时箭头杆变为金色
+    }
+  }
+  
+  // 活动状态效果
+  &:active {
+    transform: translateY(2px) scale(0.98);
+  }
+}
+
+.visible {
+  opacity: 1;
+  bottom: 30px;
+}
+
+.arrowContainer {
+  position: relative;
+  width: 24px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.arrowHead {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 22px solid #660019; // 波尔多红箭头
+  transition: border-bottom-color 0.3s ease;
+}
+
+.arrowStem {
+  position: absolute;
+  top: 18px;
+  width: 12px;
+  height: 26px;
+  background-color: #660019; // 波尔多红箭头杆
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}

@@ -3,33 +3,33 @@ import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 import { skills } from "@/data/skills";
-import { Braces, Code2, Layers, Monitor, Wrench } from "lucide-react";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { Box, Braces, Code2, Layers, Monitor, Wrench } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
+  SiAndroid,
+  SiAndroidstudio,
+  SiAnaconda,
   SiCplusplus,
-  SiPython,
-  SiKotlin,
-  SiJavascript,
-  SiTypescript,
+  SiDocker,
   SiDotnet,
+  SiGit,
+  SiJavascript,
+  SiKotlin,
+  SiLatex,
+  SiLinux,
+  SiNextdotjs,
+  SiPython,
   SiPytorch,
   SiReact,
-  SiNextdotjs,
   SiThreedotjs,
-  SiHuawei,
-  SiAndroid,
-  SiLinux,
-  SiGit,
-  SiDocker,
-  SiAnaconda,
-  SiLatex,
-  SiAndroidstudio,
+  SiTypescript,
 } from "react-icons/si";
 import { FaJava, FaMicrochip, FaWindows } from "react-icons/fa6";
 import { VscVscode } from "react-icons/vsc";
 
-// Generic fallback
 const iconMap: Record<string, LucideIcon> = {
+  Box,
   Braces,
   Code2,
   Layers,
@@ -37,12 +37,14 @@ const iconMap: Record<string, LucideIcon> = {
   Wrench,
 };
 
-// Skill to Icon mapping
 const skillIconMap: Record<
   string,
-  React.ComponentType<{ className?: string; style?: any; size?: number }>
+  React.ComponentType<{
+    className?: string;
+    style?: React.CSSProperties;
+    size?: number;
+  }>
 > = {
-  // Languages
   "C++": SiCplusplus,
   Python: SiPython,
   Java: FaJava,
@@ -50,23 +52,14 @@ const skillIconMap: Record<
   "C#": SiDotnet,
   JavaScript: SiJavascript,
   TypeScript: SiTypescript,
-  ArkTS: SiHuawei, // Using Huawei icon for ArkTS as it's related
-
-  // Frameworks
   PyTorch: SiPytorch,
   React: SiReact,
   "Next.js": SiNextdotjs,
   "Three.js": SiThreedotjs,
   WPF: FaWindows,
-
-  // Platforms
-  HarmonyOS: SiHuawei,
-  OpenHarmony: SiHuawei,
   Android: SiAndroid,
   Linux: SiLinux,
   "Embedded (OrangePi, DAYU200)": FaMicrochip,
-
-  // Tools
   Git: SiGit,
   Docker: SiDocker,
   Anaconda: SiAnaconda,
@@ -83,17 +76,14 @@ const skillColorMap: Record<string, string> = {
   "C#": "#239120",
   JavaScript: "#F7DF1E",
   TypeScript: "#3178C6",
-  ArkTS: "#CF0A2C",
   PyTorch: "#EE4C2C",
   React: "#61DAFB",
-  "Next.js": "var(--color-text)", // Adapts to theme (Black/White)
-  "Three.js": "var(--color-text)", // Adapts to theme (Black/White)
+  "Next.js": "var(--color-text)",
+  "Three.js": "var(--color-text)",
   WPF: "#0078D7",
-  HarmonyOS: "#CF0A2C", // Huawei Red
-  OpenHarmony: "#0052D9", // OpenHarmony Blue
   Android: "#3DDC84",
   Linux: "#FCC624",
-  "Embedded (OrangePi, DAYU200)": "#EA580C", // Orange for OrangePi
+  "Embedded (OrangePi, DAYU200)": "#EA580C",
   Git: "#F05032",
   Docker: "#2496ED",
   Anaconda: "#44A833",
@@ -106,64 +96,106 @@ export default function Skills() {
   const lang = useStore($lang);
 
   return (
-    <section id="skills" className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold mb-10 text-gradient inline-block">
-          {ui.skills.title[lang]}
-        </h2>
+    <section id="skills" className="py-24">
+      <div className="section-shell">
+        <div className="section-band overflow-hidden px-6 py-8 md:px-10 md:py-12">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-8 top-8 h-28 w-28 rounded-full border"
+            style={{
+              borderColor:
+                "color-mix(in srgb, var(--color-primary) 28%, transparent)",
+              background:
+                "radial-gradient(circle, rgba(var(--color-primary-rgb), 0.12), transparent 68%)",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-10 right-28 h-16 w-16 rotate-12 rounded-2xl border"
+            style={{
+              borderColor:
+                "color-mix(in srgb, var(--color-accent) 30%, transparent)",
+              background:
+                "linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.08), transparent)",
+            }}
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {skills.map((category, i) => {
-            const Icon = iconMap[category.icon] || Code2;
-            return (
-              <div key={category.icon} className="h-full">
+          <div className="mb-10">
+            <SectionHeader
+              eyebrow={lang === "zh" ? "技能体系" : "Skill Matrix"}
+              title={ui.skills.title[lang]}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {skills.map((category, index) => {
+              const Icon = iconMap[category.icon] || Code2;
+
+              return (
                 <div
-                  className="rounded-xl p-5 h-full"
-                  style={{
-                    backgroundColor: "var(--color-bg-card)",
-                    border: "1px solid var(--color-border)",
-                  }}
+                  key={category.icon}
+                  className="surface-card surface-card-hover h-full px-5 py-5 hud-corners"
                 >
-                  <div className="flex items-center gap-2.5 mb-4">
-                    <Icon size={18} style={{ color: "var(--color-primary)" }} />
-                    <h3
-                      className="font-semibold text-sm"
-                      style={{ color: "var(--color-text)" }}
-                    >
-                      {category.title[lang]}
-                    </h3>
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    {category.items.map((skill, j) => {
-                      const SkillIcon = skillIconMap[skill];
-                      const skillColor =
-                        skillColorMap[skill] || "var(--color-text-secondary)";
-
-                      return (
-                        <span
-                          key={skill}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium cursor-default"
+                  <div className="relative z-10">
+                    <div className="mb-5 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="flex h-11 w-11 items-center justify-center rounded-2xl"
                           style={{
-                            backgroundColor: "var(--color-bg-secondary)",
-                            color: "var(--color-text-secondary)",
-                            border: "1px solid var(--color-border)",
+                            background:
+                              "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
+                            boxShadow: "0 10px 24px var(--color-glow)",
                           }}
                         >
-                          {SkillIcon && (
-                            <SkillIcon
-                              size={16}
-                              style={{ color: skillColor }}
-                            />
-                          )}
-                          <span>{skill}</span>
-                        </span>
-                      );
-                    })}
+                          <Icon size={20} className="text-white" />
+                        </div>
+                        <h3
+                          className="text-lg font-semibold"
+                          style={{ color: "var(--color-text)" }}
+                        >
+                          {category.title[lang]}
+                        </h3>
+                      </div>
+                      <span
+                        className="text-xs font-semibold uppercase tracking-[0.22em]"
+                        style={{ color: "var(--color-text-muted)" }}
+                      >
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-3">
+                      {category.items.map((skill) => {
+                        const SkillIcon = skillIconMap[skill];
+                        const skillColor =
+                          skillColorMap[skill] || "var(--color-text-secondary)";
+
+                        return (
+                          <span
+                            key={skill}
+                            className="inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+                            style={{
+                              backgroundColor: "var(--color-bg-secondary)",
+                              color: "var(--color-text-secondary)",
+                              borderColor: "var(--color-border)",
+                            }}
+                          >
+                            {SkillIcon && (
+                              <SkillIcon
+                                size={16}
+                                style={{ color: skillColor }}
+                              />
+                            )}
+                            <span>{skill}</span>
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

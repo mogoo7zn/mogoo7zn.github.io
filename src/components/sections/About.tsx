@@ -1,9 +1,10 @@
-import { useStore } from "@nanostores/react";
+﻿import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 import { profile } from "@/data/profile";
 import SectionLoader from "@/components/ui/SectionLoader";
 import SensorGrid from "@/components/ui/SensorGrid";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { Box, Bot, Eye, Gamepad2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -13,127 +14,98 @@ export default function About() {
   const lang = useStore($lang);
 
   return (
-    <section id="about" className="relative py-20 px-4">
-      <SensorGrid />
-      <div className="max-w-6xl mx-auto">
-        <SectionLoader>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gradient inline-block">
-            {ui.about.title[lang]}
-          </h2>
-          <p
-            className="text-base md:text-lg leading-relaxed max-w-3xl mb-12"
-            style={{ color: "var(--color-text-secondary)" }}
-          >
-            {ui.about.description[lang]}
-          </p>
-        </SectionLoader>
+    <section id="about" className="relative py-24">
+      <div className="section-shell">
+        <div className="section-band overflow-hidden px-6 py-8 md:px-10 md:py-12">
+          <SensorGrid className="opacity-60" />
 
-        <SectionLoader delay={0.2}>
-          <h3
-            className="text-lg font-semibold mb-6"
-            style={{ color: "var(--color-text)" }}
-          >
-            {ui.about.researchAreas[lang]}
-          </h3>
-        </SectionLoader>
+          <div className="relative z-10 grid gap-8 xl:grid-cols-[1.08fr,1fr] xl:gap-10">
+            <SectionLoader className="flex flex-col gap-6">
+              <SectionHeader
+                eyebrow={lang === "zh" ? "个人介绍" : "About Me"}
+                title={ui.about.title[lang]}
+              />
 
-        {profile.researchInterests.length === 1 ? (
-          <SectionLoader delay={0.1}>
-            <div
-              className="relative p-6 sm:p-8 rounded-2xl glass glow-border flex flex-col sm:flex-row items-center sm:items-start gap-6 transition-all duration-300 hover:-translate-y-1 group hud-corners embodied-glow cursor-default"
-              style={{
-                backgroundColor: "var(--color-bg-card)",
-                border: "1px solid var(--color-border)",
-              }}
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - rect.left - rect.width / 2) / 160;
-                const y = -(e.clientY - rect.top - rect.height / 2) / 120;
-                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg) translateY(-2px)`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "";
-              }}
-            >
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-[0_0_40px_var(--color-primary)]"
-                style={{
-                  background:
-                    "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
-                  boxShadow: "0 8px 32px var(--color-glow)",
-                }}
-              >
-                {(() => {
-                  const Icon =
-                    iconMap[profile.researchInterests[0].icon] || Box;
-                  return <Icon size={32} className="text-white" />;
-                })()}
+              <div className="surface-card px-6 py-6 md:px-7">
+                <div className="relative z-10">
+                  <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-primary)]">
+                    <span>
+                      {lang === "zh" ? "研究叙事" : "Research Narrative"}
+                    </span>
+                  </div>
+                  <p
+                    className="text-base leading-8"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    {profile.bio[lang]}
+                  </p>
+                </div>
               </div>
-              <div className="text-center sm:text-left">
-                <h4
-                  className="font-bold text-xl md:text-2xl mb-3 group-hover:text-primary transition-colors"
-                  style={{ color: "var(--color-text)" }}
-                >
-                  {profile.researchInterests[0].title[lang]}
-                </h4>
-                <p
-                  className="text-base md:text-lg leading-relaxed max-w-2xl"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  {profile.researchInterests[0].description[lang]}
-                </p>
+            </SectionLoader>
+
+            <div className="flex flex-col gap-5">
+              <SectionLoader delay={0.15}>
+                <div className="flex items-center justify-between">
+                  <h3
+                    className="text-xl font-semibold"
+                    style={{ color: "var(--color-text)" }}
+                  >
+                    {ui.about.researchAreas[lang]}
+                  </h3>
+                  <span className="surface-chip text-xs font-semibold uppercase tracking-[0.2em]">
+                    {lang === "zh" ? "4 个方向" : "4 Focus Areas"}
+                  </span>
+                </div>
+              </SectionLoader>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                {profile.researchInterests.map((area, index) => {
+                  const Icon = iconMap[area.icon] || Box;
+
+                  return (
+                    <SectionLoader key={area.icon} delay={0.12 * (index + 1)}>
+                      <div className="surface-card surface-card-hover h-full px-5 py-5">
+                        <div className="relative z-10">
+                          <div className="mb-4 flex items-center justify-between">
+                            <div
+                              className="flex h-11 w-11 items-center justify-center rounded-2xl"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
+                                boxShadow: "0 12px 32px var(--color-glow)",
+                              }}
+                            >
+                              <Icon size={20} className="text-white" />
+                            </div>
+                            <span
+                              className="text-xs font-semibold"
+                              style={{ color: "var(--color-text-muted)" }}
+                            >
+                              0{index + 1}
+                            </span>
+                          </div>
+
+                          <h4
+                            className="mb-3 text-lg font-semibold"
+                            style={{ color: "var(--color-text)" }}
+                          >
+                            {area.title[lang]}
+                          </h4>
+                          <p
+                            className="text-sm leading-7"
+                            style={{ color: "var(--color-text-secondary)" }}
+                          >
+                            {area.description[lang]}
+                          </p>
+                        </div>
+                      </div>
+                    </SectionLoader>
+                  );
+                })}
               </div>
             </div>
-          </SectionLoader>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {profile.researchInterests.map((area, i) => {
-              const Icon = iconMap[area.icon] || Box;
-              return (
-                <SectionLoader key={area.icon} delay={0.1 * (i + 1)}>
-                  <div
-                    className="group relative rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 cursor-default hud-corners embodied-glow"
-                    style={{
-                      backgroundColor: "var(--color-bg-card)",
-                      border: "1px solid var(--color-border)",
-                    }}
-                    onMouseMove={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const x = (e.clientX - rect.left - rect.width / 2) / 20;
-                      const y = -(e.clientY - rect.top - rect.height / 2) / 20;
-                      e.currentTarget.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${y}deg) translateY(-4px)`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "";
-                    }}
-                  >
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
-                      }}
-                    >
-                      <Icon size={20} className="text-white" />
-                    </div>
-                    <h4
-                      className="font-semibold text-sm mb-1.5"
-                      style={{ color: "var(--color-text)" }}
-                    >
-                      {area.title[lang]}
-                    </h4>
-                    <p
-                      className="text-xs leading-relaxed"
-                      style={{ color: "var(--color-text-secondary)" }}
-                    >
-                      {area.description[lang]}
-                    </p>
-                  </div>
-                </SectionLoader>
-              );
-            })}
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

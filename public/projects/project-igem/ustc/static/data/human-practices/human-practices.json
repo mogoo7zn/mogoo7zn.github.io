@@ -1,0 +1,28 @@
+
+{
+  "title": "iHP",
+  "bannerImage": "/images/banners/hp_banner.jpg",
+  "description": "Our project was shaped by a continuous and meaningful dialogue with stakeholders and experts.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Integrated Human Practices",
+      "id": "integrated-hp"
+    },
+    {
+      "type": "paragraph",
+      "text": "From the very beginning, our project's direction was informed by our human practices work. We conducted initial interviews with local farmers and environmental regulators to understand their needs and concerns regarding water quality testing. Their feedback directly influenced our decision to design a simple, field-deployable visual test rather than a complex lab-based assay."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Stakeholder Engagement",
+      "id": "stakeholder-engagement"
+    },
+    {
+      "type": "paragraph",
+      "text": "Throughout the project, we maintained an open dialogue with our stakeholders. A mid-project presentation to a panel of experts provided crucial feedback on our biocontainment strategy, leading us to incorporate a secondary kill-switch mechanism. This iterative process ensured our project remained aligned with real-world values and needs."
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+.catSvg {
+  width: 100%;
+  height: auto;
+}
+
+.catGroup {
+  /* Optional base styling */
+  position: relative;
+}
+
+.body {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-miterlimit: 100;
+  stroke-width: 40px;
+}
+
+.leftEar,
+.rightEar {
+  transform-origin: 383.46px 418.89px;
+  transition: transform 0.2s ease;
+  fill: #a80c05;
+}
+
+.magnet {
+  width: 100%;
+  height: 100%;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+}
+
+.tail {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-miterlimit: 100;
+  stroke-width: 40px;
+}
+
+.tailBall {
+  fill: var(--accent-color);
+}
+
+.leftEye,
+.rightEye {
+  fill: var(--accent-color);
+  transform-origin: center 400px;
+  animation: blinkScale 4s infinite ease-in-out;
+}
+
+@keyframes blinkScale {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.2);
+  }
+}
+
+.leftHand,
+.rightHand {
+  fill: var(--accent-color);
+}
+
+.shake {
+  animation: shakeEar 1s ease-in-out infinite;
+}
+
+@keyframes shakeEar {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  40% {
+    transform: rotate(6deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  80% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+// 覆盖Header组件的悬停红线效果
+.catSvg :global(a) {
+  &::after {
+    display: none !important;
+  }
+}

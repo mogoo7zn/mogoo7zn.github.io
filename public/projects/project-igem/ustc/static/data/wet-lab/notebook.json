@@ -1,0 +1,28 @@
+
+{
+  "title": "Notebook",
+  "bannerImage": "/images/banners/notebook_banner.jpg",
+  "description": "A day-by-day log of our team's progress, challenges, and findings.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Week 1 (May 15-21): Project Kick-off",
+      "id": "week-1"
+    },
+    {
+      "type": "paragraph",
+      "text": "The team convened for the first time to brainstorm project ideas. We settled on the theme of bioremediation after discussing local environmental issues. Initial literature review began."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Week 2 (May 22-28): Part Design",
+      "id": "week-2"
+    },
+    {
+      "type": "paragraph",
+      "text": "The dry lab team began designing the initial set of BioBrick parts. The wet lab team started preparing standard lab stocks and media. Safety forms were completed and submitted."
+    }
+  ]
+}

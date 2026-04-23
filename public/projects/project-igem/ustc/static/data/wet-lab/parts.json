@@ -1,0 +1,14 @@
+
+{
+  "title": "Parts",
+  "bannerImage": "/images/banners/parts_banner.jpg",
+  "description": "An overview of the BioBricks we have designed, characterized, and submitted to the Registry of Standard Biological Parts.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Parts Table",
+      "id": "part-table"
+    }
+  ]
+}

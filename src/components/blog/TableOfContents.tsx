@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { List, X } from "lucide-react";
 
 export interface Heading {
@@ -18,6 +18,8 @@ export default function TableOfContents({
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeoutRef = useRef<number | null>(null);
 
   // Filter out h1 usually, just keep H2 and H3
   const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
@@ -52,11 +54,30 @@ export default function TableOfContents({
     };
   }, [tocHeadings]);
 
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current !== null) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
   if (tocHeadings.length === 0) return null;
 
   const tocContent = (
     <nav
-      className={`w-full overflow-y-auto max-h-[calc(100vh-8rem)] scrollbar-hide ${isMobile ? "pr-4" : "pr-2"}`}
+      className={`toc-scrollbar w-full overflow-y-auto overscroll-contain max-h-[calc(100vh-8rem)] ${isMobile ? "pr-3" : "pr-1"}`}
+      style={{ scrollbarGutter: "stable" }}
+      data-scrolling={isScrolling ? "true" : "false"}
+      onScroll={() => {
+        setIsScrolling(true);
+        if (scrollTimeoutRef.current !== null) {
+          window.clearTimeout(scrollTimeoutRef.current);
+        }
+        scrollTimeoutRef.current = window.setTimeout(() => {
+          setIsScrolling(false);
+        }, 700);
+      }}
       aria-label="Table of Contents"
     >
       {!isMobile && (

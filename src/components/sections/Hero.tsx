@@ -6,7 +6,6 @@ import {
   ArrowUpRight,
   ChevronDown,
   Dna,
-  Download,
   Gamepad2,
   Github,
   Globe,
@@ -56,8 +55,7 @@ export default function Hero() {
     },
     {
       label: lang === "zh" ? "研究重点" : "Research Focus",
-      value:
-        lang === "zh" ? "具身智能与 AI4S" : "Embodied AI and AI4S",
+      value: lang === "zh" ? "具身智能 / AI4S" : "Embodied AI / AI4S",
     },
     {
       label: lang === "zh" ? "英语能力" : "English",
@@ -174,30 +172,66 @@ export default function Hero() {
               {profile.title[lang]}
             </p>
 
-            <p
-              className="mt-5 max-w-2xl text-base leading-7 md:text-lg md:leading-8"
-              style={{ color: "var(--color-text-secondary)" }}
+            <div
+              className="relative mt-6 max-w-2xl overflow-hidden rounded-[1.7rem] border px-5 py-5 md:px-6 md:py-6"
+              style={{
+                borderColor:
+                  "color-mix(in srgb, var(--color-border) 82%, transparent)",
+                background:
+                  "linear-gradient(180deg, color-mix(in srgb, var(--color-bg-card) 95%, transparent), color-mix(in srgb, var(--color-bg-secondary) 88%, transparent))",
+                boxShadow: "0 18px 42px rgba(15, 23, 42, 0.08)",
+              }}
             >
-              {ui.hero.subtitle[lang]}
-            </p>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              {focusAreas.map(({ icon: Icon, label }) => (
-                <span
-                  key={label.en}
-                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium"
-                  style={{
-                    color: "var(--color-text-secondary)",
-                    background:
-                      "color-mix(in srgb, var(--color-bg-card) 86%, transparent)",
-                    border:
-                      "1px solid color-mix(in srgb, var(--color-border) 78%, transparent)",
-                  }}
+              <div
+                aria-hidden="true"
+                className="absolute -right-10 top-[-2.5rem] h-24 w-24 rounded-full blur-3xl"
+                style={{ background: "rgba(var(--color-primary-rgb), 0.14)" }}
+              />
+              <div
+                aria-hidden="true"
+                className="absolute bottom-0 left-0 h-px w-full"
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(var(--color-primary-rgb), 0.5), rgba(var(--color-accent-rgb), 0.22), transparent)",
+                }}
+              />
+              <div className="relative z-10">
+                <div
+                  className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em]"
+                  style={{ color: "var(--color-primary)" }}
                 >
-                  <Icon size={14} style={{ color: "var(--color-accent)" }} />
-                  {label[lang]}
-                </span>
-              ))}
+                  <span>{lang === "zh" ? "当前关注" : "Current Focus"}</span>
+                </div>
+
+                <p
+                  className="mt-3 text-base leading-7 md:text-lg md:leading-8"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  {ui.hero.subtitle[lang]}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {focusAreas.map(({ icon: Icon, label }) => (
+                    <span
+                      key={label.en}
+                      className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium"
+                      style={{
+                        color: "var(--color-text-secondary)",
+                        background:
+                          "color-mix(in srgb, var(--color-bg-card) 88%, transparent)",
+                        border:
+                          "1px solid color-mix(in srgb, var(--color-border) 76%, transparent)",
+                      }}
+                    >
+                      <Icon
+                        size={14}
+                        style={{ color: "var(--color-accent)" }}
+                      />
+                      {label[lang]}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div

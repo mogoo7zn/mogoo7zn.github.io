@@ -12,8 +12,8 @@
   hero: {
     greeting: { zh: "你好，我是", en: "Hi, I'm" },
     subtitle: {
-      zh: "中国科学技术大学计算机科学本科生，关注具身智能与 AI4S",
-      en: "I'm a Computer Science undergraduate at USTC, focused on embodied AI and AI4S.",
+      zh: "我从工程实践进入研究，现在主要围绕具身智能与 AI4S，关心交互理解、系统落地和可验证的问题设定",
+      en: "I moved from engineering practice into research. My current work centers on embodied AI and AI4S, with an emphasis on interaction understanding, deployable systems, and problems that can be tested in the real world.",
     },
     cta: { zh: "了解更多", en: "Learn More" },
     scrollDown: { zh: "向下滚动", en: "Scroll Down" },
@@ -22,7 +22,7 @@
     title: { zh: "关于我", en: "About Me" },
     description: {
       zh: "我目前在中国科学技术大学学习计算机科学与技术，主要关注具身智能与 AI4S，也持续从工程实践里寻找真正值得研究的问题",
-      en: "I am a Computer Science undergraduate at USTC. My recent work focuses on embodied AI and AI4S, exploring how intelligent agents can perceive, understand, and interact with the real world.",
+      en: "I study Computer Science and Technology at USTC. My main interests are embodied AI and AI4S, and I keep looking for research questions that emerge from real engineering practice.",
     },
     researchAreas: { zh: "研究方向", en: "Research Interests" },
   },

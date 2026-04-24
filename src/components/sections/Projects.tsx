@@ -133,7 +133,7 @@ export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
                         className="overflow-hidden"
                       >
                         <p
-                          className="mb-4 text-sm leading-7"
+                          className="mb-4 text-[0.97rem] leading-8 md:text-base"
                           style={{ color: "var(--color-text-secondary)" }}
                         >
                           {project.description[lang]}
@@ -148,7 +148,7 @@ export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
                               {ui.projects.highlight[lang]}
                             </div>
                             <p
-                              className="text-sm leading-7"
+                              className="text-[0.96rem] leading-8 md:text-base"
                               style={{ color: "var(--color-text-secondary)" }}
                             >
                               {project.highlight[lang]}

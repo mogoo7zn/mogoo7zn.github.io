@@ -2,7 +2,7 @@ import { atom } from "nanostores";
 
 export type Theme = "light" | "dark";
 
-export const $theme = atom<Theme>("dark");
+export const $theme = atom<Theme>("light");
 
 /** Call once on client to sync theme from localStorage / system preference */
 export function initTheme(): void {

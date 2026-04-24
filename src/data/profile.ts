@@ -2,8 +2,8 @@
   realName: { zh: "王子宁", en: "Zining Wang" },
   name: { zh: "墨谷", en: "MOGOO" },
   title: {
-    zh: "计算机科学专业本科生 · 具身智能与 AI4S",
-    en: "Undergraduate in Computer Science · Focused on embodied AI and AI4S",
+    zh: "计算机科学专业本科生",
+    en: "Computer Science Undergraduate",
   },
   university: {
     zh: "中国科学技术大学",
@@ -31,8 +31,8 @@
   website: "https://mogoo7zn.github.io",
   avatar: "/images/avatar_sci_fi_trans.svg",
   bio: {
-    zh: "我早期的探索从工程实践开始，逐渐进入研究，实践过端侧模型部署、传统纹样数字化和完整应用开发。慢慢地，我想回答一些具体的问题：模型能不能真正理解人的动作、物体状态的变化，以及交互为什么会发生。也正因为这样，我把主要兴趣收敛到具身智能，同时继续关注 AI4S，希望把模型放进真实、可验证的问题里，推进科学领域研究与AI的结合",
-    en: "My early exploration started from engineering practice and gradually moved into research. I have worked on edge model deployment, traditional pattern digitization, and full application development. Over time, I became more interested in concrete questions: can a model truly understand human actions, changes in object states, and why an interaction happens. For that reason, I have narrowed my main interest to embodied AI while continuing to focus on AI4S, with the goal of placing models in real, testable problems and pushing deeper integration between AI and scientific research.",
+    zh: "我早期的探索从工程实践开始，逐渐深入研究，实践过端侧模型部署、传统纹样数字化和完整应用开发等。慢慢地，我想回答一些具体的问题：模型能不能真正理解人的动作、物体状态的变化，以及交互为什么会发生。也正因为这样，我把主要兴趣收敛到具身智能，同时继续关注 AI4S，希望把模型放进真实、可验证的问题里，推进科学领域研究与AI的结合",
+    en: "My early exploration started from engineering practice and gradually moved toward research. I have worked on edge-side model deployment, traditional pattern digitization, and end-to-end application development. Over time, I found myself returning to a few concrete questions: can a model really understand human motion, changes in object state, and why an interaction happens. That is why my main focus has narrowed to embodied AI, while I continue to work on AI4S and look for problems that are real, testable, and grounded in scientific settings.",
   },
   english: {
     cet4: 697,

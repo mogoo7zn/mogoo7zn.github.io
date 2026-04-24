@@ -2,89 +2,193 @@
 title: "望江挑花数字化设计与风格生成实践"
 titleEn: "Digital Design and Style Generation Practice for Wangjiang Embroidery"
 description: "记录望江挑花项目中的软件开发、算法实现、实验室验证与望江实地调研"
-descriptionEn: "A project record covering software development, algorithm implementation, lab validation, and field research for Wangjiang Embroidery"
+descriptionEn: "A project record of software development, algorithm design, lab validation, and on-site field research for Wangjiang Embroidery"
 pubDate: "2025-12-25"
 tags: ["project", "computer-vision", "diffusion-models", "cultural-heritage"]
-draft: true
+draft: false
 ---
+
+import Figure from "@/components/blog/mdx/Figure";
 
 # 望江挑花数字化设计与风格生成实践
 
 ## 项目起点
 
-这个项目的目标不是简单做一个“非遗风格滤镜”，而是尝试把望江挑花的设计、生成与后续工序衔接起来，形成一条可验证的数字化流程。项目推进过程中，我们先做设计软件，再完成图像生成与风格保留算法，之后进入实验室验证，最后到望江开展实地调研
+这个项目的目标不是简单做一个“非遗风格滤镜”，而是尝试把望江挑花的设计、生成与后续工序衔接起来，形成一条可以验证的数字化流程。项目推进过程中，我们先完成设计软件，再开展图像生成与风格保留算法研究，之后在实验室测试自动化纺织工序，最后到望江进行实地调研
 
-<div className="my-6 rounded-2xl border border-dashed px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">
-  图片占位：项目整体流程图
-</div>
+<Figure
+  src="/images/blog/project-wangjiang-embroidery/process-overview.svg"
+  alt="望江挑花项目整体流程图"
+  width="min(100%, 72rem)"
+  caption="项目流程：设计软件、风格生成、实验验证与望江调研"
+/>
 
 ## 第一阶段：先完成设计软件
 
-项目最先落地的是设计软件，而不是生成算法。原因很直接，如果没有一个能承接输入、编辑、预览和输出的工具，后续算法即使效果不错，也很难进入实际使用流程
+项目最先落地的部分不是生成算法，而是设计软件本身。如果没有一个能够承接输入、编辑、预览和输出的工作台，后续算法即使有效，也很难进入实际使用流程
 
-这一阶段我主要参与了软件功能设计与相关模块联调，核心目标包括
+这一阶段我主要参与了软件功能设计与相关模块联调，工作重点包括
 
-- 支持基础图案导入、编辑与预览
+- 支持基础图案的导入、编辑与预览
 - 为后续风格生成结果预留接入接口
 - 让生成后的图样能够继续进入纺织与工艺验证流程
 
-这个阶段的结果是，团队先搭起了一个可用的设计工作台，后续算法开发不再是孤立实验，而是可以直接接入实际工具链
+这一阶段的结果是，团队先搭起了一个可用的设计工作台，后续算法开发不再是孤立实验，而是可以直接接入实际工具链
 
-<div className="my-6 rounded-2xl border border-dashed px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">
-  图片占位：设计软件界面截图
-</div>
+<Figure
+  src="/images/blog/project-wangjiang-embroidery/app-surface.png"
+  alt="望江挑花设计软件界面"
+  width="min(100%, 68rem)"
+  imgClassName="bg-white/90"
+  caption="设计软件界面：先把输入、编辑和预览链路搭建起来"
+/>
 
-## 第二阶段：完成算法后，继续研究如何保留传统风格
+## 第二阶段：算法完成后，继续研究如何保留传统风格
 
 在完成基础算法之后，项目的重点从“能不能生成”转向“生成结果是否还保留望江挑花的传统风格”
 
-这一部分我主要参与了图像处理、风格生成与结果分析，工作重点包括
+这部分工作里，我主要参与了图像处理、风格生成与结果分析，重点包括
 
 - 整理望江挑花的纹样资料，提取常见构图、重复方式和色彩特征
-- 研究如何让模型学习传统纹样的整体风格，而不是只复制局部纹理
-- 针对新的输入图片生成可用结果，而不是只在固定样本上做风格迁移展示
+- 研究如何让模型学习传统纹样的整体风格，而不只是复制局部纹理
+- 面向新的输入图片生成可用结果，而不是只在固定样本上做演示
 
-具体来说，我们更关注两个问题
+我们实际更关心两个问题
 
 1. 输入一张新的图片后，系统能否自主生成具有挑花风格的图样
-2. 生成后的图样是否还能保留传统挑花中较稳定的视觉规律，而不是只得到“看起来像 AI 生成图”的结果
+2. 生成后的图样是否仍然保留了传统挑花里比较稳定的视觉规律，而不只是得到一张“看起来像 AI 生成图”的结果
 
-这一阶段的工作让项目从普通的图像风格化，推进到了更接近设计辅助生成的方向
+这一阶段让项目从普通的图像风格化，推进到更接近设计辅助生成的方向
 
-<div className="my-6 rounded-2xl border border-dashed px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">
-  图片占位：原图与生成图对比
+<div className="my-8 grid gap-5 md:grid-cols-2 not-prose">
+  <figure
+    className="overflow-hidden rounded-[1.5rem] border"
+    style={{
+      borderColor: "var(--color-border)",
+      boxShadow: "0 10px 28px rgba(15, 23, 42, 0.08)",
+      background:
+        "linear-gradient(180deg, color-mix(in srgb, var(--color-bg-card) 96%, transparent), color-mix(in srgb, var(--color-bg-secondary) 92%, transparent))",
+    }}
+  >
+    <div className="flex aspect-[4/3] items-center justify-center p-5 md:p-6">
+      <img
+        src="/images/blog/project-wangjiang-embroidery/style_human_01.png"
+        alt="输入图像示例"
+        className="block h-full w-full object-contain"
+        loading="lazy"
+      />
+    </div>
+    <figcaption
+      className="px-4 py-3 text-[0.95rem] italic leading-7"
+      style={{ color: "var(--color-text-muted)" }}
+    >
+      输入图像示例
+    </figcaption>
+  </figure>
+
+  <figure
+    className="overflow-hidden rounded-[1.5rem] border"
+    style={{
+      borderColor: "var(--color-border)",
+      boxShadow: "0 10px 28px rgba(15, 23, 42, 0.08)",
+      background:
+        "linear-gradient(180deg, color-mix(in srgb, var(--color-bg-card) 96%, transparent), color-mix(in srgb, var(--color-bg-secondary) 92%, transparent))",
+    }}
+  >
+    <div className="flex aspect-[4/3] items-center justify-center p-5 md:p-6">
+      <img
+        src="/images/blog/project-wangjiang-embroidery/style_USTC_01.png"
+        alt="风格生成结果示例"
+        className="block h-full w-full object-contain"
+        loading="lazy"
+      />
+    </div>
+    <figcaption
+      className="px-4 py-3 text-[0.95rem] italic leading-7"
+      style={{ color: "var(--color-text-muted)" }}
+    >
+      保留传统视觉特征的生成结果示例
+    </figcaption>
+  </figure>
 </div>
 
 ## 第三阶段：在实验室测试自动化纺织工序
 
-算法生成结果如果无法进入后续工序，就很难说明这项工作真正有用。因此在实验室里，我们继续验证图样能否进入自动化纺织流程
+如果算法生成结果无法进入后续工序，就很难说明这项工作真正有用。因此在实验室里，我们继续验证图样能否进入自动化纺织流程
 
-这部分工作的重点不是追求单张效果图，而是看流程是否闭环，主要包括
+这一部分的重点不是追求单张效果图，而是检验流程是否闭环，主要包括
 
 - 评估生成图样在自动化纺织工序中的可用性
 - 检查图案结构、颜色层次与输出格式是否适合后续设备处理
 - 观察从数字图样到实际工序时会出现哪些偏差
 
-实验室测试给出的一个直接结论是，算法结果必须考虑工艺约束，单纯从视觉上“像”还不够，还要能被后续流程接受
+实验室测试给出的一个直接结论是，算法结果必须考虑工艺约束，单纯从视觉上“像”还不够，还要能被后续流程接住
 
-<div className="my-6 rounded-2xl border border-dashed px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">
-  图片占位：实验室自动化纺织测试照片
-</div>
+<Figure
+  src="/images/blog/project-wangjiang-embroidery/test-product.png"
+  alt="实验室自动化纺织测试结果"
+  width="min(100%, 62rem)"
+  caption="实验室自动化纺织测试：检验生成图样是否真的能够进入后续工艺流程"
+/>
 
 ## 第四阶段：在望江开展实地调研
 
-项目最后一个重要阶段，是去望江开展实地调研。这一步的目的不是补充背景材料，而是把前面的软件、算法和实验结果放回真实语境里重新判断
+项目最后一个重要阶段，是到望江进行实地调研。这个阶段的目的不是补背景材料，而是把前面的软件、算法和实验结果重新放回真实语境里判断
 
 调研过程中，我们重点关注了几件事
 
 - 传统挑花在实际制作中的图样组织方式
-- 当地对“保留传统风格”的理解，是否与我们实验室里的判断一致
-- 数字化工具在真实使用场景中的潜在价值与限制
+- 当地对“保留传统风格”的理解，是否与实验室里的判断一致
+- 数字化工具在真实使用场景中的潜在价值与局限
 
 实地调研让我们更明确地认识到，望江挑花的数字化工作不能只看生成效果，还要考虑工艺习惯、使用方式和文化表达是否被尊重
 
-<div className="my-6 rounded-2xl border border-dashed px-6 py-10 text-center text-sm text-[var(--color-text-muted)]">
-  图片占位：望江实地调研照片
+<div className="my-8 grid gap-5 md:grid-cols-[1.08fr,0.92fr] not-prose">
+  <figure
+    className="overflow-hidden rounded-[1.6rem] border"
+    style={{
+      borderColor: "var(--color-border)",
+      boxShadow: "0 12px 30px rgba(15, 23, 42, 0.08)",
+      background:
+        "linear-gradient(180deg, color-mix(in srgb, var(--color-bg-card) 96%, transparent), color-mix(in srgb, var(--color-bg-secondary) 92%, transparent))",
+    }}
+  >
+    <img
+      src="/images/blog/project-wangjiang-embroidery/onsite-2.jpg"
+      alt="项目阶段汇报现场"
+      className="block h-[22rem] w-full object-cover md:h-[25rem]"
+      loading="lazy"
+    />
+    <figcaption
+      className="px-5 py-4 text-[0.95rem] italic leading-7"
+      style={{ color: "var(--color-text-muted)" }}
+    >
+      项目阶段汇报与讨论现场
+    </figcaption>
+  </figure>
+
+  <figure
+    className="overflow-hidden rounded-[1.6rem] border"
+    style={{
+      borderColor: "var(--color-border)",
+      boxShadow: "0 12px 30px rgba(15, 23, 42, 0.08)",
+      background:
+        "linear-gradient(180deg, color-mix(in srgb, var(--color-bg-card) 96%, transparent), color-mix(in srgb, var(--color-bg-secondary) 92%, transparent))",
+    }}
+  >
+    <img
+      src="/images/blog/project-wangjiang-embroidery/onsite-1.jpg"
+      alt="望江实地调研现场"
+      className="block h-[22rem] w-full object-cover md:h-[25rem]"
+      loading="lazy"
+    />
+    <figcaption
+      className="px-5 py-4 text-[0.95rem] italic leading-7"
+      style={{ color: "var(--color-text-muted)" }}
+    >
+      望江实地调研：把实验室里的判断重新放回真实工艺场景中核对
+    </figcaption>
+  </figure>
 </div>
 
 ## 我在项目中的主要工作
@@ -93,14 +197,14 @@ draft: true
 
 - 参与设计软件相关功能的推进与联调
 - 实现并测试图像处理与风格生成相关模块
-- 研究如何在新输入图片上生成具有望江挑花传统风格的结果
+- 研究如何在新的输入图片上生成保留望江挑花传统风格的结果
 - 参与实验室中的自动化纺织流程验证
 - 参与望江实地调研后的整理与反思
 
-这项工作对我最大的价值，不是单独掌握了某一种算法，而是第一次比较完整地经历了从软件、算法、验证到实地调研的完整链路
+这项工作对我最大的价值，不是单独掌握了某一种算法，而是第一次比较完整地经历了从软件、算法、验证到实地调研的一条完整链路
 
 ## 项目收获
 
-这个项目让我更清楚地意识到，很多“生成效果”只有放进完整流程里才有意义。对于文化遗产相关工作尤其如此，算法只是其中一环，真正重要的是它能否和设计、工艺、使用场景以及文化理解连接起来
+这个项目让我更清楚地意识到，很多“生成效果”只有放进完整流程里才有意义。对于文化遗产相关工作尤其如此，算法只是其中一环，更重要的是它能否和设计、工艺、使用场景以及文化理解连接起来
 
 对我来说，这也是一次很重要的训练，让我开始从“把算法做出来”转向“把问题做完整”

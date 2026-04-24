@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
@@ -48,8 +48,6 @@ const categoryLabels: Record<string, { zh: string; en: string }> = {
 
 export default function Timeline() {
   const lang = useStore($lang);
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const timelineGroups = useMemo(() => {
     const groups = new Map<string, (typeof timelineEvents)[number][]>();
 
@@ -75,6 +73,24 @@ export default function Timeline() {
       categories: Array.from(new Set(events.map((event) => event.category))),
     }));
   }, []);
+
+  const summaryStats = useMemo(
+    () => [
+      {
+        label: lang === "zh" ? "阶段年份" : "Years",
+        value: `${timelineGroups.length}`,
+      },
+      {
+        label: lang === "zh" ? "关键节点" : "Milestones",
+        value: `${timelineEvents.length}`,
+      },
+      {
+        label: lang === "zh" ? "覆盖方向" : "Categories",
+        value: `${Object.keys(categoryLabels).length}`,
+      },
+    ],
+    [lang, timelineGroups.length],
+  );
 
   return (
     <section id="timeline" className="py-24">
@@ -105,176 +121,96 @@ export default function Timeline() {
             <SectionHeader
               eyebrow={lang === "zh" ? "成长历程" : "Journey"}
               title={ui.timeline.title[lang]}
+              description={
+                lang === "zh"
+                  ? "按年份梳理学习、项目、竞赛与研究节点，方便快速浏览关键阶段"
+                  : "A year-based overview of study, projects, competitions, and research milestones."
+              }
             />
           </SectionLoader>
 
-          <div
-            className="mb-8 rounded-[1.75rem] border px-4 py-4 md:px-5"
-            style={{
-              borderColor: "var(--color-border)",
-              background:
-                "linear-gradient(180deg, color-mix(in srgb, var(--color-bg-card) 94%, transparent), color-mix(in srgb, var(--color-bg-secondary) 88%, transparent))",
-            }}
-          >
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-xl">
+          <div className="mb-8 grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+            <div className="surface-card overflow-hidden px-5 py-5 md:px-6">
+              <div className="relative z-10 grid gap-4 sm:grid-cols-3">
+                {summaryStats.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className="rounded-[1.35rem] border px-4 py-4"
+                    style={{
+                      borderColor: "var(--color-border)",
+                      background:
+                        index === 0
+                          ? "linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 12%, transparent), color-mix(in srgb, var(--color-bg-card) 94%, transparent))"
+                          : "color-mix(in srgb, var(--color-bg-card) 90%, transparent)",
+                    }}
+                  >
+                    <div
+                      className="text-[0.76rem] font-semibold uppercase tracking-[0.18em]"
+                      style={{ color: "var(--color-text-muted)" }}
+                    >
+                      {item.label}
+                    </div>
+                    <div
+                      className="mt-2 text-2xl font-bold tracking-tight md:text-[2rem]"
+                      style={{ color: "var(--color-text)" }}
+                    >
+                      {item.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="surface-card overflow-hidden px-5 py-5 md:px-6">
+              <div className="relative z-10">
                 <div
-                  className="text-sm font-semibold"
-                  style={{ color: "var(--color-text)" }}
+                  className="inline-flex items-center gap-2 text-[0.76rem] font-semibold uppercase tracking-[0.2em]"
+                  style={{ color: "var(--color-primary)" }}
                 >
-                  {lang === "zh" ? "时间线视图" : "Timeline View"}
+                  <span>{lang === "zh" ? "阶段概览" : "Overview"}</span>
                 </div>
                 <p
-                  className="mt-1 text-sm leading-7"
+                  className="mt-3 text-[0.98rem] leading-8 md:text-base"
                   style={{ color: "var(--color-text-secondary)" }}
                 >
-                  {isExpanded
-                    ? lang === "zh"
-                      ? "展开后可以按时间顺序查看完整经历"
-                      : "Expanded view shows every milestone in chronological order."
-                    : lang === "zh"
-                      ? "摘要视图按年份梳理主要阶段，适合先快速浏览"
-                      : "Summary view groups milestones by year for quicker scanning."}
+                  {lang === "zh"
+                    ? "从进入 USTC 开始，这里按年份整理了项目推进、竞赛训练、奖项与研究经历，重点保留对阶段判断最有代表性的节点"
+                    : "Starting from my time at USTC, this section groups project work, competitions, awards, and research by year, keeping the milestones that best represent each stage."}
                 </p>
-              </div>
-
-              <div
-                className="inline-flex w-full rounded-full border p-1 md:w-auto"
-                style={{
-                  borderColor: "var(--color-border)",
-                  background:
-                    "color-mix(in srgb, var(--color-bg-card) 92%, transparent)",
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setIsExpanded(false)}
-                  className="flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-colors md:flex-none"
-                  style={{
-                    color: isExpanded ? "var(--color-text-secondary)" : "white",
-                    background: isExpanded
-                      ? "transparent"
-                      : "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
-                  }}
-                >
-                  {lang === "zh" ? "摘要视图" : "Summary"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsExpanded(true)}
-                  className="flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-colors md:flex-none"
-                  style={{
-                    color: isExpanded ? "white" : "var(--color-text-secondary)",
-                    background: isExpanded
-                      ? "linear-gradient(135deg, var(--color-primary), var(--color-accent))"
-                      : "transparent",
-                  }}
-                >
-                  {lang === "zh" ? "完整时间线" : "Full Timeline"}
-                </button>
               </div>
             </div>
           </div>
 
-          {isExpanded ? (
-            <div className="relative ml-2">
-              <div
-                className="absolute bottom-0 left-[1.1rem] top-0 w-px"
-                style={{
-                  background:
-                    "linear-gradient(to bottom, var(--color-primary), var(--color-accent))",
-                  opacity: 0.34,
-                }}
-              />
-
-              <div className="space-y-5">
-                {timelineEvents.map((event, index) => {
-                  const Icon = iconMap[event.icon] || Clock;
-                  const color =
-                    categoryColors[event.category] || "var(--color-primary)";
-
-                  return (
-                    <SectionLoader
-                      key={`${event.date}-${event.title.en}`}
-                      delay={0.06 * index}
-                    >
-                      <div className="relative grid grid-cols-[2.2rem,1fr] gap-4">
-                        <div className="relative flex justify-center">
-                          <div
-                            className="relative z-10 mt-4 h-4 w-4 rounded-full ring-4"
-                            style={{
-                              backgroundColor: color,
-                              ringColor: "var(--color-bg)",
-                              boxShadow: `0 0 0 6px color-mix(in srgb, ${color} 18%, transparent)`,
-                            }}
-                          />
-                        </div>
-
-                        <div className="surface-card surface-card-hover px-5 py-5 hud-corners">
-                          <div className="relative z-10">
-                            <div className="mb-3 flex flex-wrap items-center gap-2">
-                              <span
-                                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"
-                                style={{
-                                  backgroundColor: `${color}18`,
-                                  color,
-                                }}
-                              >
-                                <Icon size={14} />
-                                {event.date}
-                              </span>
-                            </div>
-
-                            <h3
-                              className="mb-2 text-base font-semibold md:text-lg"
-                              style={{ color: "var(--color-text)" }}
-                            >
-                              {event.title[lang]}
-                            </h3>
-                            <p
-                              className="text-sm leading-7"
-                              style={{ color: "var(--color-text-secondary)" }}
-                            >
-                              {event.description[lang]}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </SectionLoader>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <div className="grid gap-4 md:grid-cols-2">
-              {timelineGroups.map((group, index) => (
-                <SectionLoader key={group.year} delay={0.06 * index}>
-                  <article className="surface-card px-5 py-5 hud-corners">
+          <div className="grid gap-5 md:grid-cols-2">
+            {timelineGroups.map((group, index) => (
+              <SectionLoader key={group.year} delay={0.06 * index}>
+                <article className="surface-card surface-card-hover overflow-hidden px-5 py-5 md:px-6 hud-corners">
+                  <div className="relative z-10">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <div
-                          className="text-2xl font-extrabold tracking-tight"
+                          className="text-[2rem] font-extrabold tracking-tight md:text-[2.35rem]"
                           style={{ color: "var(--color-text)" }}
                         >
                           {group.year}
                         </div>
                         <p
-                          className="mt-1 text-sm"
+                          className="mt-1 text-[0.96rem]"
                           style={{ color: "var(--color-text-secondary)" }}
                         >
                           {lang === "zh"
-                            ? `${group.events.length} 个阶段节点`
-                            : `${group.events.length} milestones`}
+                            ? `${group.events.length} 个关键节点`
+                            : `${group.events.length} key milestones`}
                         </p>
                       </div>
 
-                      <div className="flex flex-wrap justify-end gap-2">
+                      <div className="flex max-w-[14rem] flex-wrap justify-end gap-2">
                         {group.categories.map((category) => {
                           const color = categoryColors[category];
                           return (
                             <span
                               key={`${group.year}-${category}`}
-                              className="rounded-full px-3 py-1 text-xs font-semibold"
+                              className="rounded-full px-3 py-1 text-[0.76rem] font-semibold"
                               style={{
                                 color,
                                 backgroundColor: `${color}16`,
@@ -287,7 +223,7 @@ export default function Timeline() {
                       </div>
                     </div>
 
-                    <div className="mt-5 space-y-3">
+                    <div className="mt-6 space-y-4">
                       {group.previewEvents.map((event) => {
                         const Icon = iconMap[event.icon] || Clock;
                         const color =
@@ -296,30 +232,35 @@ export default function Timeline() {
                         return (
                           <div
                             key={`${group.year}-${event.date}-${event.title.en}`}
-                            className="rounded-2xl border px-4 py-3"
+                            className="grid grid-cols-[auto,1fr] gap-3 rounded-[1.25rem] border px-4 py-4"
                             style={{
                               borderColor: "var(--color-border)",
                               background:
-                                "color-mix(in srgb, var(--color-bg-secondary) 80%, transparent)",
+                                "color-mix(in srgb, var(--color-bg-secondary) 78%, transparent)",
                             }}
                           >
-                            <div className="mb-2 flex items-center gap-2">
-                              <span
-                                className="inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-xs font-semibold"
-                                style={{
-                                  color,
-                                  backgroundColor: `${color}18`,
-                                }}
-                              >
-                                <Icon size={12} />
-                                {event.date}
-                              </span>
-                            </div>
                             <div
-                              className="text-sm font-semibold leading-6"
-                              style={{ color: "var(--color-text)" }}
+                              className="mt-1 flex h-10 w-10 items-center justify-center rounded-2xl"
+                              style={{
+                                color,
+                                backgroundColor: `${color}16`,
+                              }}
                             >
-                              {event.title[lang]}
+                              <Icon size={17} />
+                            </div>
+                            <div className="min-w-0">
+                              <div
+                                className="text-[0.78rem] font-semibold uppercase tracking-[0.16em]"
+                                style={{ color }}
+                              >
+                                {event.date}
+                              </div>
+                              <div
+                                className="mt-1 text-[1rem] font-semibold leading-7 md:text-[1.04rem]"
+                                style={{ color: "var(--color-text)" }}
+                              >
+                                {event.title[lang]}
+                              </div>
                             </div>
                           </div>
                         );
@@ -328,19 +269,19 @@ export default function Timeline() {
 
                     {group.hiddenCount > 0 && (
                       <p
-                        className="mt-4 text-sm font-medium"
+                        className="mt-4 text-[0.96rem] font-medium"
                         style={{ color: "var(--color-text-secondary)" }}
                       >
                         {lang === "zh"
-                          ? `另有 ${group.hiddenCount} 条详细节点可在完整时间线中查看`
-                          : `${group.hiddenCount} more milestones in full timeline.`}
+                          ? `另含 ${group.hiddenCount} 条同年节点`
+                          : `${group.hiddenCount} additional milestones in the same year`}
                       </p>
                     )}
-                  </article>
-                </SectionLoader>
-              ))}
-            </div>
-          )}
+                  </div>
+                </article>
+              </SectionLoader>
+            ))}
+          </div>
         </div>
       </div>
     </section>

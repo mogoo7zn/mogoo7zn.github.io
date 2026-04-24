@@ -92,7 +92,7 @@ export default function About() {
                             {area.title[lang]}
                           </h4>
                           <p
-                            className="text-sm leading-7"
+                            className="text-[0.96rem] leading-8 md:text-base"
                             style={{ color: "var(--color-text-secondary)" }}
                           >
                             {area.description[lang]}

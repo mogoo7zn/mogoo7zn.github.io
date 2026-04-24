@@ -1,9 +1,20 @@
 import { useStore } from "@nanostores/react";
-import { $theme, toggleTheme } from "@/stores/theme";
-import { Sun, Moon } from "lucide-react";
+import { $theme, resolveTheme, toggleTheme } from "@/stores/theme";
+import { Monitor, Sun, Moon } from "lucide-react";
 
 export default function ThemeToggle() {
   const theme = useStore($theme);
+  const resolved = resolveTheme(theme);
+
+  const Icon =
+    theme === "system" ? Monitor : theme === "dark" ? Sun : Moon;
+
+  const title =
+    theme === "system"
+      ? `Follow system (${resolved === "dark" ? "currently dark" : "currently light"})`
+      : theme === "light"
+        ? "Switch to dark theme"
+        : "Switch to system theme";
 
   return (
     <button
@@ -11,9 +22,9 @@ export default function ThemeToggle() {
       className="relative p-2 rounded-full transition-all duration-300 hover:scale-110"
       style={{ color: "var(--color-text-secondary)" }}
       aria-label="Toggle theme"
-      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={title}
     >
-      {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+      <Icon size={18} />
     </button>
   );
 }

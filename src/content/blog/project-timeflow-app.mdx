@@ -1,58 +1,136 @@
 ---
 title: "时间流：智能时间管理应用"
 titleEn: "TimeFlow: Smart Time Management App"
-description: "TimeFlow - 打造更适合校园生活的 Android 时间管理应用"
-descriptionEn: "TimeFlow - Building an Android time management app more suited for campus life"
+description: "围绕校园时间管理需求设计并开发的 Android 原生应用，包含目标管理、智能日程安排与桌面组件"
+descriptionEn: "An Android-native time management app designed for campus use, featuring goal setting, intelligent scheduling, and home-screen widgets"
 pubDate: "2024-12-30"
 tags: ["project", "android", "Kotlin", "app-development"]
 draft: true
 ---
 
+import Figure from "@/components/blog/mdx/Figure";
+
 # 时间流：智能时间管理应用
 
-## 项目原点
+## 项目背景
 
-大学生活充实而忙碌，如何更科学地规划每一天？我发现现有的工具往往不够贴合校园场景，于是产生了开发一款专属于校园师生的时间优化应用的念头
+这个项目来自一个很直接的观察。对科大学生来说，“时间不够用”几乎是普遍体验，但市面上的时间管理工具大多是通用型产品，不够贴合校园里的课程安排、任务切换和临时调整场景。基于这类需求，我们尝试做一款面向校园生活的时间管理应用 `TimeFlow`
 
-## 功能构思
+答辩材料和文字稿里，我们把问题拆成了几个更具体的方向
 
-### 懂你的习惯分析
+- 缺少针对校园场景的时间管理工具
+- 现有软件操作复杂，打开和修改成本高
+- 任务来源分散，课程、个人目标和临时事务很难统一管理
+- 即使制定了计划，也常常因为缺乏执行动力和调整机制而中断
 
-这个应用不仅仅是记录，更是在理解你的生活：
+<div className="my-8 rounded-[1.5rem] border border-dashed px-6 py-10 text-center text-[0.98rem] leading-8 not-prose" style={{ borderColor: "var(--color-border)", color: "var(--color-text-muted)", background: "color-mix(in srgb, var(--color-bg-secondary) 78%, transparent)" }}>
+  图片占位：需求调研图表或答辩页截屏
+  <br />
+  当前素材目录中没有明确对应的调研统计图，如你补充后我可以替换到这里
+</div>
 
-- **模式识别**：自动分析你的日常作息规律
-- **热点洞察**：帮你发现那些不知不觉溜走的时间，从源头减少浪费
+## 解决思路
 
-### 智能的日程管家
+围绕上述问题，项目最后落成的方案主要包含四块
 
-不再需要手动一项项排期，让算法为你生成最优解：
+- 目标导向的时间管理模式
+- 智能日程安排功能
+- 目标设定指导
+- 清晰的主界面与桌面组件
 
-- **优先级评估**：基于矩阵算法，科学评估任务的轻重缓急
-- **动态调整**：突发任务插入？别担心，日程表会自动重新规划，保持灵活
+这里的重点不是简单做一个待办清单，而是把“目标”“日程”“习惯”和“提醒”放在一条连续的使用链路里，让用户能从目标设定一路走到每日执行
 
-### 坚实的技术底座
+## 关键功能
 
-为了保证流畅体验，我在技术选型上也下了一番功夫：
+### 智能日程安排
 
-- **原生开发**：使用 Kotlin/Java 进行 Android 原生构建，确保丝滑操作
-- **本地智能**：用户行为数据直接在本地处理分析，保护隐私的同时提升响应速度
-- **稳定存储**：MySQL 数据持久化，让你的数据安全无忧
+智能日程安排是这款应用的核心功能之一。系统会根据任务优先级和已有安排自动调整当天计划，尽量减少手动排程的负担，也为插入临时事务预留调整空间
 
-## 全程回顾
+<Figure
+  src="/images/blog/project-timeflow-app/daily-schedule-auto-arranging.jpg"
+  alt="TimeFlow 自动安排日程界面"
+  width="min(100%, 28rem)"
+  caption="自动安排中的日程页：系统在已有课程与任务基础上重新组织当日安排"
+/>
 
-这是一个从零到一的完整旅程：
+### 周视图与课程化展示
 
-1. **倾听需求**：走访校园，真正了解大家在时间管理上的痛点
-2. **精心设计**：绘制 UI 原型，反复打磨交互细节
-3. **敏捷开发**：功能模块快速选代，让想法落地
-4. **持续优化**：根据反馈不断调优，哪怕是一个小按钮的点击感
+除了单日安排，应用也支持以周视图查看课程、个人任务和固定习惯。这样做的目的，是让校园用户能在课表和个人计划之间快速切换，而不是在多个工具里来回查找
 
-## 核心收获
+<Figure
+  src="/images/blog/project-timeflow-app/weekly-schedule-view.jpg"
+  alt="TimeFlow 周视图界面"
+  width="min(100%, 28rem)"
+  caption="周视图：把课程、任务与固定安排放在统一时间轴上查看"
+/>
 
-- 完整走通了软件开发的生命周期，不再只是写片段代码
-- Android 原生开发能力得到了实战检验和飞跃
-- 学会了如何从用户角度思考产品，而不仅仅是堆砌功能
+### 桌面组件
 
----
+为了降低使用门槛，我们还尝试了桌面组件方案。对时间管理类工具来说，用户不愿意打开 App 往往不是因为没有需求，而是因为查看和修改的步骤太长。桌面组件可以把当天任务直接暴露在主屏，提高回看频率
 
-_更多开发心得将持续更新_
+<Figure
+  src="/images/blog/project-timeflow-app/home-screen-widget-preview.jpg"
+  alt="TimeFlow 桌面组件预览"
+  width="min(100%, 28rem)"
+  caption="桌面组件预览：减少进入应用的路径成本，强化日常回看"
+/>
+
+### 登录与校园接入
+
+从现有素材来看，项目还尝试过结合校园统一身份认证入口，说明我们当时并不是把它当作一个完全独立的待办工具，而是希望它能和校园已有的信息环境发生连接
+
+<Figure
+  src="/images/blog/project-timeflow-app/campus-sso-entry.jpg"
+  alt="TimeFlow 校园统一认证入口"
+  width="min(100%, 28rem)"
+  caption="校园统一身份认证入口界面"
+/>
+
+<div className="my-8 rounded-[1.5rem] border border-dashed px-6 py-10 text-center text-[0.98rem] leading-8 not-prose" style={{ borderColor: "var(--color-border)", color: "var(--color-text-muted)", background: "color-mix(in srgb, var(--color-bg-secondary) 78%, transparent)" }}>
+  图片占位：目标设定指导界面
+  <br />
+  答辩稿里明确提到该功能，但当前图片目录中没有可以直接对应的页面截图
+</div>
+
+## 开发实现
+
+从答辩材料来看，这个项目采用的是比较标准的 Android 原生方案
+
+- 开发环境：`Android Studio`
+- 开发语言：`Java` 与 `Kotlin`
+- 本地存储：`Room`
+- 底层数据库：`SQLite`
+
+这套技术选型比较符合项目当时的目标。一方面，原生开发有利于快速接入 Android 平台能力；另一方面，`Room + SQLite` 对于本地数据持久化、离线使用和结构化查询都比较合适
+
+在实现方式上，我们采用了较明确的模块化组织，把 `Action`、`Goal`、`Task`、`Milestone` 等实体拆开建模，再用外键组织它们之间的关系。这样做的好处是，后续无论是做任务关联、目标拆解还是进度追踪，都有清晰的数据基础
+
+<div className="my-8 rounded-[1.5rem] border border-dashed px-6 py-10 text-center text-[0.98rem] leading-8 not-prose" style={{ borderColor: "var(--color-border)", color: "var(--color-text-muted)", background: "color-mix(in srgb, var(--color-bg-secondary) 78%, transparent)" }}>
+  图片占位：代码结构图或数据库关系图
+  <br />
+  文字稿中提到了模块化代码组织和数据关系设计，但当前素材目录里没有结构图
+</div>
+
+## 项目过程
+
+这个项目的推进大致经历了几步
+
+1. 做需求调研，确认校园用户在时间管理中的典型痛点
+2. 根据调研结果确定目标导向、智能排程和轻量交互这几个产品方向
+3. 用 Android 原生方案完成主要界面和本地数据结构
+4. 在现有功能基础上继续补桌面组件、提醒和习惯类能力
+5. 结合答辩反馈思考后续的算法细化和生态接入方向
+
+答辩稿里还提到，开发过程中采用了敏捷式推进方式。这对一个校园项目来说是合理的，因为需求会随着演示、试用和阶段展示不断变化，原型和实现需要留出调整空间
+
+## 当前结果与后续计划
+
+从现有材料看，项目已经完成了核心功能的原型实现，至少包括任务管理、周视图排程、桌面组件尝试和基础的校园接入界面。后续规划则主要集中在三个方向
+
+- 继续优化智能日程安排，使其更贴近用户真实行为
+- 扩展习惯养成和激励机制
+- 尝试和更多校园服务做接入，形成更完整的时间管理生态
+
+## 我的收获
+
+这项工作对我的价值，不只是在 Android 端做出一个可运行应用，更重要的是第一次比较完整地经历了从需求调研、产品抽象、界面实现到答辩整理的一条链路。它让我开始意识到，时间管理类产品的难点不只是功能是否齐全，而是是否真的足够低成本、足够贴近用户日常使用环境

@@ -22,7 +22,13 @@ const mappedPubs = allPubs.map(pub => {
     status: pub.data.status,
     abstract: null,
   }
-}).sort((a, b) => b.year - a.year);
+}).sort((a, b) => {
+  if (a.id === 'phaseflow') return -1;
+  if (b.id === 'phaseflow') return 1;
+  if (a.id === 'eva') return -1;
+  if (b.id === 'eva') return 1;
+  return b.year - a.year;
+});
 ---
 
 <PageLayout title="Publications | Zining Wang">
@@ -32,6 +38,9 @@ const mappedPubs = allPubs.map(pub => {
     <h1 class="text-2xl md:text-3xl font-bold mb-8 text-gradient inline-block">
       Publications
     </h1>
+    <p class="mb-8 text-base leading-8" style="color: var(--color-text-secondary);">
+      本页汇总 AI4Bio、推理模型与具身智能相关论文、预印本、代码仓库与项目说明，后续会随投稿和发表状态持续更新.
+    </p>
     <PublicationList client:load pubs={mappedPubs as any} />
   </main>
   <Footer client:load />

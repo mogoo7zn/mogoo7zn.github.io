@@ -3,7 +3,7 @@
 ## Overview 总览 🌟
 
 The layout system provides a consistent structure for all pages in our iGEM wiki. It consists of three main components:
-布局系统为我们的iGEM wiki的所有页面提供了一致的结构。它由三个主要组件组成：
+布局系统为我们的iGEM wiki的所有页面提供了一致的结构.它由三个主要组件组成：
 
 - 🏗️ Layout (Main container 主容器)
 - 📍 Header (Navigation bar 导航栏)

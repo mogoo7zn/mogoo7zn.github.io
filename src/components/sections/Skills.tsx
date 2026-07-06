@@ -4,7 +4,21 @@ import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 import { skills } from "@/data/skills";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { Box, Braces, Code2, Layers, Monitor, Wrench } from "lucide-react";
+import {
+  Aperture,
+  Atom,
+  BarChart3,
+  Box,
+  Braces,
+  Code2,
+  Database,
+  Dna,
+  Layers,
+  Monitor,
+  Sigma,
+  Sparkles,
+  Wrench,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
   SiAndroid,
@@ -52,7 +66,15 @@ const skillIconMap: Record<
   "C#": SiDotnet,
   JavaScript: SiJavascript,
   TypeScript: SiTypescript,
+  "JavaScript / TypeScript": SiTypescript,
   PyTorch: SiPytorch,
+  NumPy: Sigma,
+  SciPy: Atom,
+  OpenCV: Aperture,
+  "RNA Modeling": Dna,
+  "Sequence Generation": Sparkles,
+  "Dataset Curation": Database,
+  "Model Evaluation": BarChart3,
   React: SiReact,
   "Next.js": SiNextdotjs,
   "Three.js": SiThreedotjs,
@@ -76,7 +98,15 @@ const skillColorMap: Record<string, string> = {
   "C#": "#239120",
   JavaScript: "#F7DF1E",
   TypeScript: "#3178C6",
+  "JavaScript / TypeScript": "#3178C6",
   PyTorch: "#EE4C2C",
+  NumPy: "#4D77CF",
+  SciPy: "#8CAAE6",
+  OpenCV: "#5C3EE8",
+  "RNA Modeling": "#0891B2",
+  "Sequence Generation": "#7C3AED",
+  "Dataset Curation": "#0F766E",
+  "Model Evaluation": "#F59E0B",
   React: "#61DAFB",
   "Next.js": "var(--color-text)",
   "Three.js": "var(--color-text)",

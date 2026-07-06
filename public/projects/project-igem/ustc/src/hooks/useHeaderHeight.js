@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
 /**
- * 一个自定义 Hook，用于安全地（只在客户端）获取并监控 Header 的实时高度。
+ * 一个自定义 Hook，用于安全地（只在客户端）获取并监控 Header 的实时高度.
  * 它会优先尝试读取 '--current-header-height' 这个 CSS 变量，
- * 如果失败，则回退到直接测量 <header> 元素的实际高度。
+ * 如果失败，则回退到直接测量 <header> 元素的实际高度.
  * @returns {number} Header 的当前高度（像素值）
  */
 export function useHeaderHeight() {

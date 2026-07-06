@@ -1,13 +1,13 @@
 ﻿import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
-import { Github, Mail, Cpu, Network } from "lucide-react";
+import { Github, Mail, Dna, Network } from "lucide-react";
 import { profile } from "@/data/profile";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import VisitCounter from "@/components/blog/VisitCounter";
 
-function EmbodiedAICore() {
+function ResearchCore() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -143,8 +143,8 @@ function EmbodiedAICore() {
         className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-60"
         style={{ color: "var(--color-text-secondary)" }}
       >
-        <Cpu size={14} />
-        <span>Embodied AI / AI4S</span>
+        <Dna size={14} />
+        <span>AI4Bio / Reasoning / Embodied AI</span>
         <Network size={14} />
       </div>
     </div>
@@ -160,7 +160,7 @@ export default function Footer() {
         <div className="mesh-overlay opacity-35" />
 
         <div className="relative z-10 flex flex-col items-center justify-center gap-10">
-          <EmbodiedAICore />
+          <ResearchCore />
 
           <div
             className="h-px w-full opacity-20"

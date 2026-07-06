@@ -119,7 +119,7 @@ export default function Timeline() {
 
           <SectionLoader className="mb-8">
             <SectionHeader
-              eyebrow={lang === "zh" ? "成长历程" : "Journey"}
+              eyebrow={lang === "zh" ? "经历档案" : "Archive"}
               title={ui.timeline.title[lang]}
               description={
                 lang === "zh"

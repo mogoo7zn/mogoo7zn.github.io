@@ -3,7 +3,7 @@
 ## Overview 概述 🌟
 
 Our wiki uses consistent animations to enhance user experience while maintaining performance. This guide outlines our animation standards and implementation details.
-我们的wiki使用一致的动画来增强用户体验，同时保持良好性能。本指南概述了我们的动画标准和实现细节。
+我们的wiki使用一致的动画来增强用户体验，同时保持良好性能.本指南概述了我们的动画标准和实现细节.
 
 ## Animation Standards 动画标准 📋
 

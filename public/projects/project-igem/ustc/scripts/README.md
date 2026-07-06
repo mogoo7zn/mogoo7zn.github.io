@@ -2,7 +2,7 @@
 
 ## 概述
 
-`replace-static-assets.js` 是一个用于批量替换项目中静态资源路径的脚本，将本地路径替换为 iGEM 服务器路径。
+`replace-static-assets.js` 是一个用于批量替换项目中静态资源路径的脚本，将本地路径替换为 iGEM 服务器路径.
 
 ## 功能特性
 
@@ -23,7 +23,7 @@
 5. **Google Fonts**: `https://fonts.googleapis.com/css2?family=*` → `https://tools.igem.org/uploads/teams/3892/assets/fonts/montserrat-thin.ttf`
 6. **Google Fonts preconnect**: `https://fonts.googleapis.com` → `https://tools.igem.org`
 
-**注意**: 只替换 WebP 图片，不替换 SVG 图片。所有外部字体依赖都会被替换为 iGEM 服务器上的字体资源。
+**注意**: 只替换 WebP 图片，不替换 SVG 图片.所有外部字体依赖都会被替换为 iGEM 服务器上的字体资源.
 
 ## 文件名转换规则
 
@@ -48,7 +48,7 @@ node scripts/replace-static-assets.js --preview
 node scripts/replace-static-assets.js -p
 ```
 
-预览模式会显示所有将要进行的替换，但不会实际修改文件。
+预览模式会显示所有将要进行的替换，但不会实际修改文件.
 
 ### 2. 执行模式
 
@@ -58,7 +58,7 @@ node scripts/replace-static-assets.js --execute
 node scripts/replace-static-assets.js -e
 ```
 
-执行模式会实际修改文件。
+执行模式会实际修改文件.
 
 ### 3. 查看帮助
 

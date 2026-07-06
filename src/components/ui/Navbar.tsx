@@ -11,7 +11,6 @@ import { initLang } from "@/i18n/store";
 const sectionItems = [
   { key: "about" as const, href: "/#about" },
   { key: "skills" as const, href: "/#skills" },
-  { key: "timeline" as const, href: "/#timeline" },
   { key: "cv" as const, href: "/#cv" },
 ];
 
@@ -140,14 +139,14 @@ export default function Navbar() {
             >
               MOGOO
             </span>
-            <style>{`
-              @keyframes shine {
-                to {
-                  background-position: 200% center;
-                }
-              }
-            `}</style>
           </a>
+          <style>{`
+            @keyframes shine {
+              to {
+                background-position: 200% center;
+              }
+            }
+          `}</style>
 
           <div
             className="hidden items-center gap-1 rounded-full border px-2 py-1.5 md:flex"

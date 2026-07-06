@@ -7,7 +7,7 @@
 ## 基础概念 🌟 Basic Concepts
 
 > [!NOTE]
-> 在开始之前，请确保你已经熟悉了React和Next.js的基本概念。
+> 在开始之前，请确保你已经熟悉了React和Next.js的基本概念.
 > Before starting, make sure you're familiar with React and Next.js basics.
 
 ## 组件开发规范 📦 Component Development Standards
@@ -46,7 +46,7 @@ export default Component;
 ### 自定义布局 📐 Custom Layouts
 
 > [!TIP]
-> 使用`getLayout`模式可以为不同页面定制独特的布局方案。
+> 使用`getLayout`模式可以为不同页面定制独特的布局方案.
 > Use the `getLayout` pattern to customize layouts for different pages.
 
 <details>

@@ -3,7 +3,7 @@
 ## Overview 概览 🌟
 
 Custom hooks allow us to extract component logic into reusable functions.
-自定义Hook允许我们将组件逻辑提取为可重用的函数。
+自定义Hook允许我们将组件逻辑提取为可重用的函数.
 
 ## Core Hooks 核心Hook 📌
 

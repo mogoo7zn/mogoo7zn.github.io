@@ -9,7 +9,6 @@ import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
 import Projects from '@/components/sections/Projects';
 import Skills from '@/components/sections/Skills';
-import Timeline from '@/components/sections/Timeline';
 import CV from '@/components/sections/CV';
 import Footer from '@/components/ui/Footer';
 
@@ -25,11 +24,10 @@ const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.s
   <Navbar client:load />
   <DroneBackToTop client:load />
   <main>
-    <Hero client:load />
+    <Hero client:idle />
     <About client:visible />
     <Projects client:visible validBlogSlugs={validBlogSlugs} />
     <Skills client:load />
-    <Timeline client:visible />
     <CV client:visible />
   </main>
 

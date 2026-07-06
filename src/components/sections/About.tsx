@@ -5,10 +5,18 @@ import { profile } from "@/data/profile";
 import SectionLoader from "@/components/ui/SectionLoader";
 import SensorGrid from "@/components/ui/SensorGrid";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { Box, Bot, Eye, Gamepad2 } from "lucide-react";
+import { Activity, Bot, Box, BrainCircuit, Cpu, Dna, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-const iconMap: Record<string, LucideIcon> = { Box, Bot, Eye, Gamepad2 };
+const iconMap: Record<string, LucideIcon> = {
+  Activity,
+  Bot,
+  Box,
+  BrainCircuit,
+  Cpu,
+  Dna,
+  Sparkles,
+};
 
 export default function About() {
   const lang = useStore($lang);
@@ -30,7 +38,7 @@ export default function About() {
                 <div className="relative z-10">
                   <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-primary)]">
                     <span>
-                      {lang === "zh" ? "研究叙事" : "Research Narrative"}
+                      {lang === "zh" ? "研究主线" : "Research Focus"}
                     </span>
                   </div>
                   <p
@@ -53,7 +61,9 @@ export default function About() {
                     {ui.about.researchAreas[lang]}
                   </h3>
                   <span className="surface-chip text-xs font-semibold uppercase tracking-[0.2em]">
-                    {lang === "zh" ? "4 个方向" : "4 Focus Areas"}
+                    {lang === "zh"
+                      ? `${profile.researchInterests.length} 条主线`
+                      : `${profile.researchInterests.length} Focuses`}
                   </span>
                 </div>
               </SectionLoader>

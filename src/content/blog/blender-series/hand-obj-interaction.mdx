@@ -1,8 +1,8 @@
 ﻿---
-title: "手部三维交互渲染"
-titleEn: "Hand 3D Interaction Rendering"
-description: "记录在手部三维交互项目中，如何使用 Blender 处理实验点云数据进行配图渲染 | 备忘录"
-descriptionEn: "Notes on how to use Blender to process experimental point cloud data for rendering accompanying figures in the Hand 3D Interaction project | Memo"
+title: "手物交互三维结果的论文配图渲染"
+titleEn: "Rendering 3D Hand-Object Interaction Results for Paper Figures"
+description: "使用 Blender 处理手物交互实验中的 OBJ/GLB 结果，完成纹理烘焙、固定视角、标准打光与论文级渲染输出"
+descriptionEn: "A Blender workflow for rendering OBJ/GLB results from hand-object interaction experiments, covering texture baking, fixed camera setup, controlled lighting, and paper-ready output"
 pubDate: 2026-03-27
 tags: ["blender", "paper", "3D", "interaction"]
 series: "blender"
@@ -18,14 +18,14 @@ import LinkCard from "@/components/blog/mdx/LinkCard";
 
 <Callout type="info" title="目标与背景">
   在该使用场景中，需要将模型推理与真实扫描的结果文件（如 `.obj` 或 `.glb`
-  格式）进行高质量的渲染对比，以直观展示在相同视角和光照条件下，不同方法的表现差异
-  本文将详细记录如何一步步导入模型、烘焙贴图 (Bake) 并设置相机与灯光进行渲染
-  最终渲染规格为学术论文中常用的 `512x512` 分辨率
+  格式）进行高质量的渲染对比，以直观展示在相同视角和光照条件下不同方法的表现差异.
+  本文记录导入模型、烘焙贴图 (Bake)、设置相机与灯光并完成最终渲染的流程.
+  最终渲染规格为学术论文中常用的 `512x512` 分辨率.
 </Callout>
 
 ## 1. 导入源文件
 
-首先，将实验生成的点云或网格数据导入到 Blender 的工作空间中
+首先，将实验生成的点云或网格数据导入到 Blender 的工作空间中.
 
 <Step title="导入并区分网格数据格式">
     **操作步骤**：点击顶部菜单栏 `File > Import > Wavefront (.obj)` 导入生成的手部和物体模型
@@ -47,7 +47,7 @@ import LinkCard from "@/components/blog/mdx/LinkCard";
 
 ## 2. 几何清理与纹理烘焙 (Bake)
 
-在配置最终材质与灯光渲染之前，需要对模型原有的顶点色或零散纹理进行烘焙 (Bake) 处理，从而统一材质的光照响应，确保渲染出标准且无瑕疵的视觉效果
+在配置最终材质与灯光渲染之前，需要对模型原有的顶点色或零散纹理进行烘焙 (Bake) 处理，从而统一材质的光照响应，保证不同结果在相同渲染设置下具有可比性.
 
 <Step title="UV 展开与材质贴图序列配置">
     我们需要先对物体进行 UV 展开 (UV Mapping)，随后将顶点附带的颜色数据通过 Bake 操作烘焙为一张统一的 2D 贴图
@@ -109,8 +109,7 @@ import LinkCard from "@/components/blog/mdx/LinkCard";
 
 ## 3. 相机调整与灯光设置
 
-对于学术论文配图，“规范清晰的固定视角”与“高质量的对比打光”是核心诉求
-我们将画面裁切分辨率固化为 `512 x 512`
+对于学术论文配图，规范清晰的固定视角与高质量的对比打光是核心诉求.本文将画面裁切分辨率固定为 `512 x 512`.
 
 <Step title="锁定机位与场景打光技巧">
     1. **设定相机画幅边界**：首先创建一个 Camera，设定分辨率为 `512 x 512` 正方形画幅，并在视口调整到易于观察手物交互细节的三维位置，按对齐视角快捷键固定机位
@@ -148,5 +147,4 @@ import LinkCard from "@/components/blog/mdx/LinkCard";
 
 ## 4. 最终渲染出图
 
-检查渲染引擎是否稳健设定在 Cycles 或 Eevee 后，点击键盘 `F12` 进行计算输出
-通过以上流程规范化操作，便能得到如下极简干练的高质量对比成片：
+检查渲染引擎是否设置为 Cycles 或 Eevee 后，点击键盘 `F12` 进行计算输出.通过上述流程，可以得到适合论文配图和方法对比的标准化渲染结果：

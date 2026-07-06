@@ -5,6 +5,7 @@ import { ui } from "@/i18n/ui";
 import { projects } from "@/data/projects";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  Atom,
   Palette,
   Cpu,
   Building2,
@@ -14,16 +15,26 @@ import {
   ChevronDown,
   ChevronUp,
   BookOpen,
+  Code2,
+  ExternalLink,
+  FileText,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
+  Atom,
   Palette,
   Cpu,
   Building2,
   Gamepad2,
   Clock,
   Dna,
+};
+
+const getProjectLinkIcon = (type?: string) => {
+  if (type === "code") return Code2;
+  if (type === "paper" || type === "report") return FileText;
+  return ExternalLink;
 };
 
 export default function ProjectPageList() {
@@ -39,10 +50,10 @@ export default function ProjectPageList() {
         return (
           <motion.article
             key={project.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.06 * i, duration: 0.4 }}
-            className="rounded-xl p-6 transition-all duration-300 hover:shadow-lg hud-corners embodied-glow"
+            className="rounded-xl p-6 transition-all duration-300 hover:shadow-lg hud-corners research-glow"
             style={{
               backgroundColor: "var(--color-bg-card)",
               border: "1px solid var(--color-border)",
@@ -109,6 +120,35 @@ export default function ProjectPageList() {
                 </span>
               ))}
             </div>
+
+            {project.links && project.links.length > 0 && (
+              <div className="mb-3 flex flex-wrap gap-2">
+                {project.links.map((link) => {
+                  const LinkIcon = getProjectLinkIcon(link.type);
+                  const isExternal = link.href.startsWith("http");
+
+                  return (
+                    <a
+                      key={`${project.id}-${link.href}`}
+                      href={link.href}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 hover:scale-105"
+                      style={{
+                        color: "var(--color-accent)",
+                        border:
+                          "1px solid color-mix(in srgb, var(--color-accent) 46%, transparent)",
+                        background:
+                          "color-mix(in srgb, var(--color-bg-secondary) 82%, transparent)",
+                      }}
+                    >
+                      <LinkIcon size={12} />
+                      {link.label[lang]}
+                    </a>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Highlight toggle */}
             <button

@@ -7,25 +7,103 @@ export interface Project {
   highlight: { zh: string; en: string };
   techStack: string[];
   icon: string;
+  award?: { zh: string; en: string };
+  links?: ProjectLink[];
   blogSlug?: string; // slug matching a blog post in src/content/blog/
+}
+
+export interface ProjectLink {
+  label: { zh: string; en: string };
+  href: string;
+  type?: "code" | "paper" | "report" | "website";
 }
 
 export const projects: Project[] = [
   {
+    id: "phaseflow",
+    title: {
+      zh: "PhaseFlow：蛋白序列与 LLPS 相图的双向生成模型",
+      en: "PhaseFlow: Bidirectional Generation for Protein Sequences and LLPS Phase Diagrams",
+    },
+    category: { zh: "AI4Bio 论文工作", en: "AI4Bio Manuscript" },
+    date: "2026.07 – Present",
+    description: {
+      zh: "围绕蛋白质液-液相分离（LLPS）构建统一生成模型，将氨基酸序列与 4×4 PSSI 相图作为双模态对象联合建模，支持序列到相图预测、目标相图条件下的蛋白序列设计，以及面向目标相分离性质的定向演化.",
+      en: "Developing a unified generative model for protein liquid-liquid phase separation by jointly modeling amino-acid sequences and 4x4 PSSI phase diagrams, supporting sequence-to-phase prediction, phase-conditioned protein design, and directed evolution toward target phase-separation properties.",
+    },
+    highlight: {
+      zh: "最新论文工作，当前准备投稿 Nature；围绕蛋白序列与 LLPS 相图建立统一生成建模框架",
+      en: "Latest manuscript project, currently in preparation for submission to Nature; building a unified generative framework for protein sequences and LLPS phase diagrams",
+    },
+    links: [
+      {
+        label: { zh: "代码仓库", en: "Code Repository" },
+        href: "https://github.com/kevinhyj/PhaseFlow",
+        type: "code",
+      },
+    ],
+    techStack: [
+      "Python",
+      "PyTorch",
+      "Protein Design",
+      "Flow Matching",
+      "Transformer",
+      "LLPS",
+    ],
+    icon: "Atom",
+  },
+  {
+    id: "eva-rna-foundation-model",
+    title: {
+      zh: "EVA：RNA 设计原理解析与长上下文生成式基础模型",
+      en: "EVA: Long-Context Generative Foundation Model for RNA Design",
+    },
+    category: { zh: "AI4Bio 研究", en: "AI4Bio Research" },
+    date: "2026.02 – Present",
+    description: {
+      zh: "参与构建面向 RNA 序列理解与设计的长上下文生成式基础模型，支持 RNA 设计原则建模、序列生成与下游任务适配.工作覆盖模型训练与微调协作、研究网站前后端实现，以及预印本与项目材料的工程支撑.",
+      en: "Contributing to a long-context generative foundation model for RNA sequence understanding and design, with emphasis on RNA design principles, sequence generation, and downstream adaptation. My work spans model training and fine-tuning support, full-stack implementation of the project website, and engineering support for the preprint and project release.",
+    },
+    highlight: {
+      zh: "论文在投 Nature Machine Intelligence；bioRxiv 预印本已公开；参与模型训练、微调协作与项目网站实现",
+      en: "Manuscript under review at Nature Machine Intelligence; bioRxiv preprint available; contributed to training support, fine-tuning collaboration, and project website implementation",
+    },
+    links: [
+      {
+        label: { zh: "代码仓库", en: "Code Repository" },
+        href: "https://github.com/GENTEL-lab/EVA",
+        type: "code",
+      },
+      {
+        label: { zh: "bioRxiv 预印本", en: "bioRxiv Preprint" },
+        href: "https://www.biorxiv.org/content/10.64898/2026.03.17.712398v1",
+        type: "paper",
+      },
+    ],
+    techStack: [
+      "Python",
+      "PyTorch",
+      "RNA Modeling",
+      "Foundation Models",
+      "Full-stack Development",
+    ],
+    icon: "Dna",
+  },
+  {
     id: "wangjiang-embroidery",
     title: {
-      zh: "风格融合在望江挑花非遗传承的研究与应用",
-      en: "Style Fusion for Wangjiang Embroidery Heritage Preservation",
+      zh: "望江挑花数字化设计与风格生成",
+      en: "Digital Design and Style Generation for Wangjiang Embroidery",
     },
     category: { zh: "大学生研究计划", en: "Undergraduate Research" },
     date: "2024.01 – 2025.11",
     description: {
-      zh: "对中国非物质文化遗产望江挑花进行数字化保护与创新。通过将传统工艺美学精髓与个性化定制图像进行智能风格融合，生成自动化针织图样。本人主要实现风格融合和图像处理任务，协助团队研发针织工艺软件系统。该系统可以将原始素材转化为可操作的针织纹样，并生成可视化操作指南。",
-      en: "Digitized preservation and innovation of Wangjiang embroidery, a Chinese intangible cultural heritage. Built an intelligent style fusion pipeline combining traditional aesthetics with personalized images to generate automated knitting patterns. Led the style transfer and image processing tasks, and co-developed a knitting craft software system that converts raw materials into operable patterns with step-by-step visual guides.",
+      zh: "围绕望江挑花非遗工艺开展数字化保护与设计辅助研究，构建设计软件、图像处理与风格生成流程，并将生成结果接入后续工艺验证.本人主要负责风格融合、图像处理实验与软件链路联调，重点关注生成结果的工艺可用性与传统视觉特征保留.",
+      en: "Conducted digital-preservation and design-assistance research for Wangjiang embroidery, integrating design software, image processing, style generation, and craft-process validation. My contributions focused on style-fusion experiments, image-processing modules, and system integration, with attention to craft usability and preservation of traditional visual characteristics.",
     },
     highlight: {
-      zh: "专利申请中；掌握扩散模型调优与数据集标注",
-      en: "Patent pending; Mastered diffusion model fine-tuning and dataset annotation",
+      zh: "完成从图样编辑、风格生成到实验室工艺验证与实地调研的闭环流程；相关专利申请中",
+      en: "Established a closed workflow from pattern editing and style generation to lab validation and field research; related patent pending",
     },
     techStack: [
       "Python",
@@ -47,15 +125,27 @@ export const projects: Project[] = [
     category: { zh: "学科竞赛", en: "Academic Competition" },
     date: "2025.04 – 2025.08",
     description: {
-      zh: "面向 DAYU200 开发板进行端侧大语言模型部署。决赛阶段面向华为真机，利用设备 GPU 算力提高模型推理速度，探索并初步实现多模态大模型与操作系统的协调，实现约 15 token/s 的端侧推理能力。担任队长。",
-      en: "Deployed LLMs on edge devices (DAYU200 board). In the finals, developed on Huawei devices leveraging GPU for model inference acceleration, achieving ~15 token/s for multi-modal LLM inference on edge. Served as team leader.",
+      zh: "作为队长推进 OpenHarmony 端侧大模型部署项目，搭建从 ArkUI/ArkTS 应用界面、NAPI 桥接到 C++ 推理后端的完整链路.决赛阶段进一步探索多模态输入、真机适配与设备 GPU 加速，实现约 15 token/s 的端侧推理能力.",
+      en: "Led an OpenHarmony edge-LLM deployment project, building an end-to-end pipeline from ArkUI/ArkTS interfaces and NAPI bridging to a C++ inference backend. During the finals, we explored multimodal input, hardware adaptation, and device-GPU acceleration, achieving approximately 15 token/s on edge devices.",
     },
     highlight: {
-      zh: "多模态大模型嵌入式设备端侧部署",
-      en: "Multi-modal LLM deployment on embedded devices",
+      zh: "在资源受限设备上完成本地 LLM 部署、性能调优、系统演示与技术答辩",
+      en: "Delivered local LLM deployment, performance tuning, system demonstration, and technical presentation on resource-constrained devices",
     },
     techStack: ["C++", "ArkTS", "Llama", "MNN"],
     icon: "Cpu",
+    links: [
+      {
+        label: { zh: "源码仓库", en: "Source Repository" },
+        href: "https://gitlab.eduxiji.net/T202510358995850/project2721707-302713",
+        type: "code",
+      },
+      {
+        label: { zh: "项目文档", en: "Project Document" },
+        href: "/projects/project-os-competition/项目文档.pdf",
+        type: "report",
+      },
+    ],
     blogSlug: "project-os-competition",
   },
   {
@@ -67,12 +157,12 @@ export const projects: Project[] = [
     category: { zh: "企业实习", en: "Industry Internship" },
     date: "2025.06 – 2025.08",
     description: {
-      zh: "经校内选拔参与华为举办的 HarmonyOS 菁英班，学习 OpenHarmony 和 HarmonyOS 技术。为终端底层软件相机部门开发参数自动化适配工具，提升产品参数适配效率。",
-      en: "Selected for Huawei's HarmonyOS Elite Program. Studied OpenHarmony/HarmonyOS technologies and developed automated parameter adaptation tools for the camera software department, improving product adaptation efficiency.",
+      zh: "经校内选拔进入华为 HarmonyOS 菁英班，在终端相机软件部门参与工程工具链开发.主要负责参数自动化适配工具，支持多机型配置解析、规则校验与批量处理，提升相机参数适配流程的效率与一致性.",
+      en: "Selected for Huawei's HarmonyOS Elite Program and worked on engineering tooling in the terminal camera software department. I developed automated parameter-adaptation tooling for multi-device configuration parsing, rule validation, and batch processing, improving workflow efficiency and consistency.",
     },
     highlight: {
-      zh: "快速定位与解决问题并正确展示和表达才是实践工作最关键的能力",
-      en: "The key ability in practice is quickly identifying and solving problems while effectively communicating results",
+      zh: "面向真实业务流程完成自动化工具开发，并训练复杂系统中的问题定位与技术沟通",
+      en: "Built automation tooling for a real engineering workflow while strengthening debugging and technical communication in complex systems",
     },
     techStack: ["C++", "Python", "HarmonyOS"],
     icon: "Building2",
@@ -87,15 +177,27 @@ export const projects: Project[] = [
     category: { zh: "课程大作业", en: "Course Project" },
     date: "2025.10 – 2025.12",
     description: {
-      zh: "使用 DQN、AlphaZero 等强化学习方法开发重力四子棋 Agent，参与 Kaggle ConnectX 比赛，历史最高排名 19/241 名。",
-      en: "Developed Connect Four agents using RL methods (DQN, AlphaZero) for the Kaggle ConnectX competition. Achieved a peak ranking of 19th out of 241 participants.",
+      zh: "围绕 Kaggle ConnectX 构建重力四子棋智能体，系统比较 DQN、AlphaZero 与 MCTS 搜索策略在离散博弈环境中的训练稳定性、搜索效率与对战表现，历史最高排名 19/241.",
+      en: "Built Connect Four agents for Kaggle ConnectX and systematically compared DQN, AlphaZero, and MCTS-based strategies in terms of training stability, search efficiency, and competitive performance. Achieved a peak rank of 19/241.",
     },
     highlight: {
-      zh: "掌握基本强化学习方法和 Agent 开发思路",
-      en: "Mastered fundamental RL methods and agent development paradigms",
+      zh: "完成从状态编码、策略训练到 MCTS 搜索的完整 Agent 实现",
+      en: "Implemented the full agent pipeline from state encoding and policy training to MCTS-based search",
     },
     techStack: ["PyTorch", "DQN", "AlphaZero", "RL"],
     icon: "Gamepad2",
+    links: [
+      {
+        label: { zh: "源代码 ZIP", en: "Source ZIP" },
+        href: "/projects/project-kaggle-connectx/Kaggle-ConnectX-source-code.zip",
+        type: "code",
+      },
+      {
+        label: { zh: "技术报告", en: "Technical Report" },
+        href: "/projects/project-kaggle-connectx/report.pdf",
+        type: "report",
+      },
+    ],
     blogSlug: "project-kaggle-connectx",
   },
   {
@@ -107,12 +209,12 @@ export const projects: Project[] = [
     category: { zh: "安卓软件开发", en: "Android Development" },
     date: "2023.10 – 2024.11",
     description: {
-      zh: "开发一款为校园师生设计的时间优化管理应用，基于用户习惯分析系统，结合个体作息规律与任务优先级矩阵，自主生成科学化日程规划方案。",
-      en: "Developed a time management app for campus users that analyzes habits and generates optimized scheduling plans based on personal routines and task priority matrices.",
+      zh: "面向高校学生的时间管理需求开发 Android 原生应用，将课程、任务、目标、习惯与提醒整合到统一日程视图中，并探索基于优先级与用户行为的自动排程机制.",
+      en: "Developed an Android-native time-management app for university students, integrating courses, tasks, goals, habits, and reminders into a unified schedule view while exploring automatic scheduling based on priorities and user behavior.",
     },
     highlight: {
-      zh: "掌握从用户需求到开发、反馈再调优的完整项目流程",
-      en: "Gained end-to-end experience from user requirements to development, feedback, and iteration",
+      zh: "覆盖需求调研、产品抽象、界面实现与迭代反馈的完整应用开发流程",
+      en: "Covered the full app-development cycle from user research and product abstraction to UI implementation and iteration",
     },
     techStack: ["Kotlin", "Java", "MySQL"],
     icon: "Clock",
@@ -127,15 +229,26 @@ export const projects: Project[] = [
     category: { zh: "学科竞赛", en: "Academic Competition" },
     date: "2025.02 – 2025.10",
     description: {
-      zh: "与网页组队员共同搭建校内比赛实验服务器平台，完成网页美工与功能设计。在项目中学习网页前后端开发知识，担任网页组组长。",
-      en: "Led the web development team to build the team's experimental server platform and website. Gained full-stack web development experience while managing team communication and task allocation.",
+      zh: "担任 USTC iGEM 队网页组组长，负责 Wiki 网站架构设计、页面开发、内容管线与静态部署.项目围绕合成生物学竞赛的展示和评审要求，支持实验、建模、人类实践等复杂文档的结构化呈现.",
+      en: "Led the web team for the USTC iGEM project, responsible for Wiki architecture, page development, content pipeline design, and static deployment. The site supported structured presentation of experimental, modeling, and human-practices materials for a synthetic-biology competition.",
     },
     highlight: {
-      zh: "学会高效沟通、团队管理，懂得协商与鼓励",
-      en: "Learned effective communication, team management, and collaborative leadership",
+      zh: "USTC iGEM 2025 团队获得国际金奖；完成面向评审场景的静态站点工程，并推进多人协作下的内容与代码交付",
+      en: "The USTC iGEM 2025 team received an International Gold Medal; delivered a judging-oriented static site and coordinated content-code delivery across a multi-person team",
     },
     techStack: ["JavaScript", "React", "Next.js", "Haskell"],
     icon: "Dna",
+    award: {
+      zh: "iGEM 国际金奖",
+      en: "iGEM Gold Medal",
+    },
+    links: [
+      {
+        label: { zh: "源码仓库", en: "Source Repository" },
+        href: "https://gitlab.eduxiji.net/ustc-igem/2025-wiki",
+        type: "code",
+      },
+    ],
     blogSlug: "project-igem",
   },
 ];

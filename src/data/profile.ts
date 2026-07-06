@@ -2,8 +2,8 @@
   realName: { zh: "王子宁", en: "Zining Wang" },
   name: { zh: "墨谷", en: "MOGOO" },
   title: {
-    zh: "计算机科学专业本科生",
-    en: "Computer Science Undergraduate",
+    zh: "计算机科学 | AI4Bio | Reasoning",
+    en: "Computer Science | AI4Bio | Reasoning",
   },
   university: {
     zh: "中国科学技术大学",
@@ -31,8 +31,8 @@
   website: "https://mogoo7zn.github.io",
   avatar: "/images/avatar_sci_fi_trans.svg",
   bio: {
-    zh: "我早期的探索从工程实践开始，逐渐深入研究，实践过端侧模型部署、传统纹样数字化和完整应用开发等。慢慢地，我想回答一些具体的问题：模型能不能真正理解人的动作、物体状态的变化，以及交互为什么会发生。也正因为这样，我把主要兴趣收敛到具身智能，同时继续关注 AI4S，希望把模型放进真实、可验证的问题里，推进科学领域研究与AI的结合",
-    en: "My early exploration started from engineering practice and gradually moved toward research. I have worked on edge-side model deployment, traditional pattern digitization, and end-to-end application development. Over time, I found myself returning to a few concrete questions: can a model really understand human motion, changes in object state, and why an interaction happens. That is why my main focus has narrowed to embodied AI, while I continue to work on AI4S and look for problems that are real, testable, and grounded in scientific settings.",
+    zh: "我的研究兴趣覆盖 AI4Bio、Reasoning Models 与具身智能.近期工作主要围绕生物序列建模、生成式科学模型、推理能力评估，以及第一视角手物交互等可验证问题展开；此前的工程经历覆盖端侧模型部署、图像生成与完整应用开发.",
+    en: "My research interests span AI4Bio, reasoning models, and embodied intelligence. Recent work focuses on biological sequence modeling, generative scientific models, reasoning evaluation, and verifiable problems such as egocentric hand-object interaction, while my earlier engineering experience covers edge-side model deployment, image generation, and end-to-end application development.",
   },
   english: {
     cet4: 697,
@@ -44,35 +44,27 @@
   },
   researchInterests: [
     {
+      icon: "Dna",
+      title: { zh: "AI4Bio", en: "AI4Bio" },
+      description: {
+        zh: "围绕 RNA、蛋白质等生物序列开展建模与生成研究，关注模型输出是否能对应明确的生物学表型、实验约束和可验证目标",
+        en: "Modeling and generating biological sequences such as RNA and proteins, with attention to whether model outputs align with biological phenotypes, experimental constraints, and verifiable objectives.",
+      },
+    },
+    {
+      icon: "BrainCircuit",
+      title: { zh: "Reasoning Models", en: "Reasoning Models" },
+      description: {
+        zh: "关注推理模型的任务构造、能力评估与可靠性分析，尤其是模型在复杂约束、多步判断和科学问题设定中的表现",
+        en: "Studying task construction, capability evaluation, and reliability analysis for reasoning models, especially under complex constraints, multi-step judgment, and scientific problem settings.",
+      },
+    },
+    {
       icon: "Bot",
-      title: { zh: "具身智能", en: "Embodied AI" },
+      title: { zh: "具身智能", en: "Embodied Intelligence" },
       description: {
-        zh: "围绕第一视角下的手部交互与操作建模，研究如何让模型理解并生成可执行的交互行为",
-        en: "Studying egocentric hand interaction and manipulation modeling, with an emphasis on understanding and generating executable interactions.",
-      },
-    },
-    {
-      icon: "Eye",
-      title: { zh: "AI4S", en: "AI4S" },
-      description: {
-        zh: "探索 AI 方法在科学发现、闭环实验设计与实现、RNA 序列预测生成和评价的应用，关注跨学科科学问题",
-        en: "Exploring how AI methods can support scientific discovery, closed-loop experiment design and implementation, as well as RNA sequence prediction, generation, and evaluation across interdisciplinary scientific problems.",
-      },
-    },
-    {
-      icon: "Gamepad2",
-      title: { zh: "第一视角交互", en: "Egocentric Interaction" },
-      description: {
-        zh: "理解第一视角下的人类精细动作与手物交互，为灵巧操作和生成建模提供支持",
-        en: "Understanding fine-grained human hand-object interactions from egocentric perspectives to support dexterous operation and generative modeling.",
-      },
-    },
-    {
-      icon: "Box",
-      title: { zh: "系统与部署", en: "Systems & Deployment" },
-      description: {
-        zh: "将研究原型落地到可运行系统，关注工程实现、效率优化与部署体验",
-        en: "Turning research prototypes into working systems, with a focus on implementation, efficiency, and deployment.",
+        zh: "关注第一视角视觉、手物交互、空间生成与可供性建模，探索模型如何从感知结果走向可执行、可评估的交互结构",
+        en: "Working on egocentric vision, hand-object interaction, spatial generation, and affordance modeling, exploring how models connect perception to executable and evaluable interaction structures.",
       },
     },
   ],

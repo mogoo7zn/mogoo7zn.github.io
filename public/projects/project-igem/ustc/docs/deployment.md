@@ -3,7 +3,7 @@
 ## Overview 概述 🌟
 
 This guide covers the deployment process for our Next.js based iGEM Wiki.
-本指南涵盖了基于Next.js的iGEM Wiki的部署流程。
+本指南涵盖了基于Next.js的iGEM Wiki的部署流程.
 
 ## Pre-deployment Checklist 部署前检查清单 ✅
 

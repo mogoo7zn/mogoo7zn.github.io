@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from 'react';
 
 /**
- * 最终版：实现滑入、居中，并在最后一个子元素即将被Footer遮挡时才开始向上移动的智能效果。
+ * 最终版：实现滑入、居中，并在最后一个子元素即将被Footer遮挡时才开始向上移动的智能效果.
  * @param {React.RefObject<HTMLElement>} stickyElementRef - 要应用效果的元素的 ref (目录<nav>容器)
  * @returns {object} 一个包含动态样式的 style 对象
  */

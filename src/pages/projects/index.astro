@@ -17,6 +17,9 @@ const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.s
     <h1 class="text-2xl md:text-3xl font-bold mb-8 text-gradient inline-block">
       Projects
     </h1>
+    <p class="mb-8 text-base leading-8" style="color: var(--color-text-secondary);">
+      这里汇总 AI4Bio、推理模型、具身智能、模型部署与应用开发相关项目，重点呈现问题背景、技术贡献与交付结果，而不只是功能清单.
+    </p>
     <ProjectPageList client:load validBlogSlugs={validBlogSlugs} />
   </main>
   <Footer client:load />

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 /**
  * A subtle grid overlay with a scanning beam effect,
- * reminiscent of a robot's sensor perception grid.
+ * used as a quiet research-system background texture.
  * Used as a background decoration for sections.
  */
 export default function SensorGrid({ className = "" }: { className?: string }) {

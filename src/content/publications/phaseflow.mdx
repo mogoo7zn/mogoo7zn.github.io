@@ -1,0 +1,62 @@
+---
+title: "PhaseFlow: Bidirectional Generation of Protein Sequences and Phase Diagrams for LLPS"
+titleEn: "PhaseFlow: Bidirectional Generation of Protein Sequences and Phase Diagrams for LLPS"
+authors:
+  [
+    "Zining Wang",
+    "PhaseFlow Project Team",
+  ]
+venue: "准备投稿 Nature"
+venueEn: "Manuscript in preparation for Nature"
+year: 2026
+pubDate: 2026-07-06
+doi: ""
+arxiv: ""
+pdf: ""
+code: "https://github.com/kevinhyj/PhaseFlow"
+tags:
+  [
+    "AI4Bio",
+    "Protein Design",
+    "LLPS",
+    "Flow Matching",
+    "Generative Modeling",
+  ]
+status: "in-preparation"
+draft: false
+---
+
+# 概述（Overview）
+
+**PhaseFlow: Bidirectional Generation of Protein Sequences and Phase Diagrams for LLPS** 是一项面向蛋白质液-液相分离（LLPS）的 AI4Bio 研究工作.项目以蛋白质序列与多条件相分离表型之间的双向生成建模为核心，目标是在统一模型中同时支持 **sequence → phase diagram** 的相图预测，以及 **phase diagram → sequence** 的条件蛋白设计.
+
+该工作目前处于论文准备阶段，计划投稿 **Nature**.代码仓库见 [kevinhyj/PhaseFlow](https://github.com/kevinhyj/PhaseFlow).
+
+## English Summary
+
+**PhaseFlow** is an AI4Bio project for modeling protein liquid-liquid phase separation. It jointly represents amino-acid sequences and 4x4 PSSI phase diagrams, enabling both sequence-to-phase prediction and phase-conditioned protein sequence design within a unified generative model.
+
+The manuscript is currently in preparation and is planned for submission to **Nature**. The code repository is available at [kevinhyj/PhaseFlow](https://github.com/kevinhyj/PhaseFlow).
+
+---
+
+## 研究问题（Research Question）
+
+LLPS 参与应激颗粒形成、生物分子凝聚体组装等重要过程.对于蛋白质设计而言，难点不仅在于预测单一序列是否发生相分离，还在于理解序列在不同光照强度与蛋白浓度条件下的完整相行为，并进一步设计出满足目标相图约束的新序列.
+
+PhaseFlow 将每条蛋白序列与一个 4×4 PSSI 相图网格对应起来，其中相图描述不同实验条件组合下的相分离表型变化.这使模型不只学习序列到标量性质的映射，而是学习序列空间与多条件相行为之间更完整的结构化关系.
+
+## 方法概述（Method）
+
+PhaseFlow 基于统一 Transformer 骨干，将蛋白序列 token 与相图 token 组织为交错序列，并结合 Flow Matching 建模连续 PSSI 值.这一设计使模型能够在同一框架内完成两类互补任务：
+
+- 从蛋白质序列生成 4×4 PSSI 相图，用于预测序列在多条件下的相分离行为；
+- 从目标 PSSI 相图生成蛋白质序列，用于条件 de novo protein design；
+- 在生成序列后重新预测相图，并通过自一致性优化提升设计结果与目标相图的匹配程度；
+- 使用相图条件下的序列似然引导 in silico directed evolution，使突变搜索朝目标 LLPS 表型推进.
+
+## 当前状态（Current Status）
+
+该论文目前尚未投稿，正在围绕实验结果、方法叙述、图表和代码材料进行整理，计划作为最新 AI4Bio 论文工作投稿 **Nature**.
+
+- Code: [kevinhyj/PhaseFlow](https://github.com/kevinhyj/PhaseFlow)

@@ -3,7 +3,7 @@
 ## Overview 概览 🎯
 
 Our testing strategy encompasses unit tests, integration tests, and end-to-end testing using Jest and React Testing Library.
-我们的测试策略包括使用Jest和React Testing Library的单元测试、集成测试和端到端测试。
+我们的测试策略包括使用Jest和React Testing Library的单元测试、集成测试和端到端测试.
 
 ## Testing Structure 测试结构 📁
 

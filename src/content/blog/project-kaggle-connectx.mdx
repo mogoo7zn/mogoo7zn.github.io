@@ -1,8 +1,8 @@
 ---
 title: "Kaggle ConnectX 强化学习竞赛"
-titleEn: "Kaggle ConnectX Reinforcement Learning Competition"
-description: "使用强化学习方法开发重力四子棋 Agent 的技术分享"
-descriptionEn: "Technical sharing on developing a Connect Four agent using reinforcement learning methods"
+titleEn: "Kaggle ConnectX Reinforcement-Learning Agent"
+description: "围绕 Kaggle ConnectX 构建强化学习博弈智能体，比较 DQN、AlphaZero 与 MCTS 搜索策略的训练稳定性和对战表现"
+descriptionEn: "A reinforcement-learning game-agent project for Kaggle ConnectX, comparing DQN, AlphaZero, and MCTS-based strategies in training stability and competitive performance"
 pubDate: "2026-01-25"
 tags: ["project", "reinforcement-learning", "DQN", "AlphaZero", "Kaggle"]
 draft: false
@@ -15,13 +15,13 @@ import LinkCard from "@/components/blog/mdx/LinkCard";
 
 ## 竞赛简介
 
-Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛，不仅充满趣味，更是一个检验强化学习算法的绝佳平台。参赛者需要开发智能 Agent 与其他选手的策略进行对战
+Kaggle ConnectX 是一个基于重力四子棋（Connect Four）的强化学习竞赛.任务目标是在固定棋盘环境中设计智能 Agent，使其能够与其他选手提交的策略进行对战，并在有限推理时间内做出稳定决策.
 
 ## 项目资源
 
 ### 完整技术报告
 
-这份 PDF 包含详细的算法推导、实验设置以及结果分析，记录了我的思考过程
+这份 PDF 包含算法推导、实验设置、训练过程与结果分析.
 
 <PDFViewer
   url="/projects/project-kaggle-connectx/report.pdf"
@@ -30,7 +30,7 @@ Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛�
 
 ### 源代码
 
-这里整理了 DQN 和 AlphaZero 的完整实现代码，可以直接运行体验
+该归档包含 DQN 与 AlphaZero 的实现代码.
 
 <LinkCard
   href="/projects/project-kaggle-connectx/Kaggle-ConnectX-source-code.zip"
@@ -42,7 +42,7 @@ Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛�
 
 ### DQN 方法
 
-在探索初期，我首先尝试了 Deep Q-Network 方法：
+在探索初期，我首先实现了 Deep Q-Network 方法：
 
 - **状态编码**：将 6×7 的棋盘状态转换为张量表示
 - **网络架构**：采用卷积神经网络提取特征，并通过全连接层输出动作价值
@@ -50,7 +50,7 @@ Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛�
 
 ### AlphaZero 方法
 
-为了追求更强的博弈能力，进一步实现了 AlphaZero 算法：
+为了提升博弈能力，我进一步实现了 AlphaZero 风格的训练与搜索流程：
 
 - **搜索算法**：使用 Monte Carlo Tree Search (MCTS) 进行动作规划
 - **双头网络**：策略网络预测落子概率，价值网络评估当前局面胜率
@@ -58,15 +58,16 @@ Kaggle ConnectX 是一个重力四子棋（Connect Four）的强化学习竞赛�
 
 ### 排名表现
 
-经过多轮迭代，Agent 取得了历史最高排名 **19/241 名**，这也验证了算法在复杂博弈环境下的有效性
+经过多轮迭代，Agent 取得了历史最高排名 **19/241 名**.这一结果表明，在有限推理时间和离散动作空间约束下，搜索策略、状态编码与训练稳定性对最终表现都有显著影响.
 
 ## 关键技术细节
 
-- **训练稳定性**：通过精细的学习率调度与梯度裁剪机制，避免模型发散
-- **搜索效率**：优化 MCTS 的搜索逻辑，在有限时间内探索更多可能
-- **博弈策略**：引入对手建模与开局库，提升 Agent 在实战中的应对能力
+- **训练稳定性**：通过学习率调度、梯度裁剪与目标网络机制降低训练发散风险；
+- **搜索效率**：优化 MCTS 搜索逻辑，在有限推理时间内扩展更多高价值分支；
+- **博弈策略**：结合对手建模和开局策略，提高 Agent 在实战对局中的鲁棒性.
 
-## 收获
+## 项目结果
 
-- 深入掌握了 DQN、PPO、AlphaZero 等主流强化学习算法
-- 初步理解了 Agent 开发的核心思路，即如何从零开始构建一个智能体
+- 完成从棋盘状态编码、价值/策略网络训练到 MCTS 搜索的 Agent 实现；
+- 比较 DQN、AlphaZero 等方法在训练稳定性、搜索效率与对战表现上的差异；
+- 历史最高排名达到 **19/241**，验证了所实现策略在该竞赛环境中的有效性.

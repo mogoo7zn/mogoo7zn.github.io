@@ -1,12 +1,14 @@
 import { useStore } from "@nanostores/react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   ArrowUpRight,
+  Bot,
+  BrainCircuit,
   ChevronDown,
   Dna,
-  Gamepad2,
   Github,
   Globe,
   GraduationCap,
@@ -14,36 +16,59 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
-import HeroScene from "@/components/three/HeroScene";
 import { profile } from "@/data/profile";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 
+type HeroSceneComponent = (typeof import("@/components/three/HeroScene"))["default"];
+
 export default function Hero() {
   const lang = useStore($lang);
+  const [Scene, setScene] = useState<HeroSceneComponent | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const timer = window.setTimeout(() => {
+      void import("@/components/three/HeroScene").then(({ default: LoadedScene }) => {
+        if (isMounted) setScene(() => LoadedScene);
+      });
+    }, 180);
+
+    return () => {
+      isMounted = false;
+      window.clearTimeout(timer);
+    };
+  }, []);
 
   const introLabel = lang === "zh" ? "你好，我是" : "Hi, I'm";
   const cardIntro =
     lang === "zh"
-      ? "这里放的是我最近最关心的研究与工程方向，也记录了我正在持续推进的事情"
-      : "This is a snapshot of the research and engineering work I care about most right now.";
+      ? "当前研究方向、工程能力与近期工作重点概览"
+      : "A compact overview of my current research direction, engineering background, and recent work.";
 
   const focusAreas: Array<{
     icon: LucideIcon;
     label: { zh: string; en: string };
   }> = [
     {
-      icon: Gamepad2,
+      icon: Dna,
       label: {
-        zh: "具身智能",
-        en: "Embodied AI",
+        zh: "AI4Bio",
+        en: "AI4Bio",
       },
     },
     {
-      icon: Dna,
+      icon: BrainCircuit,
       label: {
-        zh: "AI4S",
-        en: "AI4S",
+        zh: "Reasoning Models",
+        en: "Reasoning Models",
+      },
+    },
+    {
+      icon: Bot,
+      label: {
+        zh: "具身智能",
+        en: "Embodied Intelligence",
       },
     },
   ];
@@ -55,7 +80,10 @@ export default function Hero() {
     },
     {
       label: lang === "zh" ? "研究重点" : "Research Focus",
-      value: lang === "zh" ? "具身智能 / AI4S" : "Embodied AI / AI4S",
+      value:
+        lang === "zh"
+          ? "AI4Bio / Reasoning Models / 具身智能"
+          : "AI4Bio / Reasoning Models / Embodied Intelligence",
     },
     {
       label: lang === "zh" ? "英语能力" : "English",
@@ -84,9 +112,9 @@ export default function Hero() {
       year: "2026",
       text:
         lang === "zh"
-          ? "围绕第一视角交互，继续探索联合 2D-3D 的生成与理解"
-          : "Exploring joint 2D-3D generation and understanding for egocentric interaction.",
-      href: "/publications/thread",
+          ? "推进 PhaseFlow 项目，聚焦蛋白序列与 LLPS 相图的双向生成建模"
+          : "Advancing PhaseFlow, focused on bidirectional generation between protein sequences and LLPS phase diagrams.",
+      href: "/publications/phaseflow",
     },
   ];
 
@@ -114,14 +142,22 @@ export default function Hero() {
       className="relative flex min-h-screen select-none items-center overflow-hidden px-4 pb-16 pt-28 md:pb-20"
       onDragStart={(event) => event.preventDefault()}
     >
-      <HeroScene />
+      {Scene ? (
+        <Scene />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="hero-scene-fallback pointer-events-none absolute inset-0 -z-10 overflow-hidden opacity-[0.58]"
+        />
+      )}
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(15,23,42,0.05),transparent_18%,rgba(15,23,42,0.09))]" />
 
       <div className="section-shell pointer-events-none relative z-10">
         <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] xl:gap-12">
           <motion.div
             data-no-scene-drag
-            initial={{ opacity: 0, y: 18 }}
+            data-hero-panel
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, ease: "easeOut" }}
             className="pointer-events-auto max-w-2xl"
@@ -313,7 +349,8 @@ export default function Hero() {
 
           <motion.aside
             data-no-scene-drag
-            initial={{ opacity: 0, x: 20 }}
+            data-hero-panel
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.12, duration: 0.5, ease: "easeOut" }}
             className="surface-panel pointer-events-auto relative ml-auto w-full max-w-[34rem] overflow-hidden p-0 lg:max-w-none"
@@ -499,7 +536,7 @@ export default function Hero() {
 
       <motion.div
         data-no-scene-drag
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
         className="pointer-events-auto absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"

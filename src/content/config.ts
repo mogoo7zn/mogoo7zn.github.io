@@ -32,7 +32,7 @@ const publications = defineCollection({
     code: z.string().optional(),
     tags: z.array(z.string()).default([]),
     status: z
-      .enum(["published", "preprint", "under-review"])
+      .enum(["published", "preprint", "under-review", "in-preparation"])
       .default("published"),
     draft: z.boolean().default(false),
   }),

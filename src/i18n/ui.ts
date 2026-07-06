@@ -4,7 +4,7 @@
     about: { zh: "关于", en: "About" },
     projects: { zh: "项目", en: "Projects" },
     skills: { zh: "技能", en: "Skills" },
-    timeline: { zh: "时间线", en: "Timeline" },
+    timeline: { zh: "经历", en: "Archive" },
     cv: { zh: "简历", en: "CV" },
     blog: { zh: "博客", en: "Blog" },
     publications: { zh: "论文", en: "Publications" },
@@ -12,8 +12,8 @@
   hero: {
     greeting: { zh: "你好，我是", en: "Hi, I'm" },
     subtitle: {
-      zh: "我从工程实践进入研究，现在主要围绕具身智能与 AI4S，关心交互理解、系统落地和可验证的问题设定",
-      en: "I moved from engineering practice into research. My current work centers on embodied AI and AI4S, with an emphasis on interaction understanding, deployable systems, and problems that can be tested in the real world.",
+      zh: "我的研究兴趣覆盖 AI4Bio、Reasoning Models 与具身智能.近期工作主要围绕生物序列建模、生成式科学模型、推理能力评估，以及第一视角手物交互等可验证问题展开；此前的工程经历覆盖端侧模型部署、图像生成与完整应用开发.",
+      en: "My research interests span AI4Bio, reasoning models, and embodied intelligence. Recent work focuses on biological sequence modeling, generative scientific models, reasoning evaluation, and verifiable problems such as egocentric hand-object interaction, while my earlier engineering experience covers edge-side model deployment, image generation, and end-to-end application development.",
     },
     cta: { zh: "了解更多", en: "Learn More" },
     scrollDown: { zh: "向下滚动", en: "Scroll Down" },
@@ -21,8 +21,8 @@
   about: {
     title: { zh: "关于我", en: "About Me" },
     description: {
-      zh: "我目前在中国科学技术大学学习计算机科学与技术，主要关注具身智能与 AI4S，也持续从工程实践里寻找真正值得研究的问题",
-      en: "I study Computer Science and Technology at USTC. My main interests are embodied AI and AI4S, and I keep looking for research questions that emerge from real engineering practice.",
+      zh: "我目前在中国科学技术大学学习计算机科学与技术，研究兴趣覆盖 AI4Bio、推理模型与具身智能",
+      en: "I study Computer Science and Technology at USTC, with research interests spanning AI4Bio, reasoning models, and embodied intelligence.",
     },
     researchAreas: { zh: "研究方向", en: "Research Interests" },
   },
@@ -31,7 +31,7 @@
     viewMore: { zh: "查看详情", en: "View Details" },
     collapse: { zh: "收起", en: "Collapse" },
     techStack: { zh: "技术栈", en: "Tech Stack" },
-    highlight: { zh: "核心收获", en: "Key Takeaway" },
+    highlight: { zh: "项目要点", en: "Highlights" },
     readBlog: { zh: "阅读项目博客", en: "Read Project Blog" },
   },
   skills: {
@@ -42,7 +42,7 @@
     tools: { zh: "开发工具", en: "Tools" },
   },
   timeline: {
-    title: { zh: "成长历程", en: "Timeline" },
+    title: { zh: "经历档案", en: "Archive" },
   },
   cv: {
     title: { zh: "学术简历", en: "Academic CV" },
@@ -58,15 +58,15 @@
     showAbstract: { zh: "查看摘要", en: "Abstract" },
     hideAbstract: { zh: "收起摘要", en: "Hide" },
     noPubs: {
-      zh: "论文即将发布，敬请期待",
-      en: "Publications coming soon — stay tuned",
+      zh: "相关成果整理中",
+      en: "Selected work will be added here.",
     },
   },
   blog: {
     title: { zh: "博客", en: "Blog" },
     readMore: { zh: "阅读全文", en: "Read More" },
     backToList: { zh: "返回列表", en: "Back to List" },
-    noPosts: { zh: "暂无文章", en: "No posts yet" },
+    noPosts: { zh: "暂无已发布文章", en: "No published posts yet" },
   },
   footer: {
     builtWith: {
@@ -105,8 +105,8 @@
     submitSuccess: { zh: "评论已提交！", en: "Comment submitted!" },
     loading: { zh: "加载评论中...", en: "Loading comments..." },
     noComments: {
-      zh: "还没有评论，来留下第一条吧！",
-      en: "No comments yet — be the first!",
+      zh: "目前还没有评论",
+      en: "No comments yet.",
     },
     errors: {
       contentRequired: {

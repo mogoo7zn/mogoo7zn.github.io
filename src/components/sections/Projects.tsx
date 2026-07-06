@@ -7,25 +7,47 @@ import SectionLoader from "@/components/ui/SectionLoader";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { motion } from "framer-motion";
 import {
+  Atom,
   BookOpen,
   Building2,
   ChevronDown,
   ChevronUp,
+  Code2,
   Clock,
   Cpu,
   Dna,
+  ExternalLink,
+  FileText,
   Gamepad2,
   Palette,
+  Trophy,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
+  Atom,
   Palette,
   Cpu,
   Building2,
   Gamepad2,
   Clock,
   Dna,
+};
+
+const getProjectLinkIcon = (type?: string) => {
+  if (type === "code") return Code2;
+  if (type === "paper" || type === "report") return FileText;
+  return ExternalLink;
+};
+
+const excludedFeaturedProjectIds = new Set(["kaggle-connectx", "timeflow-app"]);
+const featuredProjectPriority: Record<string, number> = {
+  phaseflow: 0,
+  "eva-rna-foundation-model": 1,
+  "wangjiang-embroidery": 2,
+  igem: 3,
+  "os-competition": 4,
+  "huawei-internship": 5,
 };
 
 interface ProjectsProps {
@@ -35,6 +57,13 @@ interface ProjectsProps {
 export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
   const lang = useStore($lang);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const featuredProjects = [...projects]
+    .filter((project) => !excludedFeaturedProjectIds.has(project.id))
+    .sort(
+      (a, b) =>
+        (featuredProjectPriority[a.id] ?? 99) -
+        (featuredProjectPriority[b.id] ?? 99),
+    );
 
   return (
     <section id="projects" className="py-24">
@@ -58,7 +87,7 @@ export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
         </div>
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-          {projects.map((project, index) => {
+          {featuredProjects.map((project, index) => {
             const Icon = iconMap[project.icon] || Palette;
             const isExpanded = expanded === project.id;
             const hasBlog =
@@ -121,7 +150,53 @@ export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
                           >
                             0{index + 1}
                           </span>
+                          {project.award && (
+                            <span
+                              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold"
+                              style={{
+                                color: "color-mix(in srgb, #92400e 84%, var(--color-text))",
+                                border:
+                                  "1px solid color-mix(in srgb, #f59e0b 58%, transparent)",
+                                background:
+                                  "linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(251, 191, 36, 0.1))",
+                                boxShadow:
+                                  "0 8px 20px rgba(245, 158, 11, 0.12)",
+                              }}
+                            >
+                              <Trophy size={13} />
+                              {project.award[lang]}
+                            </span>
+                          )}
                         </div>
+
+                        {project.links && project.links.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {project.links.map((link) => {
+                              const LinkIcon = getProjectLinkIcon(link.type);
+                              const isExternal = link.href.startsWith("http");
+
+                              return (
+                                <a
+                                  key={`${project.id}-${link.href}`}
+                                  href={link.href}
+                                  target={isExternal ? "_blank" : undefined}
+                                  rel={isExternal ? "noopener noreferrer" : undefined}
+                                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all duration-200 hover:-translate-y-0.5"
+                                  style={{
+                                    color: "var(--color-accent)",
+                                    border:
+                                      "1px solid color-mix(in srgb, var(--color-accent) 44%, transparent)",
+                                    background:
+                                      "color-mix(in srgb, var(--color-bg-card) 88%, transparent)",
+                                  }}
+                                >
+                                  <LinkIcon size={13} />
+                                  {link.label[lang]}
+                                </a>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -140,6 +215,45 @@ export default function Projects({ validBlogSlugs = [] }: ProjectsProps) {
                         </p>
 
                         <div className="surface-panel px-4 py-4">
+                          {project.award && (
+                            <div
+                              className="mb-4 flex items-center gap-3 rounded-2xl px-3.5 py-3"
+                              style={{
+                                border:
+                                  "1px solid color-mix(in srgb, #f59e0b 48%, transparent)",
+                                background:
+                                  "linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(250, 204, 21, 0.06))",
+                                color: "var(--color-text)",
+                              }}
+                            >
+                              <span
+                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                                style={{
+                                  color: "#92400e",
+                                  background:
+                                    "radial-gradient(circle, rgba(253, 224, 71, 0.95), rgba(245, 158, 11, 0.55))",
+                                  boxShadow:
+                                    "0 10px 24px rgba(245, 158, 11, 0.18)",
+                                }}
+                              >
+                                <Trophy size={18} />
+                              </span>
+                              <div>
+                                <div className="text-sm font-bold leading-snug">
+                                  {project.award[lang]}
+                                </div>
+                                <div
+                                  className="text-xs font-medium"
+                                  style={{ color: "var(--color-text-muted)" }}
+                                >
+                                  {lang === "zh"
+                                    ? "USTC iGEM 2025 团队荣誉"
+                                    : "USTC iGEM 2025 team recognition"}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
                           <div className="mb-4">
                             <div
                               className="mb-2 text-xs font-bold uppercase tracking-[0.22em]"

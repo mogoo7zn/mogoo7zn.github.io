@@ -22,7 +22,7 @@ if (blenderPosts.length > 0) {
     data: {
       title: 'Blender',
       titleEn: 'Blender Notes',
-      description: `这是关于 3D 建模、渲染与 Blender 软件使用的专题。共 ${blenderPosts.length} 篇笔记`,
+      description: `3D 建模、材质配置与科研配图渲染相关笔记，共 ${blenderPosts.length} 篇`,
       descriptionEn: `This is a collection of notes on 3D modeling, rendering, and using Blender software. A total of ${blenderPosts.length} posts.`,
       pubDate: latestDate,
       tags: ['Blender', '3D', 'album'],
@@ -42,6 +42,9 @@ finalPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
     <h1 class="text-3xl md:text-4xl font-bold mb-8 text-gradient inline-block">
       Blog
     </h1>
+    <p class="mb-10 max-w-3xl text-base leading-8" style="color: var(--color-text-secondary);">
+      这里整理项目记录、技术笔记与科研工具实践，重点保留问题背景、实现决策、可复用流程与阶段性产出.
+    </p>
     <PostList client:load posts={finalPosts.map(p => ({ slug: p.slug, data: p.data }))} />
   </main>
   <Footer client:load />

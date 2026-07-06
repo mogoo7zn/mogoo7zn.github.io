@@ -103,9 +103,9 @@ function AmbientParticles({
     () =>
       new THREE.PointsMaterial({
         color: isDark ? "#75E6F7" : "#5C6CFF",
-        size: 0.028,
+        size: 0.024,
         transparent: true,
-        opacity: isDark ? 0.15 : 0.1,
+        opacity: isDark ? 0.1 : 0.075,
         depthWrite: false,
         sizeAttenuation: true,
       }),
@@ -139,7 +139,7 @@ function AmbientParticles({
   return <points ref={pointsRef} geometry={geometry} material={material} />;
 }
 
-function KineticResearchArtifact({
+function ResearchArtifact({
   clickRef,
   dragRef,
   isDark,
@@ -157,18 +157,17 @@ function KineticResearchArtifact({
   scale: number;
 }) {
   const groupRef = useRef<THREE.Group>(null);
-  const gimbalRef = useRef<THREE.Group>(null);
-  const fieldRef = useRef<THREE.Group>(null);
-  const leftPanelRef = useRef<THREE.Group>(null);
-  const rightPanelRef = useRef<THREE.Group>(null);
-  const satelliteARef = useRef<THREE.Mesh>(null);
-  const satelliteBRef = useRef<THREE.Mesh>(null);
-  const satelliteCRef = useRef<THREE.Mesh>(null);
+  const helixRef = useRef<THREE.Group>(null);
+  const proteinRef = useRef<THREE.Group>(null);
+  const assayPanelRef = useRef<THREE.Group>(null);
+  const modelPanelRef = useRef<THREE.Group>(null);
   const pulseRef = useRef<THREE.Mesh>(null);
-  const scanLeftRef = useRef<THREE.Mesh>(null);
-  const scanRightRef = useRef<THREE.Mesh>(null);
+  const pulseBloomRef = useRef<THREE.Mesh>(null);
+  const scanAssayRef = useRef<THREE.Mesh>(null);
+  const scanModelRef = useRef<THREE.Mesh>(null);
   const hoverMix = useRef(0);
   const introMix = useRef(0);
+  const animationTime = useRef(0);
   const dragRotX = useRef(0);
   const dragRotY = useRef(0);
   const lastPulseToken = useRef(0);
@@ -176,473 +175,551 @@ function KineticResearchArtifact({
 
   const palette = useMemo(
     () => ({
-      primary: isDark ? "#91A4FF" : "#5765F2",
-      accent: isDark ? "#67E8F9" : "#0891B2",
-      surface: isDark ? "#15213E" : "#EEF2FF",
-      surfaceGlow: isDark ? "#1F2A56" : "#D7E6FF",
-      line: isDark ? "#7EE7F6" : "#4A63FF",
-      node: isDark ? "#F4D17F" : "#F59E0B",
-      shadow: isDark ? "#020817" : "#C7D2FE",
+      primary: isDark ? "#9AA8FF" : "#5563E6",
+      cyan: isDark ? "#6EE7F9" : "#0891B2",
+      green: isDark ? "#6EE7B7" : "#059669",
+      amber: isDark ? "#F6D58A" : "#D97706",
+      surface: isDark ? "#12213A" : "#EEF6FF",
+      surfaceSoft: isDark ? "#172A45" : "#DDEBFF",
+      line: isDark ? "#A5B4FC" : "#4757D8",
     }),
     [isDark],
   );
 
   const materials = useMemo(
     () => ({
-      shell: new THREE.MeshStandardMaterial({
-        color: palette.primary,
-        emissive: palette.primary,
-        emissiveIntensity: isDark ? 0.35 : 0.18,
-        metalness: 0.38,
-        roughness: 0.36,
-        transparent: true,
-        opacity: 0.28,
+      helixA: new THREE.MeshStandardMaterial({
+        color: palette.cyan,
+        emissive: palette.cyan,
+        emissiveIntensity: isDark ? 0.36 : 0.16,
+        metalness: 0.18,
+        roughness: 0.32,
       }),
-      shellWire: new THREE.MeshBasicMaterial({
+      helixB: new THREE.MeshStandardMaterial({
+        color: palette.green,
+        emissive: palette.green,
+        emissiveIntensity: isDark ? 0.3 : 0.12,
+        metalness: 0.14,
+        roughness: 0.34,
+      }),
+      basePair: new THREE.LineBasicMaterial({
         color: palette.line,
         transparent: true,
-        opacity: isDark ? 0.42 : 0.28,
+        opacity: isDark ? 0.22 : 0.15,
+        depthWrite: false,
+      }),
+      baseNode: new THREE.MeshBasicMaterial({
+        color: palette.amber,
+        transparent: true,
+        opacity: 0.58,
+        depthWrite: false,
+      }),
+      proteinNode: new THREE.MeshStandardMaterial({
+        color: palette.primary,
+        emissive: palette.primary,
+        emissiveIntensity: isDark ? 0.26 : 0.1,
+        metalness: 0.12,
+        roughness: 0.46,
+        transparent: true,
+        opacity: 0.48,
+      }),
+      proteinLink: new THREE.LineBasicMaterial({
+        color: palette.cyan,
+        transparent: true,
+        opacity: isDark ? 0.14 : 0.1,
+        depthWrite: false,
+      }),
+      pocket: new THREE.MeshStandardMaterial({
+        color: palette.surface,
+        emissive: palette.green,
+        emissiveIntensity: isDark ? 0.22 : 0.1,
+        metalness: 0.16,
+        roughness: 0.28,
+        transparent: true,
+        opacity: 0.34,
+      }),
+      pocketWire: new THREE.MeshBasicMaterial({
+        color: palette.cyan,
+        transparent: true,
+        opacity: isDark ? 0.18 : 0.12,
         wireframe: true,
         depthWrite: false,
       }),
-      innerCore: new THREE.MeshStandardMaterial({
-        color: palette.surface,
-        emissive: palette.accent,
-        emissiveIntensity: isDark ? 0.3 : 0.16,
-        metalness: 0.18,
-        roughness: 0.24,
+      panel: new THREE.MeshBasicMaterial({
+        color: palette.surfaceSoft,
         transparent: true,
-        opacity: 0.94,
-      }),
-      ringPrimary: new THREE.MeshBasicMaterial({
-        color: palette.line,
-        transparent: true,
-        opacity: isDark ? 0.44 : 0.22,
-        depthWrite: false,
-      }),
-      ringSoft: new THREE.MeshBasicMaterial({
-        color: palette.primary,
-        transparent: true,
-        opacity: isDark ? 0.22 : 0.12,
-        depthWrite: false,
-      }),
-      plane: new THREE.MeshBasicMaterial({
-        color: palette.surfaceGlow,
-        transparent: true,
-        opacity: isDark ? 0.16 : 0.14,
+        opacity: isDark ? 0.12 : 0.09,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),
-      planeGlow: new THREE.MeshBasicMaterial({
-        color: palette.accent,
+      panelGlow: new THREE.MeshBasicMaterial({
+        color: palette.cyan,
         transparent: true,
-        opacity: isDark ? 0.1 : 0.08,
+        opacity: isDark ? 0.04 : 0.03,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),
       guide: new THREE.LineBasicMaterial({
         color: palette.line,
         transparent: true,
-        opacity: isDark ? 0.32 : 0.22,
+        opacity: isDark ? 0.18 : 0.13,
         depthWrite: false,
       }),
-      connector: new THREE.MeshBasicMaterial({
+      assayDot: new THREE.MeshBasicMaterial({
+        color: palette.green,
+        transparent: true,
+        opacity: 0.56,
+        depthWrite: false,
+      }),
+      assayHot: new THREE.MeshBasicMaterial({
+        color: palette.amber,
+        transparent: true,
+        opacity: 0.78,
+        depthWrite: false,
+      }),
+      graph: new THREE.LineBasicMaterial({
+        color: palette.cyan,
+        transparent: true,
+        opacity: isDark ? 0.4 : 0.28,
+        depthWrite: false,
+      }),
+      flow: new THREE.MeshBasicMaterial({
         color: palette.primary,
         transparent: true,
-        opacity: isDark ? 0.18 : 0.14,
+        opacity: isDark ? 0.2 : 0.14,
         depthWrite: false,
       }),
-      connectorGlow: new THREE.MeshBasicMaterial({
-        color: palette.accent,
+      floorGlow: new THREE.MeshBasicMaterial({
+        color: palette.surfaceSoft,
         transparent: true,
-        opacity: isDark ? 0.12 : 0.08,
+        opacity: isDark ? 0.1 : 0.07,
+        side: THREE.DoubleSide,
         depthWrite: false,
       }),
-      fieldLink: new THREE.LineBasicMaterial({
-        color: palette.line,
+      floorLine: new THREE.LineBasicMaterial({
+        color: palette.cyan,
         transparent: true,
-        opacity: isDark ? 0.36 : 0.2,
-        depthWrite: false,
-      }),
-      fieldNode: new THREE.MeshBasicMaterial({
-        color: palette.accent,
-        transparent: true,
-        opacity: 0.84,
-        depthWrite: false,
-      }),
-      fieldNodeWarm: new THREE.MeshBasicMaterial({
-        color: palette.node,
-        transparent: true,
-        opacity: 0.84,
+        opacity: isDark ? 0.16 : 0.1,
         depthWrite: false,
       }),
       pulse: new THREE.MeshBasicMaterial({
-        color: palette.accent,
+        color: palette.cyan,
         transparent: true,
         opacity: 0,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),
-      floorGlow: new THREE.MeshBasicMaterial({
+      pulseBloom: new THREE.MeshBasicMaterial({
         color: palette.primary,
         transparent: true,
-        opacity: isDark ? 0.08 : 0.05,
+        opacity: 0,
         side: THREE.DoubleSide,
         depthWrite: false,
       }),
       scan: new THREE.MeshBasicMaterial({
-        color: palette.accent,
+        color: palette.green,
         transparent: true,
-        opacity: isDark ? 0.26 : 0.18,
+        opacity: isDark ? 0.18 : 0.12,
         side: THREE.DoubleSide,
         depthWrite: false,
-      }),
-      satellite: new THREE.MeshStandardMaterial({
-        color: palette.node,
-        emissive: palette.node,
-        emissiveIntensity: isDark ? 0.42 : 0.2,
-        metalness: 0.18,
-        roughness: 0.38,
       }),
     }),
     [isDark, palette],
   );
 
-  const leftConnectorGeometry = useMemo(() => {
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-0.2, -0.06, 0.04),
-      new THREE.Vector3(-0.52, 0.06, 0.1),
-      new THREE.Vector3(-0.96, 0.18, 0.06),
-      new THREE.Vector3(-1.34, 0.26, -0.04),
-    ]);
-    return new THREE.TubeGeometry(curve, 48, 0.028, 12, false);
+  const helixGeometry = useMemo(() => {
+    const segments = 104;
+    const turns = 2.35;
+    const height = 1.92;
+    const radius = 0.42;
+    const depth = 0.24;
+
+    const createStrand = (phase: number) => {
+      const points: THREE.Vector3[] = [];
+      for (let index = 0; index <= segments; index += 1) {
+        const t = index / segments;
+        const angle = t * turns * Math.PI * 2 + phase;
+        points.push(
+          new THREE.Vector3(
+            Math.cos(angle) * radius,
+            -height / 2 + t * height,
+            Math.sin(angle) * depth,
+          ),
+        );
+      }
+      return points;
+    };
+
+    const strandA = createStrand(0);
+    const strandB = createStrand(Math.PI);
+    const pairPositions: number[] = [];
+    const nodePositions: Vec3[] = [];
+
+    for (let index = 4; index < segments; index += 8) {
+      const a = strandA[index];
+      const b = strandB[index];
+      pairPositions.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      if (index % 16 === 4) nodePositions.push([a.x, a.y, a.z]);
+      if (index % 24 === 12) nodePositions.push([b.x, b.y, b.z]);
+    }
+
+    return {
+      strandA: new THREE.TubeGeometry(new THREE.CatmullRomCurve3(strandA), 88, 0.016, 6, false),
+      strandB: new THREE.TubeGeometry(new THREE.CatmullRomCurve3(strandB), 88, 0.016, 6, false),
+      basePairs: createLineGeometry(pairPositions),
+      nodePositions,
+    };
   }, []);
 
-  const rightConnectorGeometry = useMemo(() => {
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0.22, -0.12, 0.02),
-      new THREE.Vector3(0.54, -0.08, 0.12),
-      new THREE.Vector3(0.98, 0.02, 0.08),
-      new THREE.Vector3(1.42, 0.08, -0.06),
-    ]);
-    return new THREE.TubeGeometry(curve, 48, 0.028, 12, false);
-  }, []);
-
-  const fieldGeometry = useMemo(() => {
+  const proteinGeometry = useMemo(() => {
     const nodes: Vec3[] = [
-      [-1.18, 0.8, -0.06],
-      [-0.58, 0.5, 0.16],
-      [0.04, 0.68, 0.1],
-      [0.64, 0.46, 0.18],
-      [1.18, 0.74, 0.04],
-      [-0.84, 0.08, 0.22],
-      [-0.16, 0.04, 0.3],
-      [0.54, -0.02, 0.24],
-      [1.12, 0.08, 0.1],
-      [0.04, -0.34, 0.34],
+      [-0.72, -0.34, -0.14],
+      [-0.48, -0.66, 0.08],
+      [-0.12, -0.5, 0.22],
+      [0.22, -0.68, 0.04],
+      [0.54, -0.38, -0.1],
+      [0.46, -0.02, 0.18],
+      [0.1, 0.08, 0.32],
+      [-0.26, -0.04, 0.2],
+      [-0.58, 0.02, -0.04],
+      [-0.16, -0.24, -0.22],
+      [0.28, -0.24, -0.24],
     ];
-
-    const indices: Array<[number, number]> = [
+    const links: Array<[number, number]> = [
       [0, 1],
       [1, 2],
       [2, 3],
       [3, 4],
-      [1, 5],
-      [2, 6],
-      [3, 7],
-      [4, 8],
+      [4, 5],
       [5, 6],
       [6, 7],
       [7, 8],
-      [6, 9],
+      [8, 0],
+      [2, 7],
+      [3, 10],
       [7, 9],
-      [2, 9],
-      [3, 9],
+      [9, 10],
+      [5, 10],
     ];
-
     const positions: number[] = [];
-    indices.forEach(([start, end]) => {
+    links.forEach(([start, end]) => {
       positions.push(...nodes[start], ...nodes[end]);
     });
-
-    return { nodes, geometry: createLineGeometry(positions) };
+    return { nodes, links: createLineGeometry(positions) };
   }, []);
 
-  const panelGuideGeometry = useMemo(() => createPanelGuideGeometry(1.22, 0.76, 4, 4), []);
+  const assayDots = useMemo(() => {
+    const dots: Array<{ position: Vec3; hot: boolean; scale: number }> = [];
+    for (let row = 0; row < 4; row += 1) {
+      for (let col = 0; col < 4; col += 1) {
+        const signal = (row * 5 + col * 3) % 8;
+        dots.push({
+          position: [-0.36 + col * 0.24, -0.27 + row * 0.18, 0.026],
+          hot: signal === 0 || signal === 5,
+          scale: signal === 0 ? 1.18 : signal === 5 ? 1.04 : 0.82,
+        });
+      }
+    }
+    return dots;
+  }, []);
 
-  useFrame(({ clock }, rawDelta) => {
+  const modelGraphGeometry = useMemo(() => {
+    const points: Vec3[] = [
+      [-0.5, -0.22, 0.026],
+      [-0.34, -0.05, 0.026],
+      [-0.18, -0.12, 0.026],
+      [0.0, 0.12, 0.026],
+      [0.18, 0.02, 0.026],
+      [0.34, 0.23, 0.026],
+      [0.52, 0.16, 0.026],
+    ];
+    const positions: number[] = [];
+    for (let index = 0; index < points.length - 1; index += 1) {
+      positions.push(...points[index], ...points[index + 1]);
+    }
+    return { points, geometry: createLineGeometry(positions) };
+  }, []);
+
+  const panelGuideGeometry = useMemo(() => createPanelGuideGeometry(1.08, 0.74, 4, 4), []);
+  const baseGuideGeometry = useMemo(() => createPanelGuideGeometry(3.0, 1.18, 6, 3), []);
+  const flowGeometry = useMemo(() => {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-0.98, -0.08, 0.0),
+      new THREE.Vector3(-0.58, 0.14, 0.14),
+      new THREE.Vector3(-0.12, 0.08, 0.28),
+      new THREE.Vector3(0.42, 0.18, 0.16),
+      new THREE.Vector3(0.9, -0.02, -0.02),
+    ]);
+    return new THREE.TubeGeometry(curve, 48, 0.01, 6, false);
+  }, []);
+
+  useFrame((_, rawDelta) => {
     if (!groupRef.current) return;
 
-    const delta = Math.min(rawDelta, 0.03);
-    const elapsed = clock.elapsedTime;
-    const motionScale = reducedMotion ? 0.38 : 1;
+    const delta = Math.min(rawDelta, 0.024);
+    const motionScale = reducedMotion ? 0.22 : 1;
     introMix.current = THREE.MathUtils.damp(
       introMix.current,
       1,
-      reducedMotion ? 1.8 : 1.2,
+      reducedMotion ? 0.85 : 0.55,
       delta,
     );
+    const startupSpeed = reducedMotion ? 0.08 : 0.16 + introMix.current * 0.34;
+    animationTime.current += delta * startupSpeed;
+    const elapsed = animationTime.current;
 
     const mouseX = mouseRef.current.x;
     const mouseY = mouseRef.current.y;
+    const hoverDx = Math.abs(mouseX * 7 - position[0]);
+    const hoverDy = Math.abs(mouseY * 5 - position[1]);
+    const hoverTarget = hoverDx < 2.15 && hoverDy < 1.28 ? 1 : 0;
+    hoverMix.current = THREE.MathUtils.damp(hoverMix.current, hoverTarget, 4, delta);
+
     const drag = dragRef.current;
-
-    const hoverDistance = Math.hypot(
-      mouseX * 7 - position[0],
-      mouseY * 5 - position[1],
-    );
-    const hoverTarget = hoverDistance < 3.8 ? 1 : 0;
-    hoverMix.current = THREE.MathUtils.damp(
-      hoverMix.current,
-      hoverTarget,
-      4,
-      delta,
-    );
-
     if (drag.active === 1) {
       const startX = (mouseRef.current.x - drag.dx) * 7;
       const startY = (mouseRef.current.y + drag.dy) * 5;
-      const dragDistance = Math.hypot(startX - position[0], startY - position[1]);
+      const dragDx = Math.abs(startX - position[0]);
+      const dragDy = Math.abs(startY - position[1]);
 
-      if (dragDistance < 4.2) {
+      if (dragDx < 2.25 && dragDy < 1.4) {
         dragRotY.current = THREE.MathUtils.clamp(
-          dragRotY.current + drag.dx * 1.35,
-          -0.65,
-          0.65,
+          dragRotY.current + drag.dx * 1.25,
+          -0.62,
+          0.62,
         );
         dragRotX.current = THREE.MathUtils.clamp(
-          dragRotX.current - drag.dy * 0.95,
-          -0.42,
-          0.42,
+          dragRotX.current - drag.dy * 0.86,
+          -0.38,
+          0.38,
         );
       }
     }
 
-    dragRotY.current = THREE.MathUtils.damp(dragRotY.current, 0, 3.2, delta);
+    dragRotY.current = THREE.MathUtils.damp(dragRotY.current, 0, 3.3, delta);
     dragRotX.current = THREE.MathUtils.damp(dragRotX.current, 0, 3.6, delta);
 
-    const clickDistance = Math.hypot(
-      clickRef.current.x * 7 - position[0],
-      clickRef.current.y * 5 - position[1],
-    );
-    if (clickRef.current.time > lastPulseToken.current && clickDistance < 4.1) {
+    const clickDx = Math.abs(clickRef.current.x * 7 - position[0]);
+    const clickDy = Math.abs(clickRef.current.y * 5 - position[1]);
+    if (
+      clickRef.current.time > lastPulseToken.current &&
+      clickDx < 2.25 &&
+      clickDy < 1.4
+    ) {
       lastPulseToken.current = clickRef.current.time;
       pulseStart.current = elapsed;
     }
 
     const pulseAge = elapsed - pulseStart.current;
+    const pulseProgress =
+      pulseAge >= 0 && pulseAge <= 1.55 ? pulseAge / 1.55 : 1;
     const pulseStrength =
-      pulseAge >= 0 && pulseAge <= 1.4 ? 1 - pulseAge / 1.4 : 0;
+      pulseAge >= 0 && pulseAge <= 1.55
+        ? Math.sin(pulseProgress * Math.PI) * (1 - pulseProgress * 0.18)
+        : 0;
     const intro = introMix.current * motionScale;
     const hover = hoverMix.current;
-    const baseRotY = elapsed * 0.022 * intro;
-    const baseRotX = Math.sin(elapsed * 0.2) * 0.035 * intro;
-    const targetRotY = baseRotY + mouseX * 0.11 + dragRotY.current;
-    const targetRotX = baseRotX - mouseY * 0.08 + dragRotX.current;
+    const clickNudge = pulseStrength * Math.sin(pulseProgress * Math.PI * 2);
 
     groupRef.current.rotation.y = THREE.MathUtils.damp(
       groupRef.current.rotation.y,
-      targetRotY,
+      elapsed * 0.006 * intro + mouseX * 0.12 + dragRotY.current + clickNudge * 0.06,
       3.4,
       delta,
     );
     groupRef.current.rotation.x = THREE.MathUtils.damp(
       groupRef.current.rotation.x,
-      targetRotX,
-      3.6,
+      Math.sin(elapsed * 0.1) * 0.025 * intro - mouseY * 0.078 + dragRotX.current,
+      3.7,
       delta,
     );
     groupRef.current.position.y =
-      position[1] + Math.sin(elapsed * 0.28) * 0.055 * intro;
+      position[1] + Math.sin(elapsed * 0.25) * 0.055 * intro + pulseStrength * 0.035;
+    groupRef.current.scale.setScalar(scale * (1 + hover * 0.045 + pulseStrength * 0.045));
 
-    const scaleMix = 1 + hover * 0.035 + pulseStrength * 0.03;
-    groupRef.current.scale.setScalar(scale * scaleMix);
-
-    if (gimbalRef.current) {
-      gimbalRef.current.rotation.x =
-        Math.PI / 2.8 + Math.sin(elapsed * 0.22) * 0.06 * intro;
-      gimbalRef.current.rotation.y = elapsed * 0.04 * intro;
-      gimbalRef.current.rotation.z =
-        Math.sin(elapsed * 0.16) * 0.08 * intro + hover * 0.04;
+    if (helixRef.current) {
+      helixRef.current.rotation.y = elapsed * 0.055 * intro + hover * 0.045;
+      helixRef.current.position.y = 0.04 + Math.sin(elapsed * 0.18) * 0.028 * intro;
     }
 
-    if (fieldRef.current) {
-      fieldRef.current.rotation.y = Math.sin(elapsed * 0.18) * 0.06 * intro;
-      fieldRef.current.position.y =
-        0.06 + Math.sin(elapsed * 0.34) * 0.03 * intro;
+    if (proteinRef.current) {
+      proteinRef.current.rotation.y = -elapsed * 0.024 * intro;
+      proteinRef.current.rotation.z = Math.sin(elapsed * 0.1) * 0.045 * intro;
+      proteinRef.current.position.y = -0.08 + Math.sin(elapsed * 0.16 + 0.6) * 0.02 * intro;
     }
 
-    if (leftPanelRef.current) {
-      leftPanelRef.current.rotation.y =
-        0.4 + hover * 0.12 + Math.sin(elapsed * 0.24) * 0.04 * intro;
-      leftPanelRef.current.rotation.x =
-        0.12 + Math.sin(elapsed * 0.18) * 0.03 * intro;
-      leftPanelRef.current.position.z = -0.08 + hover * 0.08;
+    if (assayPanelRef.current) {
+      assayPanelRef.current.rotation.y =
+        0.5 + hover * 0.1 + Math.sin(elapsed * 0.09) * 0.026 * intro + pulseStrength * 0.035;
+      assayPanelRef.current.position.z = -0.08 + hover * 0.08 + pulseStrength * 0.045;
     }
 
-    if (rightPanelRef.current) {
-      rightPanelRef.current.rotation.y =
-        -0.48 - hover * 0.12 + Math.sin(elapsed * 0.2 + 0.6) * 0.04 * intro;
-      rightPanelRef.current.rotation.x =
-        -0.08 + Math.sin(elapsed * 0.16 + 0.5) * 0.03 * intro;
-      rightPanelRef.current.position.z = 0.02 + hover * 0.08;
+    if (modelPanelRef.current) {
+      modelPanelRef.current.rotation.y =
+        -0.5 - hover * 0.1 + Math.sin(elapsed * 0.08 + 0.7) * 0.026 * intro - pulseStrength * 0.035;
+      modelPanelRef.current.position.z = 0.02 + hover * 0.08 + pulseStrength * 0.045;
     }
 
-    if (scanLeftRef.current) {
-      scanLeftRef.current.position.x =
-        Math.sin(elapsed * (0.8 + hover * 0.18) * intro + 0.4) * 0.42;
+    if (scanAssayRef.current) {
+      scanAssayRef.current.position.x =
+        Math.sin(elapsed * (0.32 + hover * 0.08 + pulseStrength * 0.18) * intro) * 0.42;
     }
 
-    if (scanRightRef.current) {
-      scanRightRef.current.position.x =
-        Math.sin(elapsed * (0.72 + hover * 0.2) * intro + Math.PI * 0.35) * 0.42;
+    if (scanModelRef.current) {
+      scanModelRef.current.position.x =
+        Math.sin(elapsed * (0.28 + hover * 0.08 + pulseStrength * 0.16) * intro + Math.PI * 0.4) * 0.42;
     }
 
-    const orbitSpeed = (0.42 + hover * 0.18) * intro;
-    if (satelliteARef.current) {
-      satelliteARef.current.position.set(
-        Math.cos(elapsed * orbitSpeed) * 1.58,
-        0.18 + Math.sin(elapsed * orbitSpeed * 1.7) * 0.18,
-        Math.sin(elapsed * orbitSpeed) * 0.42,
-      );
-    }
-
-    if (satelliteBRef.current) {
-      satelliteBRef.current.position.set(
-        Math.cos(elapsed * orbitSpeed + 2.2) * 1.22,
-        -0.26 + Math.sin(elapsed * orbitSpeed * 1.4 + 0.9) * 0.16,
-        Math.sin(elapsed * orbitSpeed + 2.2) * 0.52,
-      );
-    }
-
-    if (satelliteCRef.current) {
-      satelliteCRef.current.position.set(
-        Math.cos(elapsed * orbitSpeed + 4.1) * 1.76,
-        0.04 + Math.sin(elapsed * orbitSpeed * 1.25 + 0.4) * 0.22,
-        Math.sin(elapsed * orbitSpeed + 4.1) * 0.34,
-      );
-    }
-
-    materials.shell.opacity = 0.28 + hover * 0.08 + pulseStrength * 0.04;
-    materials.shellWire.opacity = (isDark ? 0.42 : 0.28) + hover * 0.08;
-    materials.innerCore.emissiveIntensity = (isDark ? 0.3 : 0.16) + hover * 0.08;
-    materials.ringPrimary.opacity = (isDark ? 0.44 : 0.22) + hover * 0.08;
-    materials.ringSoft.opacity = (isDark ? 0.22 : 0.12) + pulseStrength * 0.1;
-    materials.plane.opacity = (isDark ? 0.16 : 0.14) + hover * 0.06;
-    materials.planeGlow.opacity = (isDark ? 0.1 : 0.08) + pulseStrength * 0.08;
-    materials.guide.opacity = (isDark ? 0.32 : 0.22) + hover * 0.06;
-    materials.connector.opacity = (isDark ? 0.18 : 0.14) + hover * 0.04;
-    materials.connectorGlow.opacity = (isDark ? 0.12 : 0.08) + pulseStrength * 0.08;
-    materials.fieldLink.opacity = (isDark ? 0.36 : 0.2) + hover * 0.06;
-    materials.fieldNode.opacity = 0.84 + hover * 0.08;
-    materials.fieldNodeWarm.opacity = 0.84 + pulseStrength * 0.1;
-    materials.floorGlow.opacity = (isDark ? 0.08 : 0.05) + pulseStrength * 0.05;
-    materials.pulse.opacity = pulseStrength * 0.16;
-    materials.scan.opacity = (isDark ? 0.26 : 0.18) + hover * 0.08;
-    materials.satellite.emissiveIntensity = (isDark ? 0.42 : 0.2) + hover * 0.08;
+    materials.basePair.opacity = (isDark ? 0.22 : 0.15) + hover * 0.04;
+    materials.proteinLink.opacity = (isDark ? 0.14 : 0.1) + hover * 0.04;
+    materials.pocket.opacity = 0.34 + hover * 0.06;
+    materials.pocketWire.opacity = (isDark ? 0.18 : 0.12) + pulseStrength * 0.08;
+    materials.panel.opacity = (isDark ? 0.12 : 0.09) + hover * 0.04;
+    materials.panelGlow.opacity = (isDark ? 0.04 : 0.03) + pulseStrength * 0.06;
+    materials.guide.opacity = (isDark ? 0.18 : 0.13) + hover * 0.04;
+    materials.graph.opacity = (isDark ? 0.4 : 0.28) + hover * 0.06;
+    materials.flow.opacity = (isDark ? 0.2 : 0.14) + pulseStrength * 0.08;
+    materials.floorGlow.opacity = (isDark ? 0.1 : 0.07) + hover * 0.025 + pulseStrength * 0.04;
+    materials.floorLine.opacity = (isDark ? 0.16 : 0.1) + hover * 0.04 + pulseStrength * 0.08;
+    materials.pulse.opacity = pulseStrength * 0.32;
+    materials.pulseBloom.opacity = pulseStrength * (isDark ? 0.17 : 0.12);
+    materials.scan.opacity = (isDark ? 0.18 : 0.12) + hover * 0.06;
 
     if (pulseRef.current) {
-      const ringScale = 1 + (1 - pulseStrength) * 1.8;
-      pulseRef.current.scale.setScalar(ringScale);
+      pulseRef.current.position.x = -1.34 + pulseProgress * 2.68;
+      pulseRef.current.scale.set(1 + pulseStrength * 0.32, 1, 1);
+    }
+
+    if (pulseBloomRef.current) {
+      pulseBloomRef.current.scale.set(
+        1 + pulseProgress * 0.16,
+        1 + pulseProgress * 0.1,
+        1,
+      );
     }
   });
+
+  const baseRotation: Vec3 = [-Math.PI / 2, 0, 0];
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
       <mesh
-        position={[0.04, -1.18, 0]}
-        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0.02, -1.24, 0]}
+        rotation={baseRotation}
         material={materials.floorGlow}
-        scale={[1.5, 0.92, 1]}
       >
-        <ringGeometry args={[1.04, 2.12, 128]} />
+        <planeGeometry args={[3.0, 1.18]} />
+      </mesh>
+
+      <lineSegments
+        position={[0.02, -1.225, 0]}
+        rotation={baseRotation}
+        geometry={baseGuideGeometry}
+        material={materials.floorLine}
+      />
+
+      <mesh
+        ref={pulseBloomRef}
+        position={[0.02, -1.218, 0]}
+        rotation={baseRotation}
+        material={materials.pulseBloom}
+      >
+        <planeGeometry args={[2.58, 0.92]} />
       </mesh>
 
       <mesh
         ref={pulseRef}
-        position={[0.04, -1.18, 0]}
-        rotation={[-Math.PI / 2, 0, 0]}
+        position={[-1.34, -1.212, 0]}
+        rotation={baseRotation}
         material={materials.pulse}
-        scale={[1.1, 1.1, 1]}
       >
-        <ringGeometry args={[0.92, 1.36, 128]} />
+        <planeGeometry args={[0.22, 1.18]} />
       </mesh>
 
-      <group ref={gimbalRef} position={[0, -0.08, 0.02]}>
-        <mesh material={materials.ringPrimary} scale={[1.58, 0.8, 1]}>
-          <torusGeometry args={[0.96, 0.024, 10, 180]} />
-        </mesh>
-        <mesh rotation={[0.54, Math.PI / 2.7, 0.18]} material={materials.ringSoft}>
-          <torusGeometry args={[0.76, 0.02, 10, 160]} />
-        </mesh>
-        <mesh rotation={[1.18, -0.42, 0.2]} material={materials.ringSoft}>
-          <torusGeometry args={[1.18, 0.018, 10, 180]} />
-        </mesh>
-      </group>
-
-      <mesh position={[0, -0.08, 0.04]} material={materials.shell}>
-        <octahedronGeometry args={[0.34, 0]} />
-      </mesh>
-      <mesh position={[0, -0.08, 0.04]} material={materials.shellWire}>
-        <icosahedronGeometry args={[0.5, 0]} />
-      </mesh>
-      <mesh position={[0, -0.08, 0.04]} material={materials.innerCore}>
-        <sphereGeometry args={[0.12, 24, 24]} />
-      </mesh>
-
-      <group ref={leftPanelRef} position={[-1.32, 0.22, -0.08]} rotation={[0.12, 0.4, -0.28]}>
-        <mesh material={materials.plane}>
-          <planeGeometry args={[1.22, 0.76]} />
-        </mesh>
-        <mesh position={[0, 0, -0.01]} material={materials.planeGlow}>
-          <planeGeometry args={[1.06, 0.64]} />
-        </mesh>
-        <lineSegments position={[0, 0, 0.012]} geometry={panelGuideGeometry} material={materials.guide} />
-        <mesh ref={scanLeftRef} position={[0, 0, 0.018]} material={materials.scan}>
-          <planeGeometry args={[0.14, 0.7]} />
-        </mesh>
-      </group>
-
-      <group ref={rightPanelRef} position={[1.42, 0.02, 0.02]} rotation={[-0.08, -0.48, 0.2]}>
-        <mesh material={materials.plane}>
-          <planeGeometry args={[1.22, 0.76]} />
-        </mesh>
-        <mesh position={[0, 0, -0.01]} material={materials.planeGlow}>
-          <planeGeometry args={[1.06, 0.64]} />
-        </mesh>
-        <lineSegments position={[0, 0, 0.012]} geometry={panelGuideGeometry} material={materials.guide} />
-        <mesh ref={scanRightRef} position={[0, 0, 0.018]} material={materials.scan}>
-          <planeGeometry args={[0.14, 0.7]} />
-        </mesh>
-      </group>
-
-      <mesh geometry={leftConnectorGeometry} material={materials.connector} />
-      <mesh geometry={leftConnectorGeometry} material={materials.connectorGlow} />
-      <mesh geometry={rightConnectorGeometry} material={materials.connector} />
-      <mesh geometry={rightConnectorGeometry} material={materials.connectorGlow} />
-
-      <group ref={fieldRef} position={[0, 0.04, -0.24]}>
-        <lineSegments geometry={fieldGeometry.geometry} material={materials.fieldLink} />
-        {fieldGeometry.nodes.map((node, index) => (
+      <group ref={helixRef} position={[0, 0.06, 0.02]} rotation={[0.1, -0.2, -0.08]}>
+        <mesh geometry={helixGeometry.strandA} material={materials.helixA} />
+        <mesh geometry={helixGeometry.strandB} material={materials.helixB} />
+        <lineSegments geometry={helixGeometry.basePairs} material={materials.basePair} />
+        {helixGeometry.nodePositions.map((node, index) => (
           <mesh
-            key={`field-node-${index}`}
+            key={`base-node-${index}`}
             position={node}
-            material={index === 2 || index === 9 ? materials.fieldNodeWarm : materials.fieldNode}
+            material={materials.baseNode}
+            scale={index % 2 === 0 ? 1 : 0.82}
           >
-            <sphereGeometry args={[index === 9 ? 0.065 : 0.052, 14, 14]} />
+            <sphereGeometry args={[0.035, 12, 12]} />
           </mesh>
         ))}
       </group>
 
-      <mesh ref={satelliteARef} material={materials.satellite}>
-        <sphereGeometry args={[0.06, 16, 16]} />
-      </mesh>
-      <mesh ref={satelliteBRef} material={materials.satellite}>
-        <sphereGeometry args={[0.05, 16, 16]} />
-      </mesh>
-      <mesh ref={satelliteCRef} material={materials.satellite}>
-        <sphereGeometry args={[0.045, 16, 16]} />
-      </mesh>
+      <group ref={proteinRef} position={[0, -0.14, 0.02]} rotation={[0.2, 0.35, -0.08]} scale={[0.88, 0.88, 0.88]}>
+        <lineSegments geometry={proteinGeometry.links} material={materials.proteinLink} />
+        {proteinGeometry.nodes.map((node, index) => (
+          <mesh
+            key={`protein-node-${index}`}
+            position={node}
+            material={materials.proteinNode}
+          >
+            <sphereGeometry args={[index === 6 ? 0.074 : 0.056, 16, 16]} />
+          </mesh>
+        ))}
+        <mesh position={[0.02, -0.24, 0.02]} material={materials.pocket}>
+          <icosahedronGeometry args={[0.34, 1]} />
+        </mesh>
+        <mesh position={[0.02, -0.24, 0.02]} material={materials.pocketWire}>
+          <icosahedronGeometry args={[0.43, 1]} />
+        </mesh>
+      </group>
+
+      <mesh geometry={flowGeometry} material={materials.flow} />
+
+      <group ref={assayPanelRef} position={[-1.14, 0.12, -0.08]} rotation={[0.1, 0.46, -0.18]}>
+        <mesh material={materials.panel}>
+          <planeGeometry args={[1.08, 0.74]} />
+        </mesh>
+        <mesh position={[0, 0, -0.01]} material={materials.panelGlow}>
+          <planeGeometry args={[0.92, 0.6]} />
+        </mesh>
+        <lineSegments position={[0, 0, 0.012]} geometry={panelGuideGeometry} material={materials.guide} />
+        <mesh ref={scanAssayRef} position={[0, 0, 0.018]} material={materials.scan}>
+          <planeGeometry args={[0.12, 0.68]} />
+        </mesh>
+        {assayDots.map((dot, index) => (
+          <mesh
+            key={`assay-dot-${index}`}
+            position={dot.position}
+            material={dot.hot ? materials.assayHot : materials.assayDot}
+            scale={dot.scale}
+          >
+            <sphereGeometry args={[0.026, 10, 10]} />
+          </mesh>
+        ))}
+      </group>
+
+      <group ref={modelPanelRef} position={[1.12, -0.08, 0.02]} rotation={[-0.08, -0.46, 0.14]}>
+        <mesh material={materials.panel}>
+          <planeGeometry args={[1.08, 0.74]} />
+        </mesh>
+        <mesh position={[0, 0, -0.01]} material={materials.panelGlow}>
+          <planeGeometry args={[0.92, 0.6]} />
+        </mesh>
+        <lineSegments position={[0, 0, 0.012]} geometry={panelGuideGeometry} material={materials.guide} />
+        <lineSegments geometry={modelGraphGeometry.geometry} material={materials.graph} />
+        <mesh ref={scanModelRef} position={[0, 0, 0.018]} material={materials.scan}>
+          <planeGeometry args={[0.12, 0.68]} />
+        </mesh>
+        {modelGraphGeometry.points.map((node, index) => (
+          <mesh
+            key={`model-node-${index}`}
+            position={node}
+            material={index === 3 || index === 5 ? materials.assayHot : materials.assayDot}
+            scale={index === 5 ? 1.18 : 0.9}
+          >
+            <sphereGeometry args={[0.032, 10, 10]} />
+          </mesh>
+        ))}
+      </group>
+
     </group>
   );
 }
@@ -832,10 +909,10 @@ export default function HeroScene() {
   }, []);
 
   const artifactPosition = useMemo<Vec3>(
-    () => (isMobile ? [0, -2.36, -3.1] : [-1.02, -2.42, -3.12]),
+    () => (isMobile ? [1.08, -0.72, -3.12] : [-0.18, -1.72, -3.12]),
     [isMobile],
   );
-  const artifactScale = isMobile ? 0.86 : 1.2;
+  const artifactScale = isMobile ? 0.68 : 1.16;
   const interactivePoints = useMemo(
     () => [[artifactPosition[0], artifactPosition[1]]],
     [artifactPosition],
@@ -852,8 +929,15 @@ export default function HeroScene() {
         const mouseX = mouseRef.current.x * 7;
         const mouseY = mouseRef.current.y * 5;
         const isNearArtifact = interactivePoints.some(([x, y]) => {
-          return Math.hypot(mouseX - x, mouseY - y) < 4.1;
+          const focusDx = Math.abs(mouseX - x);
+          const focusDy = Math.abs(mouseY - y);
+          return focusDx < 1.85 && focusDy < 1.12;
         });
+
+        heroElement.classList.toggle(
+          "hero-scene-focused",
+          isNearArtifact || isDragging.current,
+        );
 
         heroElement.style.cursor = isDragging.current
           ? "grabbing"
@@ -870,24 +954,27 @@ export default function HeroScene() {
     return () => {
       cancelAnimationFrame(rafId);
       const heroElement = document.getElementById("hero");
-      if (heroElement) heroElement.style.cursor = "default";
+      if (heroElement) {
+        heroElement.style.cursor = "default";
+        heroElement.classList.remove("hero-scene-focused");
+      }
     };
   }, [interactivePoints, isMobile]);
 
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden opacity-[0.68]">
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden opacity-[0.74]">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[0.75, 1.15]}
         camera={{ position: [0, 0, 7], fov: 48 }}
         gl={{ antialias: true, alpha: true }}
-        performance={{ min: 0.5 }}
+        performance={{ min: 0.35 }}
       >
         <ambientLight intensity={0.72} />
         <directionalLight position={[4, 3, 5]} intensity={1.35} color={isDark ? "#A5B4FC" : "#818CF8"} />
         <pointLight position={[-4, -1, 4]} intensity={1.2} color={isDark ? "#67E8F9" : "#38BDF8"} />
         <pointLight position={[2.5, 2, 3.5]} intensity={0.9} color={isDark ? "#FDE68A" : "#FDBA74"} />
-        <AmbientParticles isDark={isDark} count={isMobile ? 64 : 112} mouseRef={mouseRef} />
-        <KineticResearchArtifact
+        <AmbientParticles isDark={isDark} count={isMobile ? 22 : 42} mouseRef={mouseRef} />
+        <ResearchArtifact
           clickRef={clickRef}
           dragRef={dragRef}
           isDark={isDark}

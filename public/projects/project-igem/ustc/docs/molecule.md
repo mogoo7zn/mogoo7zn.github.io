@@ -2,7 +2,7 @@
 
 ## 概述 / Overview
 
-该分子可视化系统提供了一种灵活而强大的方式，可以在浏览器中渲染分子结构。它使用React和D3.js构建，能够提供高质量的、互动式的二维视觉展示，适用于各种分子，从简单的结构如乙醇到复杂的分子如青霉素。
+该分子可视化系统提供了一种灵活而强大的方式，可以在浏览器中渲染分子结构.它使用React和D3.js构建，能够提供高质量的、互动式的二维视觉展示，适用于各种分子，从简单的结构如乙醇到复杂的分子如青霉素.
 
 This molecule visualization system provides a flexible and powerful way to render molecular structures in the browser. Built using React and D3.js, it offers high-quality, interactive 2D visualization of various molecules from simple structures like ethanol to complex molecules like penicillin.
 
@@ -10,7 +10,7 @@ This molecule visualization system provides a flexible and powerful way to rende
 
 ### 1. 分子查看器 / MoleculeViewer
 
-核心组件，使用D3.js渲染具有3D视觉效果的分子。
+核心组件，使用D3.js渲染具有3D视觉效果的分子.
 
 #### 特性 / Features
 
@@ -109,7 +109,7 @@ import MoleculeViewer from '../components/common/Molecules/MoleculeViewer';
 
 ### 2. 分子信息 / MoleculeInfo
 
-显示从SMILES字符串派生的分子信息的组件。
+显示从SMILES字符串派生的分子信息的组件.
 
 #### 使用方法 / Usage
 
@@ -284,4 +284,4 @@ import MoleculeInfo from '../components/common/Molecules/MoleculeInfo';
 
 ## 最后说明 / Final Notes
 
-分子可视化系统在灵活性、性能和视觉质量之间取得了平衡。它设计用于教育和科学可视化需求，同时在处理复杂分子结构时保持良好的性能。
+分子可视化系统在灵活性、性能和视觉质量之间取得了平衡.它设计用于教育和科学可视化需求，同时在处理复杂分子结构时保持良好的性能.

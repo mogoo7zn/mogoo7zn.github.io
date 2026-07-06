@@ -2,7 +2,7 @@
 
 ## 项目简介 🌟
 
-本项目是2025 iGEM wiki，基于Next.js，为 USTC iGEM 团队提供现代化、组件化的网页开发框架。
+本项目是2025 iGEM wiki，基于Next.js，为 USTC iGEM 团队提供现代化、组件化的网页开发框架.
 
 ## 技术文档 📚
 

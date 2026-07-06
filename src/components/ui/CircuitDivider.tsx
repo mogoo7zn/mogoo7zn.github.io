@@ -1,6 +1,6 @@
 /**
  * A subtle circuit / data-flow line divider between sections.
- * Purely decorative – represents data flowing through an embodied agent's system.
+ * Purely decorative - represents data flowing through a research system.
  */
 export default function CircuitDivider() {
   return (

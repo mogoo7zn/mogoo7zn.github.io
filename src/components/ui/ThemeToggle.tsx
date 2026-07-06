@@ -1,16 +1,22 @@
 import { useStore } from "@nanostores/react";
+import { useEffect, useState } from "react";
 import { $theme, resolveTheme, toggleTheme } from "@/stores/theme";
 import { Monitor, Sun, Moon } from "lucide-react";
 
 export default function ThemeToggle() {
   const theme = useStore($theme);
+  const [hasMounted, setHasMounted] = useState(false);
   const resolved = resolveTheme(theme);
+
+  useEffect(() => setHasMounted(true), []);
 
   const Icon =
     theme === "system" ? Monitor : theme === "dark" ? Sun : Moon;
 
   const title =
-    theme === "system"
+    !hasMounted
+      ? "Toggle theme"
+      : theme === "system"
       ? `Follow system (${resolved === "dark" ? "currently dark" : "currently light"})`
       : theme === "light"
         ? "Switch to dark theme"

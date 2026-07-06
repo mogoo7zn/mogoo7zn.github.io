@@ -180,7 +180,7 @@ const Home = () => {
 
   // 返回组件树
   return (
-    /*<>...</>是React Fragment的简写语法，它允许在不添加额外DOM节点的情况下对多个元素进行分组。等同于：
+    /*<>...</>是React Fragment的简写语法，它允许在不添加额外DOM节点的情况下对多个元素进行分组.等同于：
       <React.Fragment>
         <Banner />
         <One />

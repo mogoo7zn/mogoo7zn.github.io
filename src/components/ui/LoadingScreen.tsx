@@ -6,7 +6,7 @@ export default function LoadingScreen() {
 
   useEffect(() => {
     // Wait for window load + a minimum display time
-    const minTime = new Promise((r) => setTimeout(r, 1200));
+    const minTime = new Promise((r) => setTimeout(r, 650));
     const loaded = new Promise<void>((r) => {
       if (document.readyState === "complete") r();
       else window.addEventListener("load", () => r(), { once: true });
@@ -21,7 +21,7 @@ export default function LoadingScreen() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
           style={{ backgroundColor: "var(--color-bg)" }}
         >

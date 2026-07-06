@@ -17,12 +17,14 @@ const statusColor: Record<Publication["status"], string> = {
   published: "bg-green-500/15 text-green-600 dark:text-green-400",
   preprint: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
   "under-review": "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  "in-preparation": "bg-violet-500/15 text-violet-600 dark:text-violet-300",
 };
 
 const statusLabel: Record<Publication["status"], { zh: string; en: string }> = {
   published: { zh: "已发表", en: "Published" },
   preprint: { zh: "预印本", en: "Preprint" },
   "under-review": { zh: "审稿中", en: "Under Review" },
+  "in-preparation": { zh: "准备中", en: "In Preparation" },
 };
 
 export default function PublicationList({
@@ -55,11 +57,12 @@ export default function PublicationList({
     <div className="space-y-6">
       {pubs.map((pub, i) => {
         const isExpanded = expandedId === pub.id;
+        const doiLabel = pub.doi?.includes("biorxiv.org") ? "bioRxiv" : "DOI";
 
         return (
           <motion.article
             key={pub.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.06 * i, duration: 0.4 }}
             className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 overflow-hidden"
@@ -210,7 +213,7 @@ export default function PublicationList({
                         border: "1px solid var(--color-border)",
                       }}
                     >
-                      <ExternalLink size={16} /> DOI
+                      <ExternalLink size={16} /> {doiLabel}
                     </a>
                   )}
                   {pub.code && (

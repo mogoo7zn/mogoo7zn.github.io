@@ -1,17 +1,19 @@
-﻿import { useStore } from "@nanostores/react";
+import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
 import { Github, Mail, Dna, Network } from "lucide-react";
 import { profile } from "@/data/profile";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import VisitCounter from "@/components/blog/VisitCounter";
 
 function ResearchCore() {
+  const reducedMotion = useReducedMotion();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   useEffect(() => {
+    if (reducedMotion) return;
     const handleMouseMove = (event: MouseEvent) => {
       mouseX.set((event.clientX / window.innerWidth - 0.5) * 2);
       mouseY.set((event.clientY / window.innerHeight - 0.5) * 2);
@@ -19,31 +21,33 @@ function ResearchCore() {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, reducedMotion]);
 
   const springConfig = { damping: 25, stiffness: 150 };
   const eyeX = useSpring(
-    useTransform(mouseX, [-1, 1], [-20, 20]),
+    useTransform(mouseX, [-1, 1], [-8, 8]),
     springConfig,
   );
   const eyeY = useSpring(
-    useTransform(mouseY, [-1, 1], [-20, 20]),
+    useTransform(mouseY, [-1, 1], [-8, 8]),
     springConfig,
   );
   const [isBlinking, setIsBlinking] = useState(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    if (reducedMotion) return;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let blinkId: ReturnType<typeof setTimeout>;
 
     const triggerBlink = () => {
       setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 200);
+      blinkId = setTimeout(() => setIsBlinking(false), 160);
       timeoutId = setTimeout(triggerBlink, Math.random() * 5000 + 3000);
     };
 
     timeoutId = setTimeout(triggerBlink, 3000);
-    return () => clearTimeout(timeoutId);
-  }, []);
+    return () => { clearTimeout(timeoutId); clearTimeout(blinkId); };
+  }, [reducedMotion]);
 
   const pupilX = useTransform(eyeX, (value) => value * 1.5);
   const pupilY = useTransform(eyeY, (value) => value * 1.5);
@@ -51,7 +55,7 @@ function ResearchCore() {
   const pathD = useTransform([eyeX, eyeY], ([x, y]) => {
     const p1 = [33.15, 133.58];
     const p2 = [92.0, 92.0];
-    const p3 = [150.0 + x, 116.0 + y];
+    const p3 = [150.0 + Number(x), 116.0 + Number(y)];
     const p4 = [208.0, 92.0];
     const p5 = [266.85, 133.58];
 
@@ -60,13 +64,13 @@ function ResearchCore() {
 
   return (
     <div className="group flex flex-col items-center gap-4">
-      <div className="relative flex h-32 w-32 items-center justify-center transition-transform duration-500 group-hover:scale-105">
+      <div className="relative flex h-24 w-24 items-center justify-center transition-transform duration-500 ">
         <svg
           width="100%"
           height="100%"
           viewBox="0 0 300 300"
           xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.3)]"
+          className="footer-core"
         >
           <defs>
             <linearGradient
@@ -144,7 +148,7 @@ function ResearchCore() {
         style={{ color: "var(--color-text-secondary)" }}
       >
         <Dna size={14} />
-        <span>AI4Bio / Reasoning / Embodied AI</span>
+        <span>AI for Science</span>
         <Network size={14} />
       </div>
     </div>
@@ -155,9 +159,9 @@ export default function Footer() {
   const lang = useStore($lang);
 
   return (
-    <footer className="relative overflow-hidden px-4 pb-8 pt-4 sm:px-6">
-      <div className="surface-panel relative mx-auto max-w-7xl overflow-hidden px-6 py-16 sm:px-8">
-        <div className="mesh-overlay opacity-35" />
+    <footer className="site-footer relative overflow-hidden px-4 pb-8 pt-4 sm:px-6">
+      <div className="surface-panel relative mx-auto max-w-6xl overflow-hidden px-6 py-10 sm:px-8">
+
 
         <div className="relative z-10 flex flex-col items-center justify-center gap-10">
           <ResearchCore />
@@ -176,7 +180,7 @@ export default function Footer() {
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full p-3 transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                className="rounded-full p-3 transition-all duration-300 hover:opacity-80"
                 style={{
                   color: "var(--color-text-secondary)",
                   backgroundColor:
@@ -189,7 +193,7 @@ export default function Footer() {
               </a>
               <a
                 href={`mailto:${profile.email}`}
-                className="rounded-full p-3 transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                className="rounded-full p-3 transition-all duration-300 hover:opacity-80"
                 style={{
                   color: "var(--color-text-secondary)",
                   backgroundColor:

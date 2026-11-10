@@ -1,0 +1,6 @@
+---
+import SeriesLayout from '@/layouts/SeriesLayout.astro';
+import { blogSeries } from '@/data/blogSeries';
+const series = blogSeries.find(series => series.id === 'research')!;
+---
+<SeriesLayout series={series} />

@@ -20,7 +20,7 @@ export default function ThemeToggle() {
       ? `Follow system (${resolved === "dark" ? "currently dark" : "currently light"})`
       : theme === "light"
         ? "Switch to dark theme"
-        : "Switch to system theme";
+        : "Switch to light theme";
 
   return (
     <button

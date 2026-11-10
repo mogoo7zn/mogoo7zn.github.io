@@ -27,16 +27,9 @@ export default defineConfig({
   },
   integrations: [react(), mdx()],
   vite: {
+    // Keep production optimization from invalidating a running dev server.
+    cacheDir: !process.argv.includes("build") ? "node_modules/.vite-dev" : "node_modules/.vite-build",
+    resolve: { dedupe: ["react", "react-dom"] },
     plugins: [tailwindcss()],
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            "three-core": ["three"],
-            r3f: ["@react-three/fiber", "@react-three/drei"],
-          },
-        },
-      },
-    },
   },
 });

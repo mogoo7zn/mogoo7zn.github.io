@@ -1,5 +1,7 @@
-﻿---
+---
 import '@/styles/global.css';
+import '@/styles/editorial.css';
+import DroneBackToTop from '@/components/ui/DroneBackToTop';
 
 interface Props {
   title?: string;
@@ -8,14 +10,14 @@ interface Props {
 
 const {
   title = 'Zining Wang | 王子宁',
-  description = '王子宁个人主页 - AI4Bio、推理模型与具身智能 | Personal homepage of Zining Wang - AI4Bio, reasoning models, and embodied intelligence',
+  description = '王子宁个人主页 - AI for Science（AI4S） | Personal homepage of Zining Wang - AI for Science (AI4S)',
 } = Astro.props;
 
 const siteUrl = 'https://mogoo7zn.github.io';
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +40,7 @@ const siteUrl = 'https://mogoo7zn.github.io';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- KaTeX for math equations -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5RLBER15GHbErM5LN4R8kkBqcc7Uf9CIaEEXQ5xA2yGqq4ih6hSR" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -67,5 +69,6 @@ const siteUrl = 'https://mogoo7zn.github.io';
   </head>
   <body class="min-h-screen overflow-x-hidden">
     <slot />
+    <DroneBackToTop client:load />
   </body>
 </html>

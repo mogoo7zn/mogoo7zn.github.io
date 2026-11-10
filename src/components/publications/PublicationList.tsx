@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
 import { ui } from "@/i18n/ui";
-import { publications, type Publication } from "@/data/publications";
+import { type Publication } from "@/data/publications";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText,
@@ -14,13 +14,15 @@ import {
 } from "lucide-react";
 
 const statusColor: Record<Publication["status"], string> = {
+  accepted: "bg-green-500/15 text-green-600 dark:text-green-400",
   published: "bg-green-500/15 text-green-600 dark:text-green-400",
   preprint: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
   "under-review": "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-  "in-preparation": "bg-violet-500/15 text-violet-600 dark:text-violet-300",
+  "in-preparation": "bg-blue-500/10 text-blue-700 dark:text-blue-300",
 };
 
 const statusLabel: Record<Publication["status"], { zh: string; en: string }> = {
+  accepted: { zh: "已接收", en: "Accepted" },
   published: { zh: "已发表", en: "Published" },
   preprint: { zh: "预印本", en: "Preprint" },
   "under-review": { zh: "审稿中", en: "Under Review" },
@@ -28,9 +30,9 @@ const statusLabel: Record<Publication["status"], { zh: string; en: string }> = {
 };
 
 export default function PublicationList({
-  pubs = publications,
+  pubs,
 }: {
-  pubs?: typeof publications;
+  pubs: Publication[];
 }) {
   const lang = useStore($lang);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -55,7 +57,7 @@ export default function PublicationList({
 
   return (
     <div className="space-y-6">
-      {pubs.map((pub, i) => {
+      {pubs.map((pub) => {
         const isExpanded = expandedId === pub.id;
         const doiLabel = pub.doi?.includes("biorxiv.org") ? "bioRxiv" : "DOI";
 
@@ -64,16 +66,13 @@ export default function PublicationList({
             key={pub.id}
             initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.06 * i, duration: 0.4 }}
-            className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 overflow-hidden"
+            transition={{ duration: 0.4 }}
+            className="group relative rounded-2xl p-6 md:p-8 transition-all duration-300   overflow-hidden"
             style={{
               backgroundColor: "var(--color-bg-card)",
               border: "1px solid var(--color-border)",
             }}
           >
-            {/* Ambient Background Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-
             <div className="relative z-10 flex flex-col h-full">
               {/* Status & Year */}
               <div className="flex items-center justify-between mb-4">
@@ -95,7 +94,7 @@ export default function PublicationList({
               {/* Title */}
               <a href={`/publications/${pub.id}`} className="block mb-3">
                 <h3
-                  className="font-bold text-xl md:text-2xl leading-tight transition-colors group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-500 group-hover:to-purple-500"
+                  className="font-bold text-xl md:text-2xl leading-tight transition-colors "
                   style={{ color: "var(--color-text)" }}
                 >
                   {pub.title[lang]}
@@ -112,7 +111,7 @@ export default function PublicationList({
                     {j > 0 && ", "}
                     <span
                       className={
-                        a.isMe ? "font-bold text-gradient" : "font-medium"
+                        a.isMe ? "font-semibold" : "font-medium"
                       }
                     >
                       {a.name}
@@ -163,9 +162,9 @@ export default function PublicationList({
                     href={`/publications/${pub.id}`}
                     className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                     style={{
-                      color: "white",
+                      color: "var(--color-on-primary)",
                       background:
-                        "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
+                        "var(--color-primary)",
                     }}
                   >
                     <BookOpen size={16} />{" "}
@@ -270,7 +269,6 @@ export default function PublicationList({
                           borderLeft: "3px solid var(--color-primary)",
                         }}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none"></div>
                         <p className="relative z-10">{pub.abstract[lang]}</p>
                       </div>
                     </motion.div>

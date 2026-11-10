@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
-import { Layers } from "lucide-react";
 
 interface Props {
   posts: {
@@ -169,7 +168,7 @@ export default function PostList({ posts }: Props) {
                   selectedTag === null
                     ? "var(--color-primary)"
                     : "var(--color-bg-secondary)",
-                color: selectedTag === null ? "white" : "var(--color-text)",
+                color: selectedTag === null ? "var(--color-on-primary)" : "var(--color-text)",
               }}
             >
               {t.all}
@@ -188,7 +187,7 @@ export default function PostList({ posts }: Props) {
                     selectedTag === tag
                       ? "var(--color-primary)"
                       : "var(--color-bg-secondary)",
-                  color: selectedTag === tag ? "white" : "var(--color-text)",
+                  color: selectedTag === tag ? "var(--color-on-primary)" : "var(--color-text)",
                 }}
               >
                 <span>{tag}</span>
@@ -344,156 +343,24 @@ export default function PostList({ posts }: Props) {
           <div className="space-y-6">
             {paginatedPosts.map((post) => {
               if (post.data.isAlbum) {
-                return (
-                  <article
-                    key={post.slug}
-                    className="group relative rounded-2xl p-0.5 transition-all duration-500 hover:-translate-y-2 mt-6 mb-8"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, var(--color-border), var(--color-primary), var(--color-border))",
-                      boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.08)",
-                    }}
-                  >
-                    <a
-                      href={`/blog/${post.slug}`}
-                      className="absolute inset-0 z-30"
-                    >
-                      <span className="sr-only">View Album</span>
-                    </a>
-                    {/* Layer hints to look like a stack of cards */}
-                    <div
-                      className="absolute -top-3 inset-x-4 h-6 rounded-xl transform -z-20 group-hover:-translate-y-1 transition-transform duration-500"
-                      style={{
-                        backgroundColor: "var(--color-bg-secondary)",
-                        border: "1px solid var(--color-border)",
-                        opacity: 0.6,
-                      }}
-                    ></div>
-                    <div
-                      className="absolute -top-1.5 inset-x-2 h-6 rounded-xl transform -z-10 group-hover:-translate-y-0.5 transition-transform duration-500"
-                      style={{
-                        backgroundColor: "var(--color-bg-secondary)",
-                        border: "1px solid var(--color-border)",
-                        opacity: 0.8,
-                      }}
-                    ></div>
-
-                    <div
-                      className="relative z-10 rounded-[14px] p-6 sm:p-8 h-full backdrop-blur-md overflow-hidden"
-                      style={{
-                        backgroundColor: "var(--color-bg-card)",
-                        border: "1px solid var(--color-border)",
-                      }}
-                    >
-                      <div
-                        className="absolute top-0 right-0 p-8 opacity-[0.02] dark:opacity-[0.03] group-hover:scale-110 group-hover:opacity-[0.04] dark:group-hover:opacity-[0.05] transition-all duration-700 pointer-events-none"
-                        style={{ color: "var(--color-text)" }}
-                      >
-                        <Layers className="w-32 h-32" />
-                      </div>
-
-                      <div className="flex items-center gap-3 mb-4">
-                        <div
-                          className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-widest shadow-sm uppercase"
-                          style={{
-                            backgroundColor: "var(--color-primary)",
-                            color: "white",
-                          }}
-                        >
-                          <Layers className="w-3.5 h-3.5" />
-                          ALBUM SERIES
-                        </div>
-                        <time
-                          className="text-xs"
-                          style={{ color: "var(--color-text-muted)" }}
-                        >
-                          {lang === "zh" ? "最近更新: " : "Updated: "}
-                          {new Date(post.data.pubDate).toLocaleDateString(
-                            lang === "zh" ? "zh-CN" : "en-US",
-                            { year: "numeric", month: "long", day: "numeric" },
-                          )}
-                        </time>
-                      </div>
-
-                      <h2
-                        className="text-2xl md:text-3xl font-bold mb-3 transition-colors group-hover:text-primary"
-                        style={{ color: "var(--color-text)" }}
-                      >
-                        {lang === "en" && post.data.titleEn
-                          ? post.data.titleEn
-                          : post.data.title}
-                      </h2>
-
-                      <p
-                        className="text-sm md:text-base mb-6 max-w-2xl"
-                        style={{
-                          color: "var(--color-text-secondary)",
-                          lineHeight: 1.6,
-                        }}
-                      >
-                        {lang === "en" && post.data.descriptionEn
-                          ? post.data.descriptionEn
-                          : post.data.description}
-                      </p>
-
-                      <div
-                        className="flex items-center justify-between mt-auto pt-5 border-t"
-                        style={{ borderColor: "var(--color-border)" }}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div
-                            className="flex items-center gap-2 text-sm font-medium"
-                            style={{ color: "var(--color-text-secondary)" }}
-                          >
-                            <span
-                              className="w-6 h-6 rounded-full flex items-center justify-center font-bold"
-                              style={{
-                                backgroundColor: "var(--color-bg-secondary)",
-                                color: "var(--color-text)",
-                                border: "1px solid var(--color-border)",
-                              }}
-                            >
-                              {post.data.folderCount || 0}
-                            </span>
-                            <span>{lang === "zh" ? "篇内容" : "Items"}</span>
-                          </div>
-                        </div>
-                        <span
-                          className="text-sm font-semibold flex items-center gap-1.5 group-hover:translate-x-1 transition-all duration-300"
-                          style={{ color: "var(--color-primary)" }}
-                        >
-                          {lang === "zh" ? "浏览专辑" : "Explore Album"}
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2.5}
-                              d="M14 5l7 7m0 0l-7 7m7-7H3"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </article>
-                );
+                return <article key={post.slug} className="series-album journal-card">
+                  <div className="journal-meta"><span>{lang === 'zh' ? '系列文章' : 'Series'} · {post.data.folderCount || 0} {lang === 'zh' ? '篇' : 'posts'}</span><time>{new Date(post.data.pubDate).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US')}</time></div>
+                  <h2><a href={`/blog/${post.slug}`}>{lang === 'en' ? post.data.titleEn || post.data.title : post.data.title}</a></h2>
+                  <p>{lang === 'en' ? post.data.descriptionEn || post.data.description : post.data.description}</p>
+                  <a className="journal-link" href={`/blog/${post.slug}`}>{lang === 'zh' ? '阅读系列' : 'Read series'} →</a>
+                </article>;
               }
 
               return (
                 <article
                   key={post.slug}
-                  className="group relative rounded-2xl p-6 transition-all duration-500 hover:-translate-y-1"
+                  className="group relative rounded-2xl p-6 transition-all duration-500 "
                   style={{
                     backgroundColor: "var(--color-bg-card)",
                     border: "1px solid var(--color-border)",
-                    boxShadow: "0 4px 20px -2px rgba(0,0,0,0.05)",
+                    boxShadow: "none",
                   }}
                 >
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                   <div className="relative z-10">
                     <div
@@ -667,7 +534,7 @@ export default function PostList({ posts }: Props) {
                               : "transparent",
                           color:
                             currentPage === page
-                              ? "white"
+                              ? "var(--color-on-primary)"
                               : "var(--color-text)",
                         }}
                       >

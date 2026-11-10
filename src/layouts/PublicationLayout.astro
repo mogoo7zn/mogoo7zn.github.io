@@ -4,7 +4,6 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import VisitCounter from '@/components/blog/VisitCounter';
 import CommentSection from '@/components/blog/CommentSection';
-import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import TableOfContents from '@/components/blog/TableOfContents';
 
 import '@/styles/pretext.css';
@@ -29,14 +28,14 @@ const backText = '返回 Publications 栏目 (Back to Publications)';
 <BaseLayout title={`${title} | Publication`}>
   <Navbar client:load />
   
-  <div class="max-w-[104rem] mx-auto px-4 lg:px-8 xl:px-12 py-24 flex xl:gap-10 2xl:gap-14 items-start justify-center">
+  <div class="article-shell">
     {/* Left Sidebar Table of Contents */}
-    <aside class="hidden xl:flex flex-col w-[16rem] 2xl:w-[18rem] shrink-0 sticky top-24 pt-8 h-[calc(100vh-6rem)] relative z-10 pr-2 xl:pr-6">
+    <aside class="hidden xl:flex flex-col w-[13rem] shrink-0 sticky top-24 pt-8 h-[calc(100vh-6rem)] relative z-10 pr-2 xl:pr-6">
       <TableOfContents client:load headings={headings} />
     </aside>
 
     {/* Main Content Area */}
-    <main class="w-full max-w-full lg:max-w-5xl xl:max-w-[64rem] 2xl:max-w-[74rem] xl:ml-2 2xl:ml-3">
+    <main class="article-main">
       <a
         href={backLink}
         class="inline-flex items-center gap-2 text-sm mb-8 transition-colors group"
@@ -72,7 +71,7 @@ const backText = '返回 Publications 栏目 (Back to Publications)';
               {tags.map((tag: string) => (
                 <span
                   class="text-xs px-2.5 py-1 rounded-full font-medium"
-                  style="background: rgba(99, 102, 241, 0.08); color: var(--color-primary); border: 1px solid rgba(99, 102, 241, 0.15);"
+                  style="background: rgba(var(--color-primary-rgb), 0.08); color: var(--color-primary); border: 1px solid var(--color-border);"
                 >
                   #{tag}
                 </span>
@@ -110,8 +109,7 @@ const backText = '返回 Publications 栏目 (Back to Publications)';
     </main>
 
     {/* Right padding filler for centering balance, slightly narrower than left sidebar to push content slightly right */}
-    <div class="hidden xl:block w-[8rem] 2xl:w-[10rem] shrink-0 pointer-events-none"></div>
+    <div class="hidden xl:block w-[3rem] shrink-0 pointer-events-none"></div>
   </div>
-  <DroneBackToTop client:load />
   <Footer client:visible />
 </BaseLayout>

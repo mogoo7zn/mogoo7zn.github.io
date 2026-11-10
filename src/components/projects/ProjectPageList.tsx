@@ -37,7 +37,7 @@ const getProjectLinkIcon = (type?: string) => {
   return ExternalLink;
 };
 
-export default function ProjectPageList() {
+export default function ProjectPageList({ validBlogSlugs = [] }: { validBlogSlugs?: string[] }) {
   const lang = useStore($lang);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -53,7 +53,7 @@ export default function ProjectPageList() {
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.06 * i, duration: 0.4 }}
-            className="rounded-xl p-6 transition-all duration-300 hover:shadow-lg hud-corners research-glow"
+            className="rounded-xl p-6 transition-all duration-300  "
             style={{
               backgroundColor: "var(--color-bg-card)",
               border: "1px solid var(--color-border)",
@@ -64,11 +64,10 @@ export default function ProjectPageList() {
               <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
                 style={{
-                  background:
-                    "linear-gradient(135deg, var(--color-primary), var(--color-accent))",
+                  background: "var(--color-bg-secondary)",
                 }}
               >
-                <Icon size={20} className="text-white" />
+                <Icon size={20} className="text-[var(--color-primary)]" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3
@@ -77,7 +76,7 @@ export default function ProjectPageList() {
                 >
                   {project.title[lang]}
                 </h3>
-                <div className="flex items-center gap-2 mt-1.5">
+                <div className="flex flex-wrap items-center gap-2 mt-1.5">
                   <span
                     className="text-xs px-2 py-0.5 rounded-full"
                     style={{
@@ -133,7 +132,7 @@ export default function ProjectPageList() {
                       href={link.href}
                       target={isExternal ? "_blank" : undefined}
                       rel={isExternal ? "noopener noreferrer" : undefined}
-                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 hover:scale-105"
+                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 "
                       style={{
                         color: "var(--color-accent)",
                         border:
@@ -152,6 +151,7 @@ export default function ProjectPageList() {
 
             {/* Highlight toggle */}
             <button
+              aria-expanded={isExpanded}
               onClick={() => setExpandedId(isExpanded ? null : project.id)}
               className="inline-flex items-center gap-1 text-xs font-medium transition-colors"
               style={{ color: "var(--color-primary)" }}
@@ -191,10 +191,10 @@ export default function ProjectPageList() {
                     </p>
 
                     {/* Blog link */}
-                    {project.blogSlug && (
+                    {project.blogSlug && validBlogSlugs.includes(project.blogSlug) && (
                       <a
                         href={`/blog/${project.blogSlug}`}
-                        className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 hover:scale-105"
+                        className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 "
                         style={{
                           color: "var(--color-accent)",
                           border: "1px solid var(--color-accent)",

@@ -5,8 +5,11 @@ import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
 import SensorGrid from '@/components/ui/SensorGrid';
 import DraftNotice from '@/components/blog/DraftNotice';
-import BlenderSeriesNav from '@/components/blender/BlenderSeriesNav';
+import SeriesNav from '@/components/blog/SeriesNav';
 import { getCollection } from 'astro:content';
+import { blogSeries } from '@/data/blogSeries';
+
+const SERIES_CONFIG = Object.fromEntries(blogSeries.map(series => [series.id, series.title]));
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -20,20 +23,21 @@ export async function getStaticPaths() {
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await post.render();
 
-// Compute series navigation if the post belongs to the "blender" series
+// Compute series navigation if the post belongs to a configured series
 let seriesIndex = -1;
 let prevPost = null;
 let nextPost = null;
 let totalInSeries = 0;
+const seriesLabel = post.data.series ? SERIES_CONFIG[post.data.series] : undefined;
 
-if (post.data.series === 'blender' && !post.data.draft) {
+if (seriesLabel && !post.data.draft) {
   const seriesPosts = allPosts
-    .filter((p) => p.data.series === 'blender' && !p.data.draft)
-    .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
-  
+    .filter((p) => p.data.series === post.data.series && !p.data.draft)
+    .sort((a, b) => (a.data.seriesOrder ?? Infinity) - (b.data.seriesOrder ?? Infinity) || a.data.pubDate.valueOf() - b.data.pubDate.valueOf() || a.slug.localeCompare(b.slug));
+
   totalInSeries = seriesPosts.length;
   seriesIndex = seriesPosts.findIndex((p) => p.slug === post.slug);
-  
+
   if (seriesIndex > 0) prevPost = seriesPosts[seriesIndex - 1];
   if (seriesIndex < totalInSeries - 1) nextPost = seriesPosts[seriesIndex + 1];
 }
@@ -63,11 +67,12 @@ if (post.data.series === 'blender' && !post.data.draft) {
       series={post.data.series}
       headings={headings}
     >
-      {post.data.series === 'blender' && (
-        <BlenderSeriesNav 
-          client:load 
-          currentIndex={seriesIndex + 1} 
-          total={totalInSeries} 
+      {seriesLabel && (
+        <SeriesNav
+          client:load
+          seriesLabel={seriesLabel}
+          currentIndex={seriesIndex + 1}
+          total={totalInSeries}
           prevPost={prevPost ? { slug: prevPost.slug, title: prevPost.data.title, titleEn: prevPost.data.titleEn } : null}
           nextPost={nextPost ? { slug: nextPost.slug, title: nextPost.data.title, titleEn: nextPost.data.titleEn } : null}
         />

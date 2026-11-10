@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import { $lang } from "@/i18n/store";
+import { homepage } from "@/data/homepage";
+import { profile } from "@/data/profile";
 import { ui } from "@/i18n/ui";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
@@ -8,11 +10,11 @@ import LanguageToggle from "./LanguageToggle";
 import { initTheme } from "@/stores/theme";
 import { initLang } from "@/i18n/store";
 
-const sectionItems = [
-  { key: "about" as const, href: "/#about" },
-  { key: "skills" as const, href: "/#skills" },
-  { key: "cv" as const, href: "/#cv" },
-];
+const sectionItems = homepage.sections.map(section => ({
+  key: section.id,
+  href: `/#${section.id}`,
+  label: section.label,
+}));
 
 const pageItems = [
   { key: "projects" as const, href: "/projects" },
@@ -38,20 +40,28 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-20% 0px -70% 0px" },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+    if (!sections.length) return;
+    let frame = 0;
+    const updateActiveSection = () => {
+      const atBottom = window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      const current = atBottom
+        ? sections[sections.length - 1]
+        : [...sections].reverse().find(section => section.getBoundingClientRect().top <= 140);
+      setActiveSection(current?.id ?? "");
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(updateActiveSection);
+    };
+    updateActiveSection();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
@@ -69,87 +79,17 @@ export default function Navbar() {
           backdropFilter: scrolled ? undefined : "blur(10px)",
         }}
       >
-        <div className="absolute inset-0 pointer-events-none rounded-2xl bg-[radial-gradient(circle_at_top_left,rgba(var(--color-primary-rgb),0.08),transparent_28%),radial-gradient(circle_at_top_right,rgba(var(--color-accent-rgb),0.06),transparent_24%)] opacity-50" />
+
 
         <div className="relative z-10 flex h-16 items-center justify-between px-4 sm:px-6">
           <a href="/" className="shrink-0 flex items-center gap-2 group">
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 300 300"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-[var(--color-primary)]"
-            >
-              <defs>
-                <linearGradient
-                  id="logo-gradient"
-                  x1="0"
-                  y1="0"
-                  x2="300"
-                  y2="300"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop offset="0" stopColor="var(--color-primary)">
-                    <animate
-                      attributeName="stop-color"
-                      values="var(--color-primary);var(--color-accent);var(--color-primary)"
-                      dur="3s"
-                      repeatCount="indefinite"
-                    />
-                  </stop>
-                  <stop offset="1" stopColor="var(--color-accent)">
-                    <animate
-                      attributeName="stop-color"
-                      values="var(--color-accent);var(--color-primary);var(--color-accent)"
-                      dur="3s"
-                      repeatCount="indefinite"
-                    />
-                  </stop>
-                </linearGradient>
-              </defs>
-              <circle
-                cx="150"
-                cy="150"
-                r="34"
-                stroke="url(#logo-gradient)"
-                strokeWidth="16"
-                fill="none"
-              />
-              <polyline
-                points="33.15,133.58 92.00,92.00 150.00,116.00 208.00,92.00 266.85,133.58"
-                stroke="url(#logo-gradient)"
-                strokeWidth="16"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            </svg>
-            <span
-              className="hidden text-lg font-semibold sm:inline"
-              style={{
-                background:
-                  "linear-gradient(90deg, var(--color-text) 0%, var(--color-primary) 50%, var(--color-text) 100%)",
-                backgroundSize: "200% auto",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-                animation: "shine 3s linear infinite",
-              }}
-            >
-              MOGOO
-            </span>
+            <img src={profile.avatar} alt="" width="36" height="36" className="theme-avatar-light h-9 w-9 object-contain" />
+            <img src={profile.avatarDark} alt="" width="36" height="36" className="theme-avatar-dark h-9 w-9 object-contain" />
+            <span className="text-base font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{profile.realName.en}</span>
           </a>
-          <style>{`
-            @keyframes shine {
-              to {
-                background-position: 200% center;
-              }
-            }
-          `}</style>
 
           <div
-            className="hidden items-center gap-1 rounded-full border px-2 py-1.5 md:flex"
+            className="hidden items-center gap-1 rounded-full border px-2 py-1.5 lg:flex"
             style={{
               borderColor: "color-mix(in srgb, var(--color-border) 86%, transparent)",
               background:
@@ -164,19 +104,19 @@ export default function Navbar() {
                 style={{
                   color:
                     activeSection === item.key
-                      ? "white"
+                      ? "var(--color-bg)"
                       : "var(--color-text-secondary)",
                   background:
                     activeSection === item.key
-                      ? "linear-gradient(135deg, var(--color-primary), var(--color-accent))"
+                      ? "var(--color-primary)"
                       : "transparent",
                   boxShadow:
                     activeSection === item.key
-                      ? "0 10px 24px var(--color-glow)"
+                      ? "none"
                       : "none",
                 }}
               >
-                {ui.nav[item.key][lang]}
+                {item.label[lang]}
               </a>
             ))}
 
@@ -201,7 +141,7 @@ export default function Navbar() {
             <LanguageToggle />
             <ThemeToggle />
             <button
-              className="rounded-xl border p-2 md:hidden"
+              className="rounded-xl border p-2 lg:hidden"
               style={{
                 color: "var(--color-text-secondary)",
                 borderColor: "var(--color-border)",
@@ -219,7 +159,7 @@ export default function Navbar() {
 
       {isOpen && (
         <div
-          className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border glass md:hidden"
+          className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl border glass lg:hidden"
           style={{ borderColor: "var(--color-border)" }}
         >
           <div className="space-y-1 px-4 py-3">
@@ -236,7 +176,7 @@ export default function Navbar() {
                       : "var(--color-text-secondary)",
                 }}
               >
-                {ui.nav[item.key][lang]}
+                {item.label[lang]}
               </a>
             ))}
 

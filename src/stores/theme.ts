@@ -43,9 +43,7 @@ export function initTheme(): void {
 }
 
 export function toggleTheme(): void {
-  const order: Theme[] = ["system", "light", "dark"];
-  const currentIndex = order.indexOf($theme.get());
-  $theme.set(order[(currentIndex + 1) % order.length]);
+  $theme.set(resolveTheme($theme.get()) === "dark" ? "light" : "dark");
 }
 
 function applyTheme(t: Theme): void {

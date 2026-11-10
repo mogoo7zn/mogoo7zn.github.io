@@ -15,16 +15,17 @@
   color: var(--pt-content);
   max-width: 720px;
   margin: 0 auto;
-  text-align: justify;
+  text-align: start;
+  overflow-wrap: break-word;
 }
 
 html.dark .pretext-design {
-  --pt-bg: var(--color-bg-primary, #111111);
-  --pt-content: #ededed;
-  --pt-muted: #a1a1a1;
-  --pt-border: #333333;
-  --pt-accent: #3291ff;
-  --pt-code-bg: #1a1a1a;
+  --pt-bg: var(--color-bg);
+  --pt-content: var(--color-text);
+  --pt-muted: var(--color-text-secondary);
+  --pt-border: var(--color-border);
+  --pt-accent: var(--color-primary);
+  --pt-code-bg: var(--color-bg-secondary);
 }
 
 .pretext-design p,
@@ -107,7 +108,7 @@ html.dark .pretext-design {
   padding-left: 1.25em;
   color: var(--pt-muted);
   font-style: italic;
-  background: rgba(0, 112, 243, 0.02);
+  background: rgba(var(--color-primary-rgb), 0.04);
   padding: 1em 1em 1em 1.25em;
   border-radius: 0 8px 8px 0;
 }

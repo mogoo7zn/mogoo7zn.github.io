@@ -1,0 +1,26 @@
+/* Dark palette — slate surfaces, soft white text and muted blue emphasis. */
+html.dark {
+  --color-primary: #91bce2;
+  --color-primary-light: #bdd8ef;
+  --color-accent: #91bacb;
+  --color-accent-light: #c0dbe5;
+  --color-primary-rgb: 145, 188, 226;
+  --color-accent-rgb: 145, 186, 203;
+  --color-bg: #141b24;
+  --color-bg-secondary: #1c2632;
+  --color-bg-tertiary: #243240;
+  --color-bg-card: #19232e;
+  --color-text: #e6edf4;
+  --color-text-primary: #e6edf4;
+  --color-text-secondary: #bcc9d6;
+  --color-text-muted: #96a8ba;
+  --color-border: #344454;
+  --color-glow: rgba(145, 186, 203, 0.06);
+  --shadow-soft: 0 24px 72px rgba(0, 0, 0, 0.16);
+  --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --shadow-elevated: 0 36px 110px rgba(0, 0, 0, 0.22);
+  --color-on-primary: #142231;
+  --color-bg-primary: var(--color-bg);
+  --color-nav: rgba(25, 35, 46, 0.96);
+  --color-avatar: #a5c9e8;
+}

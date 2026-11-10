@@ -1,0 +1,53 @@
+---
+title: "工作习惯"
+titleEn: "Habits"
+description: "工作习惯很大程度上决定了工作质量和效率."
+descriptionEn: "The quality and efficiency of your work really depend on your habits."
+pubDate: 2026-08-20
+tags: ["research", "habits"]
+series: "research"
+---
+
+import Callout from "@/components/blog/mdx/Callout";
+import Details from "@/components/blog/mdx/Details";
+import { Step } from "@/components/blog/mdx/Steps";
+
+# 工作习惯
+
+<Callout type="info" title="系列定位">
+  这个系列用来记录平时科研工作中的笔记：问题是怎么拆解的、实验为什么这样设计、
+  文献读了有什么启发、阶段性的失败与反思.内容不求完整，但求真实可回溯.
+</Callout>
+
+## 一、问题背景
+
+记录这段工作要解决什么问题，以及它为什么重要.可以交代：
+
+- 问题的来源（导师布置 / 自己发现 / 论文延伸）
+- 当时的约束条件（时间、算力、数据）
+- 期望达到的目标
+
+## 二、过程记录
+
+<Step title="第一步：调研与方案设计">
+  记录调研过程中读过的关键文献、对比过的方案，以及最终选择某条路线的理由.
+</Step>
+
+<Step title="第二步：实验与迭代">
+  记录实验设置、中间结果与调整过程.失败的部分同样值得写下来.
+</Step>
+
+<Step title="第三步：结论与复盘">
+  记录最终结果、与初始预期的差距，以及如果重来一次会怎么做.
+</Step>
+
+## 三、心得与反思
+
+这里写下方法论层面的收获，例如对领域的理解、对工具的掌握、对协作流程的改进.
+
+<Details title="附：写作备忘">
+  - 新建笔记时，复制本文件到 `src/content/blog/research-series/` 目录，改文件名、标题和日期即可.
+  - `pubDate` 按发布日期填写，系列内文章按时间自动排序并生成上下篇导航.
+  - 需要暂不公开的文章，在 frontmatter 中加 `draft: true`.
+  - 图片放在 `public/images/blog/research-notes/` 下，用 `![描述](/images/blog/research-notes/xxx.png)` 引用.
+</Details>

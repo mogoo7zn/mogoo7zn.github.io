@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useReducedMotion } from "framer-motion";
 
 /**
  * A minimalist wireframe drone that hovers at the bottom-right
  * and "flies" to the top of the page on click.
  */
 export default function DroneBackToTop() {
+  const reducedMotion = useReducedMotion();
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
   const [visible, setVisible] = useState(false);
   const [flying, setFlying] = useState(false);
   const { scrollYProgress } = useScroll();
@@ -20,15 +23,16 @@ export default function DroneBackToTop() {
 
   const handleClick = () => {
     if (flying) return;
+    if (reducedMotion) { window.scrollTo({ top: 0, behavior: "instant" }); return; }
     setFlying(true);
     // Start the flight animation, then scroll
-    setTimeout(() => {
+    timers.current.push(setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 200);
+    }, 200));
     // Reset after flight finishes
-    setTimeout(() => {
+    timers.current.push(setTimeout(() => {
       setFlying(false);
-    }, 1200);
+    }, 1200));
   };
 
   return (
@@ -49,20 +53,12 @@ export default function DroneBackToTop() {
               ? { duration: 1, ease: [0.22, 1, 0.36, 1] }
               : { duration: 0.4, ease: "easeOut" }
           }
-          className="fixed bottom-8 right-8 z-50 group cursor-pointer focus:outline-none"
+          className="drone-back-to-top fixed bottom-5 right-4 sm:bottom-8 sm:right-8 z-50 cursor-pointer"
           style={{ filter: "drop-shadow(0 2px 12px var(--color-glow))" }}
           aria-label="Back to top"
           title="Back to top"
         >
           <div className="relative w-14 h-14 flex items-center justify-center">
-            {/* Glow ring on hover */}
-            <div
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-300"
-              style={{
-                background:
-                  "radial-gradient(circle, var(--color-glow) 0%, transparent 70%)",
-              }}
-            />
             {/* Drone SVG */}
             <svg
               viewBox="0 0 64 64"
@@ -129,12 +125,6 @@ export default function DroneBackToTop() {
                 fill="var(--color-accent)"
                 opacity="0.9"
               >
-                <animate
-                  attributeName="opacity"
-                  values="0.9;0.4;0.9"
-                  dur="2s"
-                  repeatCount="indefinite"
-                />
               </circle>
               {/* Left propeller */}
               <ellipse
@@ -146,14 +136,6 @@ export default function DroneBackToTop() {
                 strokeWidth="1"
                 opacity="0.5"
               >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 14 22"
-                  to="360 14 22"
-                  dur="0.3s"
-                  repeatCount="indefinite"
-                />
               </ellipse>
               {/* Right propeller */}
               <ellipse
@@ -165,14 +147,6 @@ export default function DroneBackToTop() {
                 strokeWidth="1"
                 opacity="0.5"
               >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 50 22"
-                  to="360 50 22"
-                  dur="0.25s"
-                  repeatCount="indefinite"
-                />
               </ellipse>
               {/* Landing gear */}
               <line
@@ -221,18 +195,6 @@ export default function DroneBackToTop() {
                 fill="none"
                 opacity="0"
               >
-                <animate
-                  attributeName="r"
-                  values="3;8"
-                  dur="1.5s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  values="0.4;0"
-                  dur="1.5s"
-                  repeatCount="indefinite"
-                />
               </circle>
               <circle
                 cx="32"
@@ -243,25 +205,11 @@ export default function DroneBackToTop() {
                 fill="none"
                 opacity="0"
               >
-                <animate
-                  attributeName="r"
-                  values="3;8"
-                  dur="1.5s"
-                  begin="0.5s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  values="0.3;0"
-                  dur="1.5s"
-                  begin="0.5s"
-                  repeatCount="indefinite"
-                />
               </circle>
             </svg>
             {/* Hover float animation */}
             <style>{`
-              .group:not(:active) svg {
+              .drone-back-to-top:not(:active) svg {
                 animation: drone-hover 2.5s ease-in-out infinite;
               }
               @keyframes drone-hover {

@@ -1,0 +1,10 @@
+---
+import SeriesLayout from '@/layouts/SeriesLayout.astro';
+import { blogSeries } from '@/data/blogSeries';
+export function getStaticPaths() {
+  return blogSeries.filter(series => !['blender', 'research'].includes(series.id))
+    .map(series => ({ params: { series: series.id }, props: { series } }));
+}
+const { series } = Astro.props;
+---
+<SeriesLayout series={series} />

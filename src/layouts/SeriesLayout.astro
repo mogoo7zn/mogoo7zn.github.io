@@ -1,0 +1,18 @@
+---
+import PageLayout from './PageLayout.astro';
+import Navbar from '@/components/ui/Navbar';
+import Footer from '@/components/ui/Footer';
+import SeriesIndex from '@/components/blog/SeriesIndex';
+import { getCollection } from 'astro:content';
+import type { BlogSeries } from '@/data/blogSeries';
+interface Props { series: BlogSeries }
+const { series } = Astro.props;
+const posts = (await getCollection('blog'))
+  .filter(post => !post.data.draft && post.data.series === series.id)
+  .sort((a, b) => (a.data.seriesOrder ?? Infinity) - (b.data.seriesOrder ?? Infinity) || a.data.pubDate.valueOf() - b.data.pubDate.valueOf() || a.slug.localeCompare(b.slug));
+---
+<PageLayout title={`${series.title.zh} | Zining Wang`} description={series.description.zh}>
+  <Navbar client:load />
+  <SeriesIndex client:load series={series} posts={posts.map(post => ({ slug: post.slug, title: post.data.title, titleEn: post.data.titleEn, description: post.data.description, descriptionEn: post.data.descriptionEn, cover: post.data.cover, tags: post.data.tags, date: post.data.pubDate.toISOString().slice(0, 10) }))} />
+  <Footer client:load />
+</PageLayout>

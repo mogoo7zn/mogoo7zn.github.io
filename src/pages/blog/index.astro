@@ -1,35 +1,49 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
+import PageHeading from '@/components/ui/PageHeading';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
-import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import PostList from '@/components/blog/PostList';
 import { getCollection } from 'astro:content';
+import { blogSeries } from '@/data/blogSeries';
 
 const allPosts = await getCollection('blog');
 const activePosts = allPosts.filter((post) => !post.data.draft);
 
-// Filter out blender series posts to replace them with a single Album entry
-const normalPosts = activePosts.filter((post) => post.data.series !== 'blender');
-const blenderPosts = activePosts.filter((post) => post.data.series === 'blender');
+// Filter out series posts to replace them with a single Album entry
+const SERIES_ENTRIES = blogSeries.map(series => ({
+  series: series.id,
+  slug: series.id,
+  title: series.title.zh,
+  titleEn: series.title.en,
+  description: (n: number) => `${series.description.zh} 共 ${n} 篇。`,
+  descriptionEn: (n: number) => `${series.description.en} ${n} posts.`,
+  tags: series.tags,
+}));
+
+const seriesSlugs = SERIES_ENTRIES.map(s => s.series);
+const normalPosts = activePosts.filter((post) => !post.data.series || !seriesSlugs.includes(post.data.series));
 
 const finalPosts = [...normalPosts];
 
-if (blenderPosts.length > 0) {
-  const latestDate = new Date(Math.max(...blenderPosts.map(p => p.data.pubDate.valueOf())));
-  finalPosts.push({
-    slug: 'blender',
-    data: {
-      title: 'Blender',
-      titleEn: 'Blender Notes',
-      description: `3D 建模、材质配置与科研配图渲染相关笔记，共 ${blenderPosts.length} 篇`,
-      descriptionEn: `This is a collection of notes on 3D modeling, rendering, and using Blender software. A total of ${blenderPosts.length} posts.`,
-      pubDate: latestDate,
-      tags: ['Blender', '3D', 'album'],
-      isAlbum: true,
-      folderCount: blenderPosts.length
-    }
-  } as any);
+for (const entry of SERIES_ENTRIES) {
+  const seriesPosts = activePosts.filter((post) => post.data.series === entry.series);
+  if (seriesPosts.length > 0) {
+    const latestDate = new Date(Math.max(...seriesPosts.map(p => p.data.pubDate.valueOf())));
+    finalPosts.push({
+      slug: entry.slug,
+      data: {
+        title: entry.title,
+        titleEn: entry.titleEn,
+        description: entry.description(seriesPosts.length),
+        descriptionEn: entry.descriptionEn(seriesPosts.length),
+        pubDate: latestDate,
+        tags: entry.tags,
+        isAlbum: true,
+        folderCount: seriesPosts.length
+      }
+    } as any);
+  }
 }
 
 finalPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -37,14 +51,8 @@ finalPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 <PageLayout title="Blog | Zining Wang">
   <Navbar client:load />
-  <DroneBackToTop client:load />
-  <main class="max-w-6xl mx-auto px-4 pt-24 pb-16 min-h-screen">
-    <h1 class="text-3xl md:text-4xl font-bold mb-8 text-gradient inline-block">
-      Blog
-    </h1>
-    <p class="mb-10 max-w-3xl text-base leading-8" style="color: var(--color-text-secondary);">
-      这里整理项目记录、技术笔记与科研工具实践，重点保留问题背景、实现决策、可复用流程与阶段性产出.
-    </p>
+  <main class="editorial-page">
+    <PageHeading client:load label="FIELD NOTES & READING" title={{ zh: '研究手记', en: 'Writing' }} description={{ zh: '论文阅读、工程实践与方法记录，以系列组织持续积累的知识。', en: 'Paper readings, engineering practice, and methods, organized into ongoing series.' }} />
     <PostList client:load posts={finalPosts.map(p => ({ slug: p.slug, data: p.data }))} />
   </main>
   <Footer client:load />

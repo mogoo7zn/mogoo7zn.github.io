@@ -1,12 +1,12 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
+import PageHeading from '@/components/ui/PageHeading';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
-import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import PublicationList from '@/components/publications/PublicationList';
 import { getCollection } from 'astro:content';
 
-const allPubs = await getCollection('publications');
+const allPubs = (await getCollection('publications')).filter(pub => !pub.data.draft);
 const mappedPubs = allPubs.map(pub => {
   return {
     id: pub.slug,
@@ -20,7 +20,7 @@ const mappedPubs = allPubs.map(pub => {
     code: pub.data.code,
     tags: pub.data.tags || [],
     status: pub.data.status,
-    abstract: null,
+
   }
 }).sort((a, b) => {
   if (a.id === 'phaseflow') return -1;
@@ -33,15 +33,9 @@ const mappedPubs = allPubs.map(pub => {
 
 <PageLayout title="Publications | Zining Wang">
   <Navbar client:load />
-  <DroneBackToTop client:load />
-  <main class="max-w-3xl mx-auto px-4 pt-24 pb-16 min-h-screen">
-    <h1 class="text-2xl md:text-3xl font-bold mb-8 text-gradient inline-block">
-      Publications
-    </h1>
-    <p class="mb-8 text-base leading-8" style="color: var(--color-text-secondary);">
-      本页汇总 AI4Bio、推理模型与具身智能相关论文、预印本、代码仓库与项目说明，后续会随投稿和发表状态持续更新.
-    </p>
-    <PublicationList client:load pubs={mappedPubs as any} />
+  <main class="editorial-page">
+    <PageHeading client:load label="PAPERS & PREPRINTS" title={{ zh: '论文与预印本', en: 'Publications' }} description={{ zh: '论文、预印本及其代码与项目材料，随研究进展更新。', en: 'Papers, preprints, code, and accompanying research materials.' }} />
+    <PublicationList client:load pubs={mappedPubs} />
   </main>
   <Footer client:load />
 </PageLayout>

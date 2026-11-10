@@ -65,8 +65,8 @@ export const projects: Project[] = [
       en: "Contributing to a long-context generative foundation model for RNA sequence understanding and design, with emphasis on RNA design principles, sequence generation, and downstream adaptation. My work spans model training and fine-tuning support, full-stack implementation of the project website, and engineering support for the preprint and project release.",
     },
     highlight: {
-      zh: "论文在投 Nature Machine Intelligence；bioRxiv 预印本已公开；参与模型训练、微调协作与项目网站实现",
-      en: "Manuscript under review at Nature Machine Intelligence; bioRxiv preprint available; contributed to training support, fine-tuning collaboration, and project website implementation",
+      zh: "论文已被 Nature Machine Intelligence 接收；bioRxiv 预印本已公开；参与模型训练、微调协作与项目网站实现",
+      en: "Manuscript accepted by Nature Machine Intelligence; bioRxiv preprint available; contributed to training support, fine-tuning collaboration, and project website implementation",
     },
     links: [
       {

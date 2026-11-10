@@ -23,8 +23,8 @@ const config: Record<
   info: {
     icon: Info,
     color: "var(--color-primary)",
-    bg: "rgba(99, 102, 241, 0.06)",
-    border: "rgba(99, 102, 241, 0.3)",
+    bg: "rgba(var(--color-primary-rgb), 0.06)",
+    border: "rgba(var(--color-primary-rgb), 0.3)",
     label: "Info",
   },
   warning: {

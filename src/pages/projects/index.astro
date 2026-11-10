@@ -1,8 +1,8 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
+import PageHeading from '@/components/ui/PageHeading';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/ui/Footer';
-import DroneBackToTop from '@/components/ui/DroneBackToTop';
 import ProjectPageList from '@/components/projects/ProjectPageList';
 import { getCollection } from 'astro:content';
 
@@ -12,14 +12,8 @@ const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.s
 
 <PageLayout title="Projects | Zining Wang">
   <Navbar client:load />
-  <DroneBackToTop client:load />
-  <main class="max-w-3xl mx-auto px-4 pt-24 pb-16 min-h-screen">
-    <h1 class="text-2xl md:text-3xl font-bold mb-8 text-gradient inline-block">
-      Projects
-    </h1>
-    <p class="mb-8 text-base leading-8" style="color: var(--color-text-secondary);">
-      这里汇总 AI4Bio、推理模型、具身智能、模型部署与应用开发相关项目，重点呈现问题背景、技术贡献与交付结果，而不只是功能清单.
-    </p>
+  <main class="editorial-page">
+    <PageHeading client:load label="SELECTED SYSTEMS & RESEARCH" title={{ zh: '项目', en: 'Projects' }} description={{ zh: '研究问题、技术贡献与可复用的工程实现。', en: 'Research questions, technical contributions, and reusable engineering.' }} />
     <ProjectPageList client:load validBlogSlugs={validBlogSlugs} />
   </main>
   <Footer client:load />

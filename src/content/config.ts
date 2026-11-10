@@ -13,6 +13,7 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     cover: z.string().optional(),
     series: z.string().optional(),
+    seriesOrder: z.number().int().nonnegative().optional(),
   }),
 });
 
@@ -32,7 +33,7 @@ const publications = defineCollection({
     code: z.string().optional(),
     tags: z.array(z.string()).default([]),
     status: z
-      .enum(["published", "preprint", "under-review", "in-preparation"])
+      .enum(["published", "accepted", "preprint", "under-review", "in-preparation"])
       .default("published"),
     draft: z.boolean().default(false),
   }),

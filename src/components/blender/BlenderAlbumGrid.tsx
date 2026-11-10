@@ -22,9 +22,13 @@ interface Post {
 
 interface BlenderAlbumGridProps {
   posts: Post[];
+  placeholder?: { emoji: string; zh: string; en: string };
 }
 
-export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
+export default function BlenderAlbumGrid({
+  posts,
+  placeholder = { emoji: "🎨", zh: "视觉笔记", en: "Visual Note" },
+}: BlenderAlbumGridProps) {
   const lang = useStore($lang);
   const isEn = lang === "en";
 
@@ -48,8 +52,8 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
       {/* Sidebar / Filters (Optional: you can move it to top on mobile) */}
       <aside className="w-full lg:w-48 xl:w-64 shrink-0 space-y-8">
         {tags.length > 0 && (
-          <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 dark:border-gray-700/50">
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 dark:text-gray-200">
+          <div className="bg-[var(--color-bg-card)] backdrop-blur-sm rounded-2xl p-6 border border-[var(--color-border)]">
+            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-[var(--color-text)]">
               <Tag className="w-5 h-5" />
               {isEn ? "Tags" : "标签筛选"}
             </h3>
@@ -58,8 +62,8 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
                 onClick={() => setSelectedTag(null)}
                 className={`px-3 py-1.5 rounded-full text-sm transition-all ${
                   selectedTag === null
-                    ? "bg-blue-600 text-white font-medium"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                    ? "bg-[var(--color-primary)] text-[var(--color-on-primary)] font-medium"
+                    : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
                 }`}
               >
                 {isEn ? "All" : "全部"}
@@ -72,8 +76,8 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
                   }
                   className={`px-3 py-1.5 rounded-full text-sm transition-all ${
                     selectedTag === tag
-                      ? "bg-blue-600 text-white font-medium"
-                      : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      ? "bg-[var(--color-primary)] text-[var(--color-on-primary)] font-medium"
+                      : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)]"
                   }`}
                 >
                   {tag}
@@ -87,7 +91,7 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
       {/* Grid Layout for Cards */}
       <div className="flex-1">
         {filteredPosts.length === 0 ? (
-          <div className="text-center py-20 text-gray-500 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+          <div className="text-center py-20 text-[var(--color-text-muted)] bg-[var(--color-bg-card)] rounded-2xl border border-[var(--color-border)] backdrop-blur-sm">
             {isEn ? "No notes found" : "暂无相关笔记"}
           </div>
         ) : (
@@ -111,7 +115,7 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
                     transition={{ duration: 0.2 }}
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group flex flex-col rounded-2xl overflow-hidden shadow-sm transition-all hover:-translate-y-1 block"
+                    className="group flex flex-col rounded-2xl overflow-hidden shadow-sm transition-all  block"
                     style={{
                       backgroundColor: "var(--color-bg-card)",
                       border: "1px solid var(--color-border)",
@@ -129,7 +133,7 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
                         <img
                           src={post.data.cover}
                           alt={title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-700 group-"
                           loading="lazy"
                         />
                       ) : (
@@ -138,10 +142,10 @@ export default function BlenderAlbumGrid({ posts }: BlenderAlbumGridProps) {
                           style={{ color: "var(--color-text-muted)" }}
                         >
                           <span className="text-4xl opacity-40 mb-3 group-hover:scale-110 transition-transform duration-500">
-                            🎨
+                            {placeholder.emoji}
                           </span>
                           <span className="text-sm font-medium opacity-60">
-                            {isEn ? "Visual Note" : "视觉笔记"}
+                            {isEn ? placeholder.en : placeholder.zh}
                           </span>
                         </div>
                       )}

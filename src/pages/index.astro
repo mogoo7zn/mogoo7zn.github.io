@@ -1,35 +1,19 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import Navbar from '@/components/ui/Navbar';
-import LoadingScreen from '@/components/ui/LoadingScreen';
-import ScrollProgress from '@/components/ui/ScrollProgress';
-import DroneBackToTop from '@/components/ui/DroneBackToTop';
-
-import Hero from '@/components/sections/Hero';
-import About from '@/components/sections/About';
-import Projects from '@/components/sections/Projects';
-import Skills from '@/components/sections/Skills';
-import CV from '@/components/sections/CV';
+import ResearchHome from '@/components/sections/ResearchHome';
 import Footer from '@/components/ui/Footer';
-
+import ScrollProgress from '@/components/ui/ScrollProgress';
 import { getCollection } from 'astro:content';
-
-const posts = await getCollection('blog');
-const validBlogSlugs = posts.filter(post => !post.data.draft).map(post => post.slug);
+import '@/styles/research-home.css';
+const papers = (await getCollection('publications'))
+  .filter(paper => !paper.data.draft)
+  .sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0) || (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0))
+  .map(paper => ({ slug: paper.slug, ...paper.data }));
 ---
-
 <PageLayout>
-  <LoadingScreen client:load />
-  <ScrollProgress client:load />
   <Navbar client:load />
-  <DroneBackToTop client:load />
-  <main>
-    <Hero client:idle />
-    <About client:visible />
-    <Projects client:visible validBlogSlugs={validBlogSlugs} />
-    <Skills client:load />
-    <CV client:visible />
-  </main>
-
+  <ScrollProgress client:load />
+  <ResearchHome client:load papers={papers} />
   <Footer client:visible />
 </PageLayout>

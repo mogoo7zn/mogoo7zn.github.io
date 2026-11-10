@@ -76,3 +76,7 @@ public/projects/project-igem/**/.Trash-*/
 
 public/images/blog/project-timeflow-app/余庆杯结题答辩.pptx
 public/images/blog/project-timeflow-app/时间流结题答辩.docx
+public/cv/
+
+# Local development server state
+.local-site/

@@ -1,0 +1,254 @@
+%%%% 原模板参考了https://www.wondercv.com/的模板
+\documentclass[11pt]{article}
+% disable indent globally
+\setlength{\parindent}{0pt}
+% some general improvements, defines the XeTeX logo
+\usepackage{xltxtra}
+\usepackage{bookmark}
+% use hyperlink for email and url
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{multicol}
+\usepackage{xcolor}
+%%%% 统一一种颜色，偏蓝色，用于section下划线和fontawesome
+\definecolor{CVBlue}{RGB}{45, 77, 152} % 从校徽上取的师大蓝
+%%另一种师大蓝{RGB}{0,77,255}
+%%% \widthof[]{} 用于特殊对齐是用到
+\usepackage{calc}
+%%%% 利用tikz来定位照片和学校Logo
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+% loading fonts
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\CJKsetecglue{} %% 取消中文与数字之间间隙
+%%%%% 字体需要自己下载安装，注意版权问题，这两种字体应该比较好看，英文Helvetica，中文方正兰亭黑，也是有多种版本，自己试试哪些好看。参考了https://www.wondercv.com/的模板
+%%%%% windows系统好像需要先安装字体，之后下面语句就够了
+%Main document font
+%\setmainfont[
+%  BoldFont = HelveticaNeueLTPro-Md.otf ,
+%]{HelveticaNeueLTPro-Roman.otf}
+%
+%\setCJKmainfont[
+%BoldFont=Pro_GB18030 DemiBold.otf,
+%]{Pro_GB18030.otf}
+%%%%% 字体需要自己下载安装，注意版权问题
+%%%%% linux系统只需要字体路径就行了，如下
+% % Main document font
+\setmainfont[
+Path = Font/,
+  Extension = .otf ,
+  BoldFont = HelveticaNeueLTPro-Md.otf ,
+]{HelveticaNeueLTPro-Roman.otf}
+\setCJKmainfont[
+Path = Font/,
+  Extension = .otf ,
+BoldFont=ProGB18030 DemiBold.otf,
+]{ProGB18030.otf}
+%%%%% 定义更漂亮的“C++”，参考https://tex.stackexchange.com/questions/4302/prettiest-way-to-typeset-c-cplusplus 
+%%%%% 貌似跟具体字体大小有关，需要调下参数，我测试感觉下面的比较好看
+\usepackage{relsize}
+\usepackage{xspace}
+\protected\def\Cpp{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.28ex}{\relsize{-1}++}}\xspace} 
+% use fontawesome
+\usepackage{fontawesome}
+%\newfontfamily{\FA}{[FontAwesome.otf]}
+\usepackage[
+	a4paper,
+	left=1.2cm,
+	right=1.2cm,
+	top=1.5cm,
+	bottom=1cm,
+	nohead
+]{geometry}
+\renewcommand{\baselinestretch}{1.2} %定义行间距1.2
+\usepackage{titlesec}
+\usepackage{enumitem}
+\setlist{noitemsep} % removes spacing from items but leaves space around the whole list
+%\setlist{nosep} % removes all vertical spacing within and around the list
+\setlist[itemize]{topsep=0.25em, leftmargin=*}
+\setlist[enumerate]{topsep=0.25em, leftmargin=*}
+\titleformat{\section}         % Customise the \section command 
+  {\large\bfseries\raggedright} % Make the \section headers large (\Large),
+                               % small capitals (\scshape) and left aligned (\raggedright)
+  {}{0em}                      % Can be used to give a prefix to all sections, like 'Section ...'
+  {}                           % Can be used to insert code before the heading
+  [{\color{CVBlue}\titlerule}]                 % Inserts a horizontal line after the heading
+\titlespacing*{\section}{0cm}{*1.6}{*1.2}
+\usepackage{siunitx}
+\usepackage{amssymb}
+%\xeCJKsetup{CJKspace=true}
+%\xeCJKDeclareCharClass{CJK}{`0 -> `9}    % 设置 0-9 以 CJK 字体输出
+%\normalspacedchars{0,1,2,3,4,5,6,7,8,9} % 0-9 的字符类被还原
+
+% Setup fancyhdr for footer on every page
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % clear all fields
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\cfoot{
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor = south,fill=CVBlue,draw=none,minimum width=\paperwidth,minimum height=1.5em,align=center,font=\footnotesize,text=white] at ($(current page.south)$)
+        {\centering \small 感谢您百忙中拨冗阅读我的简历！};
+    \end{tikzpicture}
+}
+
+\begin{document}
+
+%%%% 利用tikz来定位照片
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor = north east] at ($(current page.north east)+(-1cm,-0.6cm)$) {\includegraphics[height=3.8cm]{img/photo.jpg}};
+\end{tikzpicture}%
+%%%% 利用tikz来定位学校Logo，这里只在第一页显示，如果需要每页都有，可以考虑在页眉、页脚或者background中加入，不过简历也就一两页，无所谓了
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor = north west] at ($(current page.north west)+(0.2cm,-0.2cm)$) {\includegraphics[height=1.75cm]{img/ustcfull.jpg}};
+\end{tikzpicture}%
+
+%tikzpicture环境很敏感，注释周围的空格、空行都会引起水平距离或垂直距离的变化，
+%
+\vspace*{1em}
+\filright{\huge \bfseries{王子宁}}
+
+\vspace*{0.4em}
+
+\filright{\normalsize{
+		\faPhone \ (+86)18221853868 \quad
+		\faEnvelopeO \ \href{mailto:znwang@mail.ustc.edu.cn}      {znwang@mail.ustc.edu.cn} \quad
+            \faGithub \  \href{https://github.com/mogoo7zn}  {https://github.com/mogoo7zn}}}
+%%最好用你的edu邮箱
+
+\vspace*{0.9em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faGraduationCap}\  教育背景}
+
+\textbf{学校}: 中国科学技术大学 \\   \textbf{教育水平}: 普通本科\\ \textbf{学院}: 计算机科学与技术学院 \\ \textbf{主修专业}：计算机科学与技术
+\newline \textbf{GPA: $\mathsf{3.6/4.3}$} \qquad \quad \textbf{专业排名: $\mathsf{55/196}$}
+\begin{itemize}[parsep=0.5ex]
+	\item 专业课程：编译原理，算法基础, 操作系统详解, 计算机组成原理 \ 等.
+        \item 英语水平: CET4: 697  CET6: 641 \\ \textbf{能独立阅读并书写英文论文}
+\end{itemize}
+
+\vspace*{0.6em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faTrophy}\ 奖励}
+\begin{itemize}
+    \item \textbf{2023年度校优秀学生奖学金\ 银奖}
+    \item \textbf{2023年英文“外研社·国才杯”全国大学生外语能力大赛安徽省\ 二等奖}
+    \item \textbf{2024年度校优秀学生奖学金\ 银奖}
+    \item \textbf{2024年校“余庆杯”软件开发大赛\ 三等奖}
+    \item \textbf{2025年全国操作系统设计大赛\ 国家级三等奖}
+    \item \textbf{2025年度国际定向基因工程大赛(iGEM)\ 国际级金奖}
+    
+\end{itemize}
+
+\vspace*{0.6em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faUniversity}\ 研究与项目经历}
+
+\vspace*{0.2em}
+
+\textbf{\large \color{CVBlue} 风格融合在望江挑花非遗传承的研究与应用} \hfill 2024.01-2025.11
+\begin{itemize}
+    \item \textbf{项目类别}: 大学生研究计划（机器学习 \& 软件开发）
+    \item \textbf{项目简述}: 本项目是对中国非物质文化遗产——望江挑花进行数字化保护与创新的研究与开发，通过将传统工艺美学精髓与个性化定制图像进行智能风格融合，最终生成自动化针织图样，构建新型数字化创作模式。该模式既有效降低了非遗传承人的设计工作强度，又能批量生成兼具传统韵味与现代审美的纹样方案以满足商业应用需求。项目与合作者共同完成，本人主要实现风格融合和图像处理任务，协助团员自主研发针织工艺软件系统。
+    
+    该系统具备两大创新功能：一是通过智能图像解析技术将原始素材转化为可操作的针织纹样；二是基于工序拆解算法生成可视化操作指南，可精准指导用户分步骤完成作品制作。项目全程在校内教授和非遗传承人的指导下开展，确保技术路线与文化内涵的学术严谨性。
+
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{项目收获}}: \textbf{目前专利正在申请中}; \quad 掌握基础扩散大模型调优方式, 标注数据集
+    \item \textbf{技术栈}: Python, PyTorch, 计算机视觉, 扩散模型; C\#, WPF开发
+\end{itemize}
+
+% {本项目是对中国非物质文化遗产——望江挑花进行数字化保护与创新的研究与开发，通过将传统工艺美学精髓与个性化定制图像进行智能风格融合，最终生成自动化针织图样，构建新型数字化创作模式。项目与合作者共同完成，本人主要实现风格融合和图像处理任务，协助团员自主研发针织工艺软件系统。该系统具备两大创新功能：一是通过智能图像解析技术将原始素材转化为可操作的针织纹样；二是基于工序拆解算法生成可视化操作指南，可精准指导用户分步骤完成作品制作。项目全程在校内教授和非遗传承人的指导下开展，确保技术路线与文化内涵的学术严谨性。}
+
+% {本项目是对中国非物质文化遗产——望江挑花进行数字化保护与创新的研究与开发，通过将传统工艺美学精髓与个性化定制图像进行智能风格融合，最终生成自动化针织图样，构建新型数字化创作模式。该模式既有效降低了非遗传承人的设计工作强度，又能批量生成兼具传统韵味与现代审美的纹样方案以满足商业应用需求。项目与合作者共同完成，本人主要实现风格融合和图像处理任务，协助团员自主研发针织工艺软件系统。该系统具备两大创新功能：一是通过智能图像解析技术将原始素材转化为可操作的针织纹样；二是基于工序拆解算法生成可视化操作指南，可精准指导用户分步骤完成作品制作。项目全程在校内教授和非遗传承人的指导下开展，确保技术路线与文化内涵的学术严谨性。}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} 全国大学生操作系统竞赛} \hfill 2025.04-2025.08
+\begin{itemize}
+    \item \textbf{项目类别}: 学科竞赛
+    \item \textbf{项目简述}: 初赛阶段，面向\ DAYU200\ 开发板，在有限的 CPU 算力和内存情况下端侧部署大语言模型，完成本地化部署的大语言模型应用，并对应用进行跑分测试。 决赛阶段，面向 华为真机 开发应用，依托 HarmonyOS 操作系统，利用设备 GPU 算力提高模型推理速度，同时探索并初步实现将多模态大模型能力与操作系统相协调，实现约 15 token/s 的端侧多模态大模型的推理部署能力。本人在比赛小组中担任队长一职。
+    \item[\textcolor{CVBlue}{\faStar}]\textbf{\textcolor{CVBlue}{核心工程}}: \textbf{多模态大模型应用嵌入式设备开发}
+    \item \textbf{技术栈}: C++, ArkTS, Llama, MNN
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} 华为 HarmonyOS 菁英班实习} \hfill 2025.06-2025.08
+\begin{itemize}
+    \item \textbf{项目类别}: 企业实习
+    
+    \item \textbf{项目简述}: 经过校内选拔参与华为举办的 HarmonyOS 菁英班，学习 OpenHarmony 和 HarmonyOS 技术，参与华为内部部门工作实习。具体实习内容为：为终端底层软件相机部门开发参数自动化适配工具，提升产品参数适配效率，降低适配与版本迭代成本。
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{主要收获}}: 了解企业工作状态，懂得了:\ \textbf{无论从事何种职务，能够快速定位与解决问题并正确展示和表达才是实践工作最关键的能力}
+    \item \textbf{技术栈}: C++, Python
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} kaggle-ConnectX} \hfill 2025.10-2025.12
+\begin{itemize}
+    \item \textbf{项目类别}: 课程大作业
+    
+    \item \textbf{项目简述}: 使用\ DQN, \ AlphaZero 等强化学习方法开发重力四子棋\ agent，参与\ Kaggle \ ConnectX比赛，历史最高排名\ 19/241\ 名。
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{项目收获}}: 学习基本的强化学习方法和数学原理，掌握基本的强化学习\ agent\ 开发思路
+    \item \textbf{技术栈}: PyTorch, DQN, AlphaZero, RL
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} 时间流:智能时间管理应用} \hfill 2023.10-2024.11
+\begin{itemize}
+    \item \textbf{项目类别}: 安卓软件开发
+    
+    \item \textbf{项目简述}: 本项目聚焦于开发一款专为校园师生群体设计的时间优化管理应用程序，旨在通过智能化技术助力用户实现时间资源的高效配置。项目基于用户习惯分析系统，结合用户个体作息规律与任务优先级矩阵，自主生成科学化日程规划方案，实现时间管理策略的迭代优化，为教育场景下的时间价值最大化提供可靠的解决方案。
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{项目收获}}: 学习安卓移动端开发流程和框架，初步掌握\textbf{从用户需求到实际开发，用户反馈再调优的完整项目流程}
+    \item \textbf{技术栈}: Kotlin, Java, MySQL
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} iGEM 国际遗传基因工程设计大赛} \hfill 2025.02-2025.10
+\begin{itemize}
+    \item \textbf{项目类别}: 学科竞赛
+    \item \textbf{项目简述}: 在比赛中，本人和网页组队员一同搭建校内比赛实验服务器平台，完成网页美工与功能设计。在项目中，学习到网页前后端开发知识，同时更为重要的是初步学习如何带领团队工作，合理安排任务分配，与其他组交流协商，遇到团队冲突和紧急情况处理。本人在比赛小组分组网页组中担任组长一职。
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{项目收获}}: 网页开发技术; \ \textbf{如何高效与组员沟通，管理团队，懂得了任务不能靠单干蛮干，要学会协商与鼓励}
+    \item \textbf{技术栈}: Javascript, react, .next, haskell
+\end{itemize}
+
+\vspace*{0.7em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faUsers}\ 学生工作}
+\begin{itemize}
+	\item 2025 年校学生国旗护卫队 \ 团支部书记
+	\item 2023-2025 班级 生活委员
+\end{itemize}
+
+\vspace*{0.7em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faWrench}\ 技术能力}
+
+\begin{itemize}
+    \item \textbf{开发平台}: 嵌入式开发板 (OrangePi AI pro, DAYU200)\ ;\ OpenHarmony/HarmonyOS, Android,WPF 
+    \item \textbf{编程语言}: C++, Java, C\#, Kotlin, Python, ArkTS
+    \item \textbf{框架与库}: PyTorch,  Next.js
+    \item \textbf{开发工具}: Git, Docker, Anaconda, \LaTeX{}, Android Studio
+\end{itemize}
+
+
+%%%% 如果多页简历，可以手动在适当位置插入 \newpage 或者 \clearpage 开始新一页
+
+\end{document}

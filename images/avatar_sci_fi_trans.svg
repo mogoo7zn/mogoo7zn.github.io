@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="300">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#6366F1"/>
+    </linearGradient>
+
+    <!-- Dual halo: a subtle dark outline for light mode + a subtle light outline for dark mode -->
+    <filter id="dualHalo" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2.0" flood-color="#000000" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="2.0" flood-color="#FFFFFF" flood-opacity="0.22"/>
+    </filter>
+
+    <clipPath id="clipOuter">
+      <circle cx="150" cy="150" r="118"/>
+    </clipPath>
+  </defs>
+
+  <!-- Transparent background (no rect) -->
+  <g fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#dualHalo)">
+    <circle cx="150" cy="150" r="118"/>
+    <circle cx="150" cy="150" r="34"/>
+    <g clip-path="url(#clipOuter)">
+      <polyline points="33.15,133.58 92.00,92.00 150.00,116.00 208.00,92.00 266.85,133.58"/>
+    </g>
+  </g>
+</svg>

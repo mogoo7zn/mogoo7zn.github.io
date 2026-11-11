@@ -1,0 +1,1 @@
+import{j as e}from"./jsx-runtime.ClP7wGfN.js";import{u as l,$ as t}from"./store.Kxvq8hpG.js";import"./index.DK-fsZOb.js";function c({label:r,title:s,description:i}){const a=l(t);return e.jsxs("header",{className:"editorial-page-header",children:[e.jsx("p",{className:"editorial-label",children:r}),e.jsx("h1",{children:s[a]}),e.jsx("p",{children:i[a]})]})}export{c as default};

@@ -1,0 +1,8 @@
+.paragraph {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  color: var(--text-secondary, #4a5568);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 1rem 0;
+  max-width: 720px; // 限制最大宽度以提高可读性
+}

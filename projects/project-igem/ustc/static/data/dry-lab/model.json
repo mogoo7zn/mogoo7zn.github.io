@@ -1,0 +1,38 @@
+
+{
+  "title": "Model",
+  "bannerImage": "/images/banners/model_banner.jpg",
+  "description": "Simulating and predicting the behavior of our biological system using mathematical models.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Model Overview",
+      "id": "model-overview"
+    },
+    {
+      "type": "paragraph",
+      "text": "To better understand the dynamics of our biosensor, we developed a set of ordinary differential equations (ODEs) to model the key molecular interactions. The model accounts for transcription factor binding, mRNA transcription, protein translation, and degradation rates."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Assumptions and Parameters",
+      "id": "model-assumptions"
+    },
+    {
+      "type": "paragraph",
+      "text": "Our model operates under several key assumptions, including a constant cell volume and uniform distribution of all molecular species within the cytoplasm. Key parameters, such as binding affinities and degradation rates, were sourced from existing literature and the BioNumbers database."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Simulation Results",
+      "id": "model-results"
+    },
+    {
+      "type": "paragraph",
+      "text": "Simulations run using MATLAB's SimBiology toolbox predicted a strong sigmoidal response curve, which closely matched our experimental results. The model helped us understand the system's sensitivity and predict its saturation point."
+    }
+  ]
+}

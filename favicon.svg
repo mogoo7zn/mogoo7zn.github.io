@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo-gradient" x1="0" y1="0" x2="300" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3B82F6">
+        <animate attributeName="stop-color" values="#3B82F6;#8B5CF6;#3B82F6" dur="3s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="1" stop-color="#8B5CF6">
+        <animate attributeName="stop-color" values="#8B5CF6;#3B82F6;#8B5CF6" dur="3s" repeatCount="indefinite" />
+      </stop>
+    </linearGradient>
+  </defs>
+  <circle cx="150" cy="150" r="34" stroke="url(#logo-gradient)" stroke-width="32" fill="none" />
+  <polyline points="33.15,133.58 92.00,92.00 150.00,116.00 208.00,92.00 266.85,133.58" stroke="url(#logo-gradient)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+</svg>

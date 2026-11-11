@@ -1,0 +1,685 @@
+{
+  "title": "Roster",
+  "description": "Meet the talented individuals who bring our project to life.",
+  "sections": [
+    {
+      "type": "separator-heading",
+      "text": "Team Lead",
+      "id": "team-lead",
+      "animationFiles": {
+        "intro": "TeamLeadIntro.json",
+        "loop": "TeamLeadLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "Jinlin_Liu",
+          "front": {
+            "name": "Jinlin Liu",
+            "photo": "https://static.igem.wiki/teams/5924/team/jinlin-liu.webp",
+            "major": "Biology",
+            "position": "Team Leader of Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "The devil is in the details."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Yanlin_Chen",
+          "front": {
+            "name": "Yanlin Chen",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-chenyanlin.webp",
+            "major": "Biology",
+            "position": "Team Leader of Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "A hero lies in you."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Ruoxi_Cao",
+          "front": {
+            "name": "Ruoxi Cao",
+            "photo": "https://static.igem.wiki/teams/5924/team/caoruoxi.webp",
+            "major": "Biology",
+            "position": "Team Leader of Human Practices & Drylab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Do not go gentle into that good night."
+          }
+        },
+        {
+          "type": "card",
+          "id": "ZiNing_Wang",
+          "front": {
+            "name": "Zining Wang",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-wangzinings.webp",
+            "major": "Computer Science",
+            "position": "Team Leader of Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "I only live once."
+          }
+        }
+      ]
+    },
+    {
+      "type": "separator-heading",
+      "text": "Wet Lab",
+      "id": "wet-lab",
+      "animationFiles": {
+        "intro": "WetLabIntro.json",
+        "loop": "WetLabLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "Heqi_Yang",
+          "front": {
+            "name": "Heqi Yang",
+            "photo": "https://static.igem.wiki/teams/5924/team/yangheqi.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Downwards is the only way backwards."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Xiaorui_Li",
+          "front": {
+            "name": "Xiaorui Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lixiaorui.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "If you are trapped in a windless land,I will play the song of high heavens for you."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Jingbo_Zhang",
+          "front": {
+            "name": "Jingbo Zhang",
+            "photo": "https://static.igem.wiki/teams/5924/team/zhangjingbo.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "There should always be another way."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Sirui_Li",
+          "front": {
+            "name": "Sirui Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lisirui.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "This is only a foretaste of what is to come, and only the shadow of what is going to be."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Yingying_Chen",
+          "front": {
+            "name": "Yingying Chen",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-chenyingying.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Embrace books, embrace journeys , and embrace your true self."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Yile_Wu",
+          "front": {
+            "name": "Yile Wu",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-wuyile.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Think of your energy as if it's expensive."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Dongyang_Li",
+          "front": {
+            "name": "Dongyang Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lidongyang.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Every cloud has a silver lining."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Chenyu_Zheng",
+          "front": {
+            "name": "Chenyu Zheng",
+            "photo": "https://static.igem.wiki/teams/5924/team/zhengchenyu.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Know thyself."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Shurui_Lin",
+          "front": {
+            "name": "Shurui Lin",
+            "photo": "https://static.igem.wiki/teams/5924/team/img-20241217-094309.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "To witness secrets sealed ,one must endure the harshest punishment."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Hao_Wu",
+          "front": {
+            "name": "Hao Wu",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-wuhao.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "After all, tomorow is another day."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Zifan_Chen",
+          "front": {
+            "name": "Zifan Chen",
+            "photo": "https://static.igem.wiki/teams/5924/team/chenzifan.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Stay curious, stay humble."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Can_Li",
+          "front": {
+            "name": "Can Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lican.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Listening to the whisper of life."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Yandong_Shi",
+          "front": {
+            "name": "Yandong Shi",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-syyds.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Had I not seen the sun\nI could have borne the shade\n------- by Emily Dickinson"
+          }
+        },
+        {
+          "type": "card",
+          "id": "Xiang_Li",
+          "front": {
+            "name": "Xiang Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lixiang.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Keep moving!"
+          }
+        },
+        {
+          "type": "card",
+          "id": "Qiwen_Huang",
+          "front": {
+            "name": "Qiwen Huang",
+            "photo": "https://static.igem.wiki/teams/5924/team/huangqiwen.webp",
+            "major": "Biology",
+            "position": "Wetlab"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "What we think, we became."
+          }
+        }
+      ]
+    },
+    {
+      "type": "separator-heading",
+      "text": "Dry Lab",
+      "id": "dry-lab",
+      "animationFiles": {
+        "intro": "DryLabIntro.json",
+        "loop": "DryLabLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "Xiyan_Cui",
+          "front": {
+            "name": "Xiyan Cui",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-cuixiyan.webp",
+            "major": "Bioscience",
+            "position": "Model"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Fitter, happier, more productive."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Shuo_Li",
+          "front": {
+            "name": "Shuo Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lishuo.webp",
+            "major": "Biology",
+            "position": "Model"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "The future is much more exciting if you believe you can make it better."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Xi_Chen",
+          "front": {
+            "name": "Xi Chen",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-chx.webp",
+            "major": "Information Security",
+            "position": "Model"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "I am always judged by the future me."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Site_Li",
+          "front": {
+            "name": "Site Li",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-lisite.webp",
+            "major": "Physics",
+            "position": "Model"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Wisdom begins in wonder."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Qingshuo_Jin",
+          "front": {
+            "name": "Qingshuo Jin",
+            "photo": "https://static.igem.wiki/teams/5924/team/kedaniu-male.webp",
+            "major": "Computer Science",
+            "position": "Model"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Listening to the whisper of life."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Jinyang_Zhu",
+          "front": {
+            "name": "Jinyang Zhu",
+            "photo": "https://static.igem.wiki/teams/5924/team/zhujinyang.webp",
+            "major": "Biology",
+            "position": "Model"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "No man is an island, entire of itself; every man is a piece of the continent, a part of the main."
+          }
+        }
+      ]
+    },
+    {
+      "type": "separator-heading",
+      "text": "Wiki Team",
+      "id": "wiki",
+      "animationFiles": {
+        "intro": "WikiIntro.json",
+        "loop": "WikiLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "Boning_Yang",
+          "front": {
+            "name": "Boning Yang",
+            "photo": "https://static.igem.wiki/teams/5924/team/yangboning.webp",
+            "major": "Theoretical and Applied Mechanics",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "The truth will set you free."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Feixuan_Tao",
+          "front": {
+            "name": "Feixuan Tao",
+            "photo": "https://static.igem.wiki/teams/5924/team/kedaniu-female.webp",
+            "major": "Information Science and Technology",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "..."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Jiheng_Chen",
+          "front": {
+            "name": "Jiheng Chen",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-chenjiheng.webp",
+            "major": "Computer Science",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "With faith in the heart, there is strength in the feet."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Haoxiang_Wu",
+          "front": {
+            "name": "Haoxiang Wu",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-wuhaoxiang.webp",
+            "major": "Biology",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Albert Einstein: \"If we knew what it was we were doing, it would not be called research, would it?\""
+          }
+        },
+        {
+          "type": "card",
+          "id": "Shuxian_Wang",
+          "front": {
+            "name": "Shuxian Wang",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-wangshuxian.webp",
+            "major": "Electrical Engineering",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Life is like a box of chocolates. You never know what you're gonna get."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Hao_Wang",
+          "front": {
+            "name": "Hao Wang",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-wanghao.webp",
+            "major": "Computer Science",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "I can do this all day."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Shao_Chenxuan",
+          "front": {
+            "name": "Chenxuan Shao",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-scx.avif",
+            "major": "Computer Science",
+            "position": "Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "404 Not Found"
+          }
+        }
+      ]
+    },
+    {
+      "type": "separator-heading",
+      "text": "Integrated Human Practices",
+      "id": "ihp",
+      "animationFiles": {
+        "intro": "iHPIntro.json",
+        "loop": "iHPLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "Qijia_He",
+          "front": {
+            "name": "Qijia He",
+            "photo": "https://static.igem.wiki/teams/5924/team/kedaniu-male.webp",
+            "major": "Mechanical Manufacturing and Automation",
+            "position": "Human Practices"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Don't watch the clock; do what it does. Keep going."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Shirui_Chong",
+          "front": {
+            "name": "Shirui Chong",
+            "photo": "https://static.igem.wiki/teams/5924/team/chongshirui.webp",
+            "major": "Artificial Intelligence and Data Science",
+            "position": "Human Practices & Wiki"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "What we think, we became."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Zichuan_Wang",
+          "front": {
+            "name": "Zichuan Wang",
+            "photo": "https://static.igem.wiki/teams/5924/team/wangzichuan.webp",
+            "major": "Biology",
+            "position": "Human Practices"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Knowledge makes humble, ignorance makes proud."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Jiaqi_Fan",
+          "front": {
+            "name": "Jiaqi Fan",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-fanjiaqi.webp",
+            "major": "Electronic Information Engineering",
+            "position": "Human Practices"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Believe in yourself."
+          }
+        }
+      ]
+    },
+    {
+      "type": "separator-heading",
+      "text": "Principal Investigator",
+      "id": "principal-investigator",
+      "animationFiles": {
+        "intro": "PrincipalInvestigatorIntro.json",
+        "loop": "PrincipalInvestigatorLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "prof_hong",
+          "front": {
+            "name": "Prof. Hong Jiong",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-hongjiong.webp",
+            "major": "Biology",
+            "position": "Principal Investigator"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Life is like music. It must be composed by ear, feeling and instinct, not by rule."
+          }
+        }
+      ]
+    },
+    {
+      "type": "separator-heading",
+      "text": "Advisors",
+      "id": "advisors",
+      "animationFiles": {
+        "intro": "AdvisorsIntro.json",
+        "loop": "AdvisorsLoop.json"
+      },
+      "members": [
+        {
+          "type": "card",
+          "id": "Xiaotian_He",
+          "front": {
+            "name": "Xiaotian He",
+            "photo": "https://static.igem.wiki/teams/5924/team/xiaotianhe.webp",
+            "major": "Biology",
+            "position": "Advisor"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "To be both a speaker of words and a doer of deeds."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Jiacan_Ma",
+          "front": {
+            "name": "Jiacan Ma",
+            "photo": "https://static.igem.wiki/teams/5924/team/jiacanma.webp",
+            "major": "Biology",
+            "position": "Advisor"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "The greatest test of courage on earth is to bear defeat without losing heart."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Xinyuan_Shi",
+          "front": {
+            "name": "Xinyuan Shi",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-xinyuanshi.webp",
+            "major": "Biology",
+            "position": "Advisor"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "The shortest way to do many things is to only one thing at a time."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Bojun_Yang",
+          "front": {
+            "name": "Bojun Yang",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-yangbojun.webp",
+            "major": "Medicine",
+            "position": "Advisor"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "The past belongs to death, and that the future belongs to yourself."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Zeyue_Jia",
+          "front": {
+            "name": "Zeyue Jia",
+            "photo": "https://static.igem.wiki/teams/5924/team/ava-jzy.avif",
+            "major": "Mathematics and Applied Mathematics",
+            "position": "Advisor"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "When night's shadow covers the earth, my words shall call the light."
+          }
+        },
+        {
+          "type": "card",
+          "id": "Jingyuan_Gao",
+          "front": {
+            "name": "Jingyuan Gao",
+            "photo": "https://static.igem.wiki/teams/5924/team/kedaniu-male.webp",
+            "major": "Biology",
+            "position": "Advisor"
+          },
+          "back": {
+            "title": "Favorite maxim",
+            "text": "Life is the art of drawing sufficient conclusions from insufficient premises."
+          }
+        }
+      ]
+    }
+  ]
+}

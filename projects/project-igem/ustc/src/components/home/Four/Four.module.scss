@@ -1,0 +1,273 @@
+// 基础样式
+.container {
+  background: linear-gradient(to bottom, #ffffff, #000000);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.5s ease, background 2s ease;
+  
+  &.visible {
+    opacity: 1;
+    background: #000;
+  }
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.box1 {
+  height: calc(100vh / 7);
+  
+  h1 {
+    font-family: 'Montserrat-ExtraBold', sans-serif;
+    font-size: 5rem;
+    color: #f0f0f0;
+    letter-spacing: 0.1em;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+  }
+}
+
+.box2 {
+  height: calc(100vh / 7);
+  
+  .logo {
+    height: 80%;
+    max-width: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(240, 240, 240, 0.3));
+    transition: transform 0.5s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.box3 {
+  height: calc(100vh / 7);
+  background: transparent;
+  max-width: 80%;
+  
+  p {
+    font-family: 'Montserrat-Thin', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(240, 240, 240, 0.2);
+  }
+}
+
+.box4 {
+  // height: calc(100vh / 1.5);
+  font-family: 'Montserrat-Thin', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  .sectionIntro {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+    font-family: 'Montserrat-ExtraBold', sans-serif;
+    
+    .spyHighlight {
+      color: #FFD700;
+      font-weight: 800;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    }
+  }
+  
+  .infoCardsContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+}
+
+// 信息卡片样式
+.infoCard {
+  background-color: #f0f0f0;
+  width: 100%;
+  height: 550px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(168, 12, 5, 0.3);
+  }
+}
+
+.cardContent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  
+  p {
+    color: #1b0301;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 1rem 0 0;
+    text-align: center;
+  }
+}
+
+.cardImage {
+  width: 100%;
+  height: 60%;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.titleCapsule {
+  align-items: center;
+  background-color: #a80c05;
+  font-family: 'Montserrat-ExtraBold', sans-serif;
+  color: #f0f0f0;
+  width: 80%;
+  padding: 0.5rem 0;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  margin: 1rem auto;
+  
+  .firstLetter {
+    color: #FFD700;
+    font-weight: 900;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+}
+
+// 动画效果
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container.visible {
+  .box1 {
+    animation: fadeInUp 1s ease forwards;
+  }
+  
+  .box2 {
+    animation: fadeInUp 1s ease 0.2s forwards;
+  }
+  
+  .box3 {
+    animation: fadeInUp 1s ease 0.4s forwards;
+  }
+  
+  .box4 {
+    animation: fadeInUp 1s ease 0.6s forwards;
+  }
+}
+
+// 响应式设计
+@media (max-width: 900px) {
+  .infoCardsContainer {
+    flex-direction: column;
+    gap: 1rem !important;
+  }
+  .box3 p {
+    font-size: 1.3rem;
+  }
+  .box4 {
+    height: auto !important;
+  }
+  
+  .infoCard {
+    height: 300px;
+    margin-bottom: 1rem;
+  }
+  
+  .box4 .sectionIntro {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .box1 h1 {
+    font-size: 2.5rem;
+  }
+  
+  .box3 p {
+    font-size: 1.1rem;
+  }
+  
+  .infoCard {
+    height: 300px;
+  }
+  
+  .box4 .sectionIntro {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .box1 h1 {
+    font-size: 2rem;
+  }
+  
+  .box3 {
+    max-width: 95% !important;
+    
+    p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .infoCard {
+    height: 280px;
+  }
+  
+  .box4 .sectionIntro {
+    font-size: 1.4rem;
+  }
+}

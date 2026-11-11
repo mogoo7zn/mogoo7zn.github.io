@@ -1,0 +1,19 @@
+/* components/common/Grid.module.scss */
+
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 300%;
+  z-index: 0;
+  background-color: var(--bg-color);
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'>\
+<rect width='40' height='40' fill='none' stroke='%23999' stroke-width='0.5'/>\
+</svg>");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-attachment: fixed;
+  pointer-events: none;
+}

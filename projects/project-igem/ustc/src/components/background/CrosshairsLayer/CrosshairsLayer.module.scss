@@ -1,0 +1,68 @@
+.crosshairsContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  //   animation: move-lines-down 20s linear infinite alternate; /* 使用 alternate 让它来回移动 */
+
+  pointer-events: none;
+}
+
+/*那个圆的样式*/
+.crosshairs {
+  position: absolute;
+  /* 1. 使用 CSS 变量来设置位置，并提供一个初始的默认值 */
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+
+  transform: translate(-50%, -50%);
+
+  /* 2. (可选但推荐) 添加一个 transition 来让移动更平滑，不那么生硬 */
+  transition:
+    top 0.1s linear,
+    left 0.1s linear;
+
+  width: 80px;
+  height: 80px;
+  border: 3px solid var(--accent-color); /* 使用 CSS 变量 */
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: var(--accent-color); /* 使用 CSS 变量 */
+
+    // 使用 mask 技术来“剪裁”掉圆圈内部的线条
+    // 这个渐变创建了一个中间透明、外部不透明的圆形遮罩
+    mask: radial-gradient(
+      circle at center,
+      transparent 0,
+      transparent 40px,
+      /* 在半径40px内（圆圈内）都是透明的，会隐藏线条 */ black 41px
+        /* 从半径41px开始变为不透明（黑色），会显示线条 */
+    );
+  }
+
+  &::before {
+    /* 垂直线 */
+    left: 50%;
+
+    top: 50%; /* 从顶部开始 */
+    width: 3px;
+    height: 5000px;
+    transform: translate(-50%, -50%);
+  }
+
+  &::after {
+    /* 水平线 */
+    left: 50%;
+
+    top: 50%; /* 从顶部开始 */
+    height: 3px;
+    width: 5000px;
+    transform: translate(-50%, -50%);
+  }
+}

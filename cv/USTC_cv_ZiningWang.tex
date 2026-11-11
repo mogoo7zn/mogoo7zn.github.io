@@ -1,0 +1,264 @@
+%%%% 原模板参考了https://www.wondercv.com/的模板
+\documentclass[11pt]{article}
+% disable indent globally
+\setlength{\parindent}{0pt}
+% some general improvements, defines the XeTeX logo
+\usepackage{xltxtra}
+\usepackage{bookmark}
+% use hyperlink for email and url
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\usepackage{url}
+\urlstyle{tt}
+\usepackage{multicol}
+\usepackage{xcolor}
+%%%% 统一一种颜色，偏蓝色，用于section下划线和fontawesome
+\definecolor{CVBlue}{RGB}{45, 77, 152} % 从校徽上取的师大蓝
+%%另一种师大蓝{RGB}{0,77,255}
+%%% \widthof[]{} 用于特殊对齐是用到
+\usepackage{calc}
+%%%% 利用tikz来定位照片和学校Logo
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+% loading fonts
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\CJKsetecglue{} %% 取消中文与数字之间间隙
+%%%%% 字体需要自己下载安装，注意版权问题，这两种字体应该比较好看，英文Helvetica，中文方正兰亭黑，也是有多种版本，自己试试哪些好看。参考了https://www.wondercv.com/的模板
+%%%%% windows系统好像需要先安装字体，之后下面语句就够了
+%Main document font
+%\setmainfont[
+%  BoldFont = HelveticaNeueLTPro-Md.otf ,
+%]{HelveticaNeueLTPro-Roman.otf}
+%
+%\setCJKmainfont[
+%BoldFont=Pro_GB18030 DemiBold.otf,
+%]{Pro_GB18030.otf}
+%%%%% 字体需要自己下载安装，注意版权问题
+%%%%% linux系统只需要字体路径就行了，如下
+% % Main document font
+\setmainfont[
+Path = Font/,
+  Extension = .otf ,
+  BoldFont = HelveticaNeueLTPro-Md.otf ,
+]{HelveticaNeueLTPro-Roman.otf}
+\setCJKmainfont[
+Path = Font/,
+  Extension = .otf ,
+BoldFont=ProGB18030 DemiBold.otf,
+]{ProGB18030.otf}
+%%%%% 定义更漂亮的“C++”，参考https://tex.stackexchange.com/questions/4302/prettiest-way-to-typeset-c-cplusplus 
+%%%%% 貌似跟具体字体大小有关，需要调下参数，我测试感觉下面的比较好看
+\usepackage{relsize}
+\usepackage{xspace}
+\protected\def\Cpp{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.28ex}{\relsize{-1}++}}\xspace} 
+% use fontawesome
+\usepackage{fontawesome}
+%\newfontfamily{\FA}{[FontAwesome.otf]}
+\usepackage[
+	a4paper,
+	left=1.2cm,
+	right=1.2cm,
+	top=1.5cm,
+	bottom=1cm,
+	nohead
+]{geometry}
+\renewcommand{\baselinestretch}{1.2} %定义行间距1.2
+\usepackage{titlesec}
+\usepackage{enumitem}
+\setlist{noitemsep} % removes spacing from items but leaves space around the whole list
+%\setlist{nosep} % removes all vertical spacing within and around the list
+\setlist[itemize]{topsep=0.25em, leftmargin=*}
+\setlist[enumerate]{topsep=0.25em, leftmargin=*}
+\titleformat{\section}         % Customise the \section command 
+  {\large\bfseries\raggedright} % Make the \section headers large (\Large),
+                               % small capitals (\scshape) and left aligned (\raggedright)
+  {}{0em}                      % Can be used to give a prefix to all sections, like 'Section ...'
+  {}                           % Can be used to insert code before the heading
+  [{\color{CVBlue}\titlerule}]                 % Inserts a horizontal line after the heading
+\titlespacing*{\section}{0cm}{*1.6}{*1.2}
+\usepackage{siunitx}
+\usepackage{amssymb}
+%\xeCJKsetup{CJKspace=true}
+%\xeCJKDeclareCharClass{CJK}{`0 -> `9}    % 设置 0-9 以 CJK 字体输出
+%\normalspacedchars{0,1,2,3,4,5,6,7,8,9} % 0-9 的字符类被还原
+
+% Setup fancyhdr for footer on every page
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % clear all fields
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\cfoot{
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor = south,fill=CVBlue,draw=none,minimum width=\paperwidth,minimum height=1.5em,align=center,font=\footnotesize,text=white] at ($(current page.south)$)
+        {\centering \small 感谢您百忙中拨冗阅读我的简历！};
+    \end{tikzpicture}
+}
+
+\begin{document}
+%%%% Use TikZ to position the photo
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor = north east] at ($(current page.north east)+(-1cm,-0.6cm)$) {\includegraphics[height=3.8cm]{img/photo.jpg}};
+\end{tikzpicture}%
+%%%% Use TikZ to position the university logo (shown on the first page)
+\begin{tikzpicture}[remember picture, overlay]
+	\node[anchor = north west] at ($(current page.north west)+(0.2cm,-0.2cm)$) {\includegraphics[height=1.75cm]{img/ustcfull.jpg}};
+\end{tikzpicture}%
+
+% The tikzpicture environment is sensitive: spaces/blank lines around comments may affect spacing.
+%
+\vspace*{1em}
+\filright{\huge \bfseries{Zining Wang}}
+
+\vspace*{0.4em}
+
+\filright{\normalsize{
+		\faPhone \ (+86)18221853868 \quad
+		\faEnvelopeO \ \href{mailto:znwang@mail.ustc.edu.cn}{znwang@mail.ustc.edu.cn} \quad
+        \faGithub \ \href{https://github.com/mogoo7zn}{https://github.com/mogoo7zn}}}
+%% Prefer your .edu email address
+
+\vspace*{0.9em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faGraduationCap}\ Education}
+
+\textbf{University}: University of Science and Technology of China (USTC) \\
+\textbf{Program}: Undergraduate (Bachelor's Program) \\
+\textbf{School}: School of Computer Science and Technology \\
+\textbf{Major}: Computer Science and Technology
+\newline \textbf{GPA: $\mathsf{3.6/4.3}$} \qquad \quad \textbf{Major Rank: $\mathsf{55/196}$}
+\begin{itemize}[parsep=0.5ex]
+	\item Relevant coursework: Compilers, Algorithms, Operating Systems, Computer Organization, etc.
+    \item English: CET-4 697 \quad CET-6 641 \\
+    \textbf{Able to independently read and write academic papers in English}
+\end{itemize}
+
+\vspace*{0.6em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faTrophy}\ Honors \& Awards}
+\begin{itemize}
+    \item \textbf{USTC Outstanding Student Scholarship (Silver Award), 2023}
+    \item \textbf{FLTRP·ETIC Cup National English Competition (Anhui Provincial Second Prize), 2023}
+    \item \textbf{USTC Outstanding Student Scholarship (Silver Award), 2024}
+    \item \textbf{USTC ``Yuqing Cup'' Software Development Competition (Third Prize), 2024}
+    \item \textbf{National Operating System Design Contest (National Third Prize), 2025}
+    \item \textbf{iGEM Competition (Gold Medal), 2025}
+\end{itemize}
+
+\vspace*{0.6em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faUniversity}\ Research \& Project Experience}
+
+\vspace*{0.2em}
+
+\textbf{\large \color{CVBlue} Style Fusion for Wangjiang Tiaohua (Intangible Cultural Heritage)} \hfill 2024.01--2025.11
+\begin{itemize}
+    \item \textbf{Type}: Undergraduate Research Program (Machine Learning \& Software Development)
+    \item \textbf{Overview}: This project focuses on the digital preservation and innovation of Wangjiang Tiaohua, a Chinese intangible cultural heritage.
+    By fusing the aesthetics of traditional craftsmanship with user-customized images, we generate automated knitting/embroidery patterns and build a new digital creation workflow.
+    The approach reduces the design workload and time cost for inheritors while enabling batch generation of pattern proposals that balance traditional charm with modern aesthetics for potential commercial applications.
+    The work was conducted collaboratively; I primarily implemented style fusion and image-processing components and supported teammates in developing the knitting-process software system.
+
+    The system has two key innovations: (1) intelligent image parsing that converts raw materials into operable knitting patterns; (2) a process-decomposition algorithm that generates step-by-step visual instructions to precisely guide production.
+    The project was carried out under the guidance of university faculty and heritage inheritors to ensure both academic rigor and cultural authenticity.
+
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{Highlights}}: \textbf{Patent application in progress}; \quad Hands-on experience in fine-tuning diffusion models and dataset annotation
+    \item \textbf{Tech Stack}: Python, PyTorch, Computer Vision, Diffusion Models; C\#, WPF
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} National College Student Operating System Competition} \hfill 2025.04--2025.08
+\begin{itemize}
+    \item \textbf{Type}: Academic Competition
+    \item \textbf{Overview}: In the preliminary round, we deployed a large language model on a DAYU200 development board under limited CPU and memory resources, built an on-device LLM application, and ran benchmark tests.
+    In the final round, we developed an application on Huawei devices based on HarmonyOS, leveraged device GPU compute to improve inference speed, and explored early integration of multimodal-LLM capabilities with the operating system.
+    We achieved approximately 15 token/s for on-device multimodal inference deployment. I served as the team leader.
+    \item[\textcolor{CVBlue}{\faStar}]\textbf{\textcolor{CVBlue}{Core Engineering}}: \textbf{Embedded development and deployment of a multimodal LLM application}
+    \item \textbf{Tech Stack}: C++, ArkTS, Llama, MNN
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} Huawei HarmonyOS Elite Program Internship} \hfill 2025.06--2025.08
+\begin{itemize}
+    \item \textbf{Type}: Industry Internship
+
+    \item \textbf{Overview}: Selected through on-campus screening to join Huawei's HarmonyOS Elite Program, where I studied OpenHarmony and HarmonyOS technologies and completed an internship with an internal team.
+    I developed an automated parameter adaptation tool for a camera subsystem team to improve parameter-tuning efficiency and reduce adaptation and version-iteration costs.
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{Key Takeaway}}: Gained understanding of industry workflows and learned that, regardless of role, the most critical practical ability is to quickly locate and solve problems \emph{and} communicate the solution clearly.
+    \item \textbf{Tech Stack}: C++, Python
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} Kaggle -- ConnectX} \hfill 2025.10--2025.12
+\begin{itemize}
+    \item \textbf{Type}: Course Project
+
+    \item \textbf{Overview}: Built agents for gravity-based Connect Four using reinforcement learning methods such as DQN and AlphaZero, and competed in Kaggle ConnectX.
+    Best historical rank: 19/241.
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{Outcome}}: Learned foundational RL methods and math principles; gained practical experience developing RL agents
+    \item \textbf{Tech Stack}: PyTorch, DQN, AlphaZero, RL
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} TimeFlow: Intelligent Time Management App} \hfill 2023.10--2024.11
+\begin{itemize}
+    \item \textbf{Type}: Android App Development
+
+    \item \textbf{Overview}: Developed a time-optimization management app for students and faculty.
+    Based on user habit analysis, the system combines personal routines with a task-priority matrix to automatically generate more scientific schedules and iteratively refine planning strategies, providing a solution for maximizing time value in educational settings.
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{Outcome}}: Learned the Android mobile development workflow and frameworks; gained an end-to-end view from user needs to implementation, feedback, and iterative improvement
+    \item \textbf{Tech Stack}: Kotlin, Java, MySQL
+\end{itemize}
+
+\par\noindent\textcolor{black!20}{\rule{\linewidth}{0.5pt}}
+
+\vspace*{0.1em}
+
+\textbf{\large \color{CVBlue} iGEM (International Genetically Engineered Machine) Competition} \hfill 2025.02--2025.10
+\begin{itemize}
+    \item \textbf{Type}: Academic Competition
+    \item \textbf{Overview}: Co-built an on-campus experimental server platform with web-team members and designed the competition website (UI/UX and functionality).
+    Learned web front-end and back-end development, and more importantly gained initial experience leading a team: planning task allocation, coordinating with other subteams, and handling conflicts and urgent issues.
+    Served as the web-team lead.
+    \item[\textcolor{CVBlue}{\faStar}] \textbf{\textcolor{CVBlue}{Outcome}}: Web development skills; \ \textbf{improved team communication and management—learning to collaborate, negotiate, and encourage rather than working solo}
+    \item \textbf{Tech Stack}: JavaScript, React, Next.js, Haskell
+\end{itemize}
+
+\vspace*{0.7em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faUsers}\ Leadership \& Service}
+\begin{itemize}
+	\item 2025 \quad Youth League Branch Secretary, University Flag Guard Team
+	\item 2023--2025 \quad Class Life Committee Member
+\end{itemize}
+
+\vspace*{0.7em}
+
+\section{\makebox[\widthof{\faGraduationCap}][c]{\color{CVBlue}\faWrench}\ Technical Skills}
+
+\begin{itemize}
+    \item \textbf{Platforms}: Embedded boards (OrangePi AI Pro, DAYU200); OpenHarmony/HarmonyOS; Android; WPF 
+    \item \textbf{Languages}: C++, Java, C\#, Kotlin, Python, ArkTS
+    \item \textbf{Frameworks \& Libraries}: PyTorch, Next.js
+    \item \textbf{Tools}: Git, Docker, Anaconda, \LaTeX{}, Android Studio
+\end{itemize}
+
+
+%%%% If the resume spans multiple pages, insert \newpage or \clearpage manually where needed.
+
+
+\end{document}

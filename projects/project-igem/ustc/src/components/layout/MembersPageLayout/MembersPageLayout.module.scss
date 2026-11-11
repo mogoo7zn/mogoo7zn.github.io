@@ -1,0 +1,401 @@
+// 主容器，负责创建两栏布局
+.container {
+  display: grid;
+  // 定义两栏：左侧目录固定宽度，右侧内容占据剩余空间
+  //   grid-template-columns: 240px 1fr;
+  //   gap: 3rem; // 两栏之间的间距
+  max-width: 1200px; // 页面内容的最大宽度
+  margin: 0 auto; // 居中显示
+  padding: 2rem; // 页面内边距
+  width: 100%; // 确保容器宽度不会超出视口
+  box-sizing: border-box; // 包含内边距在宽度计算中
+  z-index: 10;
+
+  // 响应式设计：当屏幕宽度小于 1024px 时
+  @media (max-width: 1024px) {
+    // 变为单栏布局
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  // 当屏幕宽度小于 768px 时
+  @media (max-width: 768px) {
+    padding: 0.8rem;
+  }
+
+  // 当屏幕宽度小于 480px 时
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
+
+  align-items: flex-start;
+}
+
+// 这个类被传给 BaseBanner，用于定义其独特的外观
+.descriptionBanner {
+  background-color: transparent; /* 改为透明，让动画背景透出来 */
+  color: var(--text-color);
+  min-height: 80vh; /* 增加垂直高度，给大标题留出足够的呼吸空间 */
+  display: flex; /* 使用 Flexbox 来垂直居中内容 */
+  flex-direction: column;
+  justify-content: center;
+  text-align: center; /* 让内部文字居中 */
+  z-index: 20;
+  position: relative; // 关键：为内部绝对定位的子元素提供一个定位上下文
+}
+
+.bannerContent {
+  display: flex;
+  flex-direction: column; // 关键：让子元素垂直（从上到下）排列
+  align-items: center; // 让子元素在水平方向上居中
+  gap: 0; // 在动画和描述文字之间添加一些垂直间距
+  text-align: center; // 确保文字居中
+}
+
+.titleAnimationContainer {
+  position: relative; // 关键：让动画脱离文档流，可以与其他元素重叠
+
+  z-index: 5; // z-index 比文字低，动画就在文字后面；比文字高，就在前面
+  pointer-events: none; // 确保动画不会阻挡鼠标事件
+
+  // 在这里控制动画的尺寸，使其能覆盖标题区域
+  width: clamp(600px, 90vw, 1100px);
+}
+
+// Banner 内部的段落描述样式
+.bannerDescription {
+  font-family: var(--font-main);
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text-secondary); /* 使用次要文本颜色 */
+  z-index: 21;
+}
+
+// // 左侧栏（目录容器）的样式
+// .leftColumn {
+//   width: 240px;
+//   // flex-shrink: 0 防止左侧栏在空间不足时被压缩
+//   flex-shrink: 0;
+
+//   // 左侧栏本身需要是粘性定位的，这样它内部的目录才能正确计算高度
+//   position: sticky;
+//   top: calc(var(--current-header-height, 60px) + 2rem);
+// }
+
+// 1. 新的父容器，负责定义缩放基准
+.bannerAnimationsContainer {
+  position: absolute;
+  bottom: 5vh;
+  right: 5vw;
+  // --- 新增 Flexbox 布局 ---
+  display: flex;
+  align-items: flex-end; // 让子元素底部对齐
+  gap: 0; // 在两个动画之间创建 2rem 的固定间距
+
+  // 定义基础尺寸变量
+  --animation-base-size: clamp(100px, 8vw, 160px);
+}
+
+// 2. 简化小恶魔动画的样式
+.cornerAnimation {
+  // 不再需要 position: absolute 或 right/bottom
+
+  // 宽度基于父容器的变量计算
+  width: calc(var(--animation-base-size) * 1.5);
+  aspect-ratio: 16 / 9;
+}
+
+// 3. 简化箭头动画的样式
+.arrowAnimation {
+  // 不再需要 position: absolute 或 right/bottom
+
+  // 宽度直接使用父容器定义的基准尺寸
+  width: var(--animation-base-size);
+  aspect-ratio: 1 / 1;
+
+  cursor: pointer;
+}
+
+.membersBox {
+  // 右侧栏占据剩余空间
+  flex-grow: 1;
+  min-width: 0; // 防止内容过宽时撑破布局
+
+  // --- 新增样式 ---
+  background-color: var(--card-bg); /* 使用卡片背景色 */
+  padding: 2rem 3rem; /* 增加内边距 */
+  border-radius: 12px; /* 添加圆角 */
+  box-shadow: var(--card-shadow); /* 添加阴影 */
+  border: 3px solid var(--primary-color); /* 添加边框线 */
+  z-index: 15;
+}
+
+// 右侧内容中的 H2 标题样式
+.subheading {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+
+  padding-bottom: 0.5rem;
+
+  // --- 修改点 ---
+  font-family: var(--font-main); /* 使用主字体 */
+  color: var(--text-color);
+  border-bottom: 2px solid var(--accent-color); /* 使用主色作为下划线 */
+
+  // 关键属性：当通过目录链接跳转时，让标题距离浏览器顶部有一段距离
+  // 这样标题就不会被固定的 Header 遮挡
+  scroll-margin-top: calc(var(--current-header-height, 60px) + 2rem);
+
+  // 第一个标题不需要额外的上边距
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// 右侧内容中的段落样式
+.paragraph {
+  font-family: var(--font-main);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8; // 增加行高以提高长文本的可读性
+  margin-bottom: 1.5rem;
+}
+
+// 主容器：现在负责弹性换行
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap; // 关键：允许子元素在空间不足时换行
+  justify-content: center;
+  align-items: center;
+  gap: 2rem; // 同时作为列间距和行间距
+  padding: 2rem 2rem;
+  min-height: 50vh;
+  perspective: 1500px;
+  width: 100%;
+  box-sizing: border-box;
+
+  // 响应式调整
+  @media (max-width: 1024px) {
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+  }
+}
+
+// 卡片插槽/卡片：现在负责定义自身的宽度
+.cardSlot {
+  transition: transform 0.3s ease-out;
+
+  // --- 新增：弹性布局的核心 ---
+  // 默认情况下（桌面端），每个卡片占据大约一半的空间
+  // 我们给一个最小宽度，防止在超大屏幕上被过度拉伸
+  // 同时给一个最大宽度，也就是卡片的设计宽度
+  flex: 0 1 500px; // flex-grow: 0, flex-shrink: 1, flex-basis: 500px
+
+  &:hover {
+    transform: translateY(-15px);
+  }
+
+  // --- 媒体查询 ---
+  // 当屏幕宽度小于或等于 992px 时
+  @media (max-width: 992px) {
+    // 让卡片占据更多空间，强制其变为单列
+    flex-basis: 100%;
+    max-width: 500px; // 在单列时，仍然限制最大宽度，使其在平板上不会太宽
+  }
+
+  // 当屏幕宽度小于 768px 时
+  @media (max-width: 768px) {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
+// 卡片本身 (.card) 的样式保持不变
+.card {
+  width: 100%; // 让卡片宽度充满其父容器 .cardSlot
+  height: 300px;
+  position: relative;
+  cursor: pointer;
+  -webkit-transform-style: preserve-3d; // Safari 兼容性
+  -moz-transform-style: preserve-3d; // Firefox 兼容性
+  transform-style: preserve-3d;
+  -webkit-transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55); // Safari 兼容性
+  -moz-transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55); // Firefox 兼容性
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  -webkit-perspective: 1000px; // Safari 兼容性
+  -moz-perspective: 1000px; // Firefox 兼容性
+  perspective: 1000px; // 添加透视效果
+
+  &.isFlipped {
+    -webkit-transform: rotateY(180deg); // Safari 兼容性
+    -moz-transform: rotateY(180deg); // Firefox 兼容性
+    transform: rotateY(180deg);
+  }
+}
+
+// 卡片的正反面通用样式
+.cardFace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; // Safari 兼容性
+  -moz-backface-visibility: hidden; // Firefox 兼容性
+  backface-visibility: hidden; // 关键：隐藏元素的背面
+  border-radius: 20px;
+  box-shadow: 0 10px 30px var(--card-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden; // 防止内容溢出
+}
+
+// 卡片正面的具体样式
+.cardFront {
+  background-color: var(--card-bg);
+  border: 3px solid var(--text-color);
+  z-index: 2;
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+  font-family: var(--font-main);
+  color: var(--text-color);
+
+  .photoPlaceholder {
+    width: 110px;
+    height: 140px;
+    border: 3px solid var(--text-color);
+    border-radius: 12px;
+    align-self: flex-start;
+    margin-top: 1rem;
+    flex-shrink: 0;
+    overflow: hidden; // 防止图片超出容器
+    position: relative; // 为内部图片定位提供上下文
+
+    .photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; // 保持图片比例并填满容器
+      object-position: center; // 图片居中显示
+      border-radius: 9px; // 比容器小一点，避免与边框重叠
+    }
+  }
+  .info {
+    flex-grow: 1;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: left;
+    p {
+      margin: 0.25rem 0;
+    }
+    .infoText {
+      font-weight: normal;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+  }
+  .nameTag {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    font-family: var(--font-accent);
+  }
+}
+
+// 卡片背面的具体样式
+.cardBack {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  -webkit-transform: rotateY(180deg); // Safari 兼容性
+  -moz-transform: rotateY(180deg); // Firefox 兼容性
+  transform: rotateY(180deg); // 关键：预先翻转180度
+  flex-direction: column;
+  text-align: center;
+  border: 3px solid var(--text-secondary);
+  -webkit-backface-visibility: hidden; // Safari 兼容性
+  -moz-backface-visibility: hidden; // Firefox 兼容性
+  backface-visibility: hidden; // 确保背面隐藏
+
+  // 确保背面不显示任何图片
+  img {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  h2 {
+    font-family: var(--font-accent);
+    margin-bottom: 1rem;
+    color: #ffd700;
+    font-weight: bold; // 增加字重提高可读性
+  }
+
+  p {
+    color: white; // 确保文本也为白色
+  }
+}
+
+// MembersPageLayout.module.scss
+
+.separatorHeading {
+  display: flex;
+  align-items: center; // 垂直居中内容
+
+  // --- 核心修改 ---
+
+  // 1. 模仿主内容区的布局：设置最大宽度并居中
+  //    这会让标题栏这个“块”本身在页面上居中
+  max-width: 1200px; // 与你的 .container 保持一致
+  margin-left: 18%;
+
+  // 3. 设置内边距，确保内容不会紧贴边缘
+  padding: 0 2rem;
+  width: 30rem; // 宽度占满可用空间（直到 max-width）
+  box-sizing: border-box; // 确保 padding 不会撑大盒子
+
+  // 4. 内容默认就是左对齐的，所以不需要额外设置
+  //    justify-content: flex-start; /* 这是 flex 的默认值 */
+
+  // 5. 响应式调整
+
+  @media (max-width: 992px) {
+    // 在小屏幕上，可以适当减小左右内边距
+    padding: 0 1rem;
+    margin-left: 10%;
+    width: 25rem;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 5%;
+    width: 20rem;
+    padding: 0 0.5rem;
+  }
+}
+
+.separatorLine {
+  flex-grow: 1; // 关键：让线条自动占据所有剩余空间
+  height: 3px; // 线条的粗细
+  background-color: var(--primary-color); // 线条的颜色
+  margin-right: 1.5rem; // 线条和图标之间的间距
+}
+
+.separatorIcon {
+  flex-shrink: 0; // 防止图标被压缩
+  width: 60px; // 为图标容器预留一个固定宽度
+  height: 60px;
+  // 你可以在这里添加更多样式，比如边框，来辅助定位
+}

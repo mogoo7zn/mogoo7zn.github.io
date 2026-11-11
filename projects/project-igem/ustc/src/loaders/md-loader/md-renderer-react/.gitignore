@@ -1,0 +1,16 @@
+node_modules/
+
+# package-lock.json
+
+/dist/*
+!/dist/ghc_wasm_jsffi.js
+!/dist/wizer.wasm
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+.DS_Store
+
+.env

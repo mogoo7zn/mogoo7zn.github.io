@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #ffb700;
+      }
+    </style>
+  </defs>
+  <g id="_2" data-name="2">
+    <g id="Medical">
+      <rect class="cls-2" x="130" y="0" width="200" height="500" rx="40" ry="40"/>
+      <rect class="cls-2" y="80" width="200" height="80" rx="40" ry="40"/>
+      <circle class="cls-1" cx="40" cy="120" r="30"/>
+      <rect class="cls-2" x="36" y="100" width="8" height="40"/>
+      <rect class="cls-2" x="36" y="100" width="8" height="40" transform="translate(-80 160) rotate(-90)"/>
+    </g>
+  </g>
+</svg>

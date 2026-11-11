@@ -1,0 +1,33 @@
+
+{
+  "title": "Results",
+  "bannerImage": "/images/banners/results_banner.jpg",
+  "description": "Presenting the data, outcomes, and conclusions from our experiments.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Characterization of Lead-Sensitive Promoter (BBa_K123456)",
+      "id": "results-1"
+    },
+    {
+      "type": "paragraph",
+      "text": "Our experimental data demonstrates a clear dose-dependent response of the promoter to lead ion concentration. At 50 µM lead, we observed a 10-fold increase in reporter gene expression compared to the control group. The results validate the functionality of our core sensing part."
+    },
+    {
+      "type": "image",
+      "src": "/images/results/graph1.png",
+      "alt": "A graph showing fluorescence vs. lead concentration."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "System Performance in Real-World Samples",
+      "id": "results-2"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam."
+    }
+  ]
+}

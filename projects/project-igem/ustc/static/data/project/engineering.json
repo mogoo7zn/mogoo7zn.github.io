@@ -1,0 +1,38 @@
+
+{
+  "title": "Engineering",
+  "bannerImage": "/images/banners/engineering_banner.jpg",
+  "description": "This is engineering for our project.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The Design-Build-Test-Learn Cycle",
+      "id": "dbtl-cycle"
+    },
+    {
+      "type": "paragraph",
+      "text": "Our project followed the engineering design cycle. We began by designing our biosensor parts based on existing literature. We then built these genetic constructs using standard cloning techniques. The testing phase involved characterizing the performance of each part individually and as a system. The learnings from these tests informed the design of our second iteration of improved parts."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Iteration 1: Proof of Concept",
+      "id": "iteration-1"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Iteration 2: Improved Sensitivity",
+      "id": "iteration-2"
+    },
+    {
+      "type": "paragraph",
+      "text": "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie."
+    }
+  ]
+}

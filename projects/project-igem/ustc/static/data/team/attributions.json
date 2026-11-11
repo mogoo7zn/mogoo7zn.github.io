@@ -1,0 +1,28 @@
+
+{
+  "title": "Attributions",
+  "bannerImage": "/images/banners/attributions_banner.jpg",
+  "description": "Acknowledging everyone who helped make our project possible.",
+  "sections": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Team Contributions",
+      "id": "team-contributions"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "General Support",
+      "id": "general-support"
+    },
+    {
+      "type": "paragraph",
+      "text": "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta."
+    }
+  ]
+}
